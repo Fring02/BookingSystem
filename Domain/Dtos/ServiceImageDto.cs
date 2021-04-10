@@ -6,6 +6,7 @@ namespace Domain.Dtos
     {
         public Guid Id { get; set; }
         public Guid ServiceId { get; set; }
-        public LeisureServiceDto Service { get; set; }
+        public string Path { get; set; }
+        public LeisureServiceCreateDto Service { get; set; }
     }
 }

@@ -9,13 +9,14 @@ namespace Infrastructure.Data
         {
         }
 
-        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<LeisureService>().HasMany<ServiceImage>().WithOne(i => i.Service);
             base.OnModelCreating(modelBuilder);
-        }*/
+        }
 
         public DbSet<LeisureService> LeisureServices { get; set; }
         public DbSet<ServiceImage> ServicesImages { get; set; }
+        public DbSet<BookingRequest> BookingRequests { get; set; }
     }
 }

@@ -15,14 +15,21 @@ namespace Infrastructure.Repositories.Booking
         {
         }
 
+        public override async Task<IEnumerable<LeisureService>> GetAllAsync()
+        {
+            return await _context.LeisureServices.Include(s => s.Images).ToListAsync();
+        }
+
         public async Task<IEnumerable<LeisureService>> GetByRating(int rating)
         {
-            return await _context.LeisureServices.Where(s => s.Rating == rating).ToListAsync();
+            return await _context.LeisureServices.Include(s => s.Images).
+                Where(s => s.Rating == rating).ToListAsync();
         }
 
         public async Task<IEnumerable<LeisureService>> GetByWorkingTime(string workingTime)
         {
-            return await _context.LeisureServices.Where(s => s.WorkingTime == workingTime).ToListAsync();
+            return await _context.LeisureServices.Include(s => s.Images).
+                Where(s => s.WorkingTime == workingTime).ToListAsync();
         }
     }
 }

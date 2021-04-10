@@ -11,12 +11,15 @@ namespace API.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<ILeisureServiceRepository, LeisureServiceRepository>();
+            services.AddScoped<IServiceImageRepository, ServiceImageRepository>();
+            services.AddScoped<IBookingRequestsRepository, BookingRequestsRepository>();
             return services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<ILeisureServicesService, LeisureServicesService>();
+            services.AddScoped<IBookingRequestsService, BookingRequestsService>();
             return services;
         }
     }

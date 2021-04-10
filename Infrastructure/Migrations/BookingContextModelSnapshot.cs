@@ -19,17 +19,33 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Domain.Models.Booking.LeisureService", b =>
+            modelBuilder.Entity("Domain.Models.Booking.BookingRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<TimeSpan>("BookingDuration")
+                    b.Property<TimeSpan>("BookingTime")
                         .HasColumnType("interval");
 
-                    b.Property<DateTime>("BookingTime")
+                    b.Property<DateTime>("LeftAt")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("BookingRequests");
+                });
+
+            modelBuilder.Entity("Domain.Models.Booking.LeisureService", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -60,20 +76,46 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("LeisureServiceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("PublishedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LeisureServiceId");
 
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServicesImages");
                 });
 
-            modelBuilder.Entity("Domain.Models.Booking.ServiceImage", b =>
+            modelBuilder.Entity("Domain.Models.Booking.BookingRequest", b =>
                 {
                     b.HasOne("Domain.Models.Booking.LeisureService", "Service")
+                        .WithMany("BookingRequests")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("Domain.Models.Booking.ServiceImage", b =>
+                {
+                    b.HasOne("Domain.Models.Booking.LeisureService", null)
                         .WithMany("Images")
+                        .HasForeignKey("LeisureServiceId");
+
+                    b.HasOne("Domain.Models.Booking.LeisureService", "Service")
+                        .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -83,6 +125,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Booking.LeisureService", b =>
                 {
+                    b.Navigation("BookingRequests");
+
                     b.Navigation("Images");
                 });
 #pragma warning restore 612, 618

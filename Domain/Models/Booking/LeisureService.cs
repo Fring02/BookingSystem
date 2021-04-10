@@ -13,7 +13,6 @@ namespace Domain.Models.Booking
         public string Description { get; set; }
         public string WorkingTime { get; set; }
         public List<ServiceImage> Images { get; set; }
-        public DateTime BookingTime { get; set; }
-        public TimeSpan BookingDuration { get; set; }
+        public List<BookingRequest> BookingRequests { get; set; }
     }
 }

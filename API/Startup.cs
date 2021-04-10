@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace API
 {
@@ -33,6 +34,10 @@ namespace API
                 o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddRepositories().AddServices();
             services.AddAutoMapper(typeof(BookingProfile));
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Booking API", Version = "v1" });
+            });
             services.AddControllers();
         }
 
@@ -45,8 +50,12 @@ namespace API
             }
             app.UseHttpsRedirection();
             app.UseRouting();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Booking API V1");
+            });
         }
     }
 }
