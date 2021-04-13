@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Models.Users;
+using System;
 using System.Collections.Generic;
 
 namespace Domain.Models.Booking
@@ -12,6 +13,9 @@ namespace Domain.Models.Booking
         public int Rating { get; set; }
         public string Description { get; set; }
         public string WorkingTime { get; set; }
+        public Guid OwnerId { get; set; }
+        public Owner Owner { get; set; }
+        public LeisureServiceCategory LeisureServiceCategory { get; set; }
         public List<ServiceImage> Images { get; set; }
         public List<BookingRequest> BookingRequests { get; set; }
     }
