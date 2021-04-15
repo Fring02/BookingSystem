@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories.Booking
 {
-    public class ServiceImageRepository : BaseRepository<ServiceImage>, IServiceImageRepository
+    public class ServiceImagesRepository : BaseRepository<ServiceImage>, IServiceImageRepository
     {
-        public ServiceImageRepository(BookingContext context) : base(context)
+        public ServiceImagesRepository(BookingContext context) : base(context)
         {
         }
 

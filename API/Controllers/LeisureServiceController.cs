@@ -15,11 +15,13 @@ namespace API.Controllers
     public class LeisureServiceController : ControllerBase
     {
         private readonly ILeisureServicesService _leisureService;
+        private readonly ILeisureServicesCategoriesService _categoryService;
         private readonly IMapper _mapper;
-        public LeisureServiceController(ILeisureServicesService leisureService, IMapper mapper)
+        public LeisureServiceController(ILeisureServicesService leisureService, IMapper mapper, ILeisureServicesCategoriesService categoryService)
         {
             _leisureService = leisureService;
             _mapper = mapper;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
@@ -48,7 +50,10 @@ namespace API.Controllers
                 var error = ModelState.Values.First().Errors.First();
                 return BadRequest(error.ErrorMessage);
             }
+            var category = await _categoryService.GetByName(dto.CategoryName);
+            if (category == null) return BadRequest("Such category doesn't exist.");
             var model = _mapper.Map<LeisureService>(dto);
+            model.CategoryId = category.Id;
             model = await _leisureService.CreateAsync(model);
             if (model == null) return StatusCode(500, "Failed to create leisure service");
             return Ok("Created new leisure service");
@@ -60,6 +65,11 @@ namespace API.Controllers
             var model = await _leisureService.GetByIdAsync(id);
             if (model == null) return BadRequest("Failed to find leisure service by id " + id);
             UpdateService(model, dto);
+            if (!string.IsNullOrEmpty(dto.CategoryName))
+            {
+                var category = await _categoryService.GetByName(dto.CategoryName);
+                model.CategoryId = category.Id;
+            }
             if (await _leisureService.UpdateAsync(model)) return Ok("Updated leisure service by id " + id);
             return BadRequest("Failed to update leisure service by id" + id);
         }

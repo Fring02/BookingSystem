@@ -71,7 +71,7 @@ namespace API.Controllers
         private void UpdateRequest(BookingRequest model, BookingRequestUpdateDto dto)
         {
             if (dto.ServiceId != Guid.Empty) model.ServiceId = dto.ServiceId;
-            if (dto.BookingTime != default(TimeSpan)) model.BookingTime = dto.BookingTime;
+            if (dto.BookingTime != default) model.BookingTime = dto.BookingTime;
         }
     }
 }

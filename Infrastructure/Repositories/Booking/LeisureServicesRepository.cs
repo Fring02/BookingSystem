@@ -9,26 +9,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories.Booking
 {
-    public class LeisureServiceRepository : BaseRepository<LeisureService>,ILeisureServiceRepository
+    public class LeisureServicesRepository : BaseRepository<LeisureService>,ILeisureServicesRepository
     {
-        public LeisureServiceRepository(BookingContext context) : base(context)
+        public LeisureServicesRepository(BookingContext context) : base(context)
         {
         }
 
         public override async Task<IEnumerable<LeisureService>> GetAllAsync()
         {
-            return await _context.LeisureServices.Include(s => s.Images).ToListAsync();
+            return await _context.LeisureServices.Include(s => s.Images).Include(s => s.LeisureServiceCategory).ToListAsync();
         }
 
         public async Task<IEnumerable<LeisureService>> GetByRating(int rating)
         {
-            return await _context.LeisureServices.Include(s => s.Images).
+            return await _context.LeisureServices.Include(s => s.Images).Include(s => s.LeisureServiceCategory).
                 Where(s => s.Rating == rating).ToListAsync();
         }
 
         public async Task<IEnumerable<LeisureService>> GetByWorkingTime(string workingTime)
         {
-            return await _context.LeisureServices.Include(s => s.Images).
+            return await _context.LeisureServices.Include(s => s.Images).Include(s => s.LeisureServiceCategory).
                 Where(s => s.WorkingTime == workingTime).ToListAsync();
         }
     }

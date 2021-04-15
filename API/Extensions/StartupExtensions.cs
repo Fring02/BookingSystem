@@ -10,9 +10,10 @@ namespace API.Extensions
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<ILeisureServiceRepository, LeisureServiceRepository>();
-            services.AddScoped<IServiceImageRepository, ServiceImageRepository>();
+            services.AddScoped<ILeisureServicesRepository, LeisureServicesRepository>();
+            services.AddScoped<IServiceImageRepository, ServiceImagesRepository>();
             services.AddScoped<IBookingRequestsRepository, BookingRequestsRepository>();
+            services.AddScoped<ILeisureServicesCategoriesRepository, LeisureServiceCategoryRepository>();
             return services;
         }
 
@@ -20,6 +21,8 @@ namespace API.Extensions
         {
             services.AddScoped<ILeisureServicesService, LeisureServicesService>();
             services.AddScoped<IBookingRequestsService, BookingRequestsService>();
+            services.AddScoped<IServiceImagesService, ServiceImagesService>();
+            services.AddScoped<ILeisureServicesCategoriesService, LeisureServicesCategoriesService>();
             return services;
         }
     }

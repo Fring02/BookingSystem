@@ -34,9 +34,14 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BookingRequests");
                 });
@@ -47,14 +52,23 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("LeisureServiceCategoryId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Location")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
@@ -67,7 +81,25 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LeisureServiceCategoryId");
+
+                    b.HasIndex("OwnerId");
+
                     b.ToTable("LeisureServices");
+                });
+
+            modelBuilder.Entity("Domain.Models.Booking.LeisureServiceCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeisureServiceCategories");
                 });
 
             modelBuilder.Entity("Domain.Models.Booking.ServiceImage", b =>
@@ -97,6 +129,58 @@ namespace Infrastructure.Migrations
                     b.ToTable("ServicesImages");
                 });
 
+            modelBuilder.Entity("Domain.Models.Users.Owner", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Firstname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Lastname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MobilePhone")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeisureServicesOwners");
+                });
+
+            modelBuilder.Entity("Domain.Models.Users.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Firstname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Lastname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MobilePhone")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("Domain.Models.Booking.BookingRequest", b =>
                 {
                     b.HasOne("Domain.Models.Booking.LeisureService", "Service")
@@ -105,7 +189,32 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Models.Users.User", "User")
+                        .WithMany("BookingRequests")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Service");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Models.Booking.LeisureService", b =>
+                {
+                    b.HasOne("Domain.Models.Booking.LeisureServiceCategory", "LeisureServiceCategory")
+                        .WithMany("Services")
+                        .HasForeignKey("LeisureServiceCategoryId");
+
+                    b.HasOne("Domain.Models.Users.Owner", "Owner")
+                        .WithMany("Services")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LeisureServiceCategory");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Domain.Models.Booking.ServiceImage", b =>
@@ -128,6 +237,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("BookingRequests");
 
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("Domain.Models.Booking.LeisureServiceCategory", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Models.Users.Owner", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Models.Users.User", b =>
+                {
+                    b.Navigation("BookingRequests");
                 });
 #pragma warning restore 612, 618
         }

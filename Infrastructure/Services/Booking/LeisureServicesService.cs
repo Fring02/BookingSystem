@@ -9,16 +9,22 @@ namespace Infrastructure.Services.Booking
 {
     public class LeisureServicesService : ILeisureServicesService
     {
-        private readonly ILeisureServiceRepository _repository;
+        private readonly ILeisureServicesRepository _repository;
+        private readonly ILeisureServicesCategoriesRepository _categoriesRepository;
 
-        public LeisureServicesService(ILeisureServiceRepository repository)
+        public LeisureServicesService(ILeisureServicesRepository repository, ILeisureServicesCategoriesRepository categoriesRepository)
         {
             _repository = repository;
+            _categoriesRepository = categoriesRepository;
         }
 
-        public Task<LeisureService> CreateAsync(LeisureService model)
+        public async Task<LeisureService> CreateAsync(LeisureService model)
         {
-            return _repository.CreateAsync(model);
+            var category = await _categoriesRepository.GetByIdAsync(model.CategoryId);
+            if(category != null)
+            return await _repository.CreateAsync(model);
+
+            return null;
         }
 
         public Task<IEnumerable<LeisureService>> GetAllAsync()

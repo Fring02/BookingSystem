@@ -14,5 +14,6 @@ namespace Domain.Dtos
         public string Description { get; set; }
         public string WorkingTime { get; set; }
         public DateTime BookingTime { get; set; }
+        public string CategoryName { get; set; }
     }
 }

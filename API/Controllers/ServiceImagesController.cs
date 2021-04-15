@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("/api/v1/services/{id}/images/")]
+    [Route("/api/v1/services/{id?}/images/")]
     public class ServiceImagesController : ControllerBase
     {
         private readonly IServiceImagesService _imagesService;

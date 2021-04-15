@@ -14,7 +14,14 @@ namespace Infrastructure.Repositories.Booking
         public BookingRequestsRepository(BookingContext context) : base(context)
         {
         }
-
+        public override async Task<BookingRequest> GetByIdAsync(Guid id)
+        {
+            return await _context.BookingRequests.Include(r => r.Service).FirstOrDefaultAsync(r => r.Id == id);
+        }
+        public override async Task<IEnumerable<BookingRequest>> GetAllAsync()
+        {
+            return await _context.BookingRequests.Include(r => r.Service).ToListAsync();
+        }
         public async Task<IEnumerable<BookingRequest>> GetByServiceId(Guid serviceId)
         {
             return await _context.BookingRequests.Where(r => r.ServiceId == serviceId).ToListAsync();
