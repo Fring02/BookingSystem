@@ -13,7 +13,7 @@ namespace API.Extensions
             services.AddScoped<ILeisureServicesRepository, LeisureServicesRepository>();
             services.AddScoped<IServiceImageRepository, ServiceImagesRepository>();
             services.AddScoped<IBookingRequestsRepository, BookingRequestsRepository>();
-            services.AddScoped<ILeisureServicesCategoriesRepository, LeisureServiceCategoryRepository>();
+            services.AddScoped<ILeisureServicesCategoriesRepository, LeisureServicesCategoriesRepository>();
             return services;
         }
 

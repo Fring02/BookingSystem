@@ -11,7 +11,7 @@ namespace Infrastructure.Services.Booking
     {
         private readonly ILeisureServicesRepository _repository;
         private readonly ILeisureServicesCategoriesRepository _categoriesRepository;
-
+        
         public LeisureServicesService(ILeisureServicesRepository repository, ILeisureServicesCategoriesRepository categoriesRepository)
         {
             _repository = repository;
@@ -55,6 +55,11 @@ namespace Infrastructure.Services.Booking
         public Task<IEnumerable<LeisureService>> GetByWorkingTime(string workingTime)
         {
             return _repository.GetByWorkingTime(workingTime);
+        }
+
+        public Task<bool> CheckOwner(Guid ownerId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
