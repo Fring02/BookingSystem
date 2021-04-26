@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Dtos;
 using Domain.Interfaces.Services.Booking;
+using Domain.Interfaces.Services.Users;
 using Domain.Models.Booking;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +17,14 @@ namespace API.Controllers
     {
         private readonly ILeisureServicesService _leisureService;
         private readonly ILeisureServicesCategoriesService _categoryService;
+        private readonly IOwnersService _ownersService;
         private readonly IMapper _mapper;
-        public LeisureServiceController(ILeisureServicesService leisureService, IMapper mapper, ILeisureServicesCategoriesService categoryService)
+        public LeisureServiceController(ILeisureServicesService leisureService, IMapper mapper, ILeisureServicesCategoriesService categoryService, IOwnersService ownersService)
         {
             _leisureService = leisureService;
             _mapper = mapper;
             _categoryService = categoryService;
+            _ownersService = ownersService;
         }
 
         [HttpGet]
@@ -52,6 +55,7 @@ namespace API.Controllers
             }
             var category = await _categoryService.GetByName(dto.CategoryName);
             if (category == null) return BadRequest("Such category doesn't exist.");
+            if (!await _ownersService.OwnerExists(dto.OwnerId)) return BadRequest("Such services owner doesn't exist");
             var model = _mapper.Map<LeisureService>(dto);
             model.CategoryId = category.Id;
             model = await _leisureService.CreateAsync(model);

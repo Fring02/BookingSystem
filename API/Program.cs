@@ -14,7 +14,7 @@ namespace API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().ApplyDatabaseMigrations().SeedData().Run();
+            CreateHostBuilder(args).Build()/*.ApplyDatabaseMigrations().SeedData()*/.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

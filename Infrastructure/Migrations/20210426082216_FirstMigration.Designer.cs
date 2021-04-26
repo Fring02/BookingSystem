@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    [Migration("20210415151056_FirstMigration")]
+    [Migration("20210426082216_FirstMigration")]
     partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,9 +60,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("LeisureServiceCategoryId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Location")
                         .HasColumnType("text");
 
@@ -83,7 +80,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeisureServiceCategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("OwnerId");
 
@@ -110,9 +107,6 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("LeisureServiceId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Path")
                         .HasColumnType("text");
 
@@ -123,8 +117,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LeisureServiceId");
 
                     b.HasIndex("ServiceId");
 
@@ -155,6 +147,17 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LeisureServicesOwners");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b69dbf88-8281-40aa-ac15-a4928562b1b0"),
+                            Email = "hasenovsultanbek@gmail.com",
+                            Firstname = "Sultanbek",
+                            Lastname = "Hasenov",
+                            MobilePhone = "+7(776)-166-70-60",
+                            Password = "qwerty123"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.Users.User", b =>
@@ -204,9 +207,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Booking.LeisureService", b =>
                 {
-                    b.HasOne("Domain.Models.Booking.LeisureServiceCategory", "LeisureServiceCategory")
+                    b.HasOne("Domain.Models.Booking.LeisureServiceCategory", "Category")
                         .WithMany("Services")
-                        .HasForeignKey("LeisureServiceCategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.Users.Owner", "Owner")
                         .WithMany("Services")
@@ -214,19 +219,15 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("LeisureServiceCategory");
+                    b.Navigation("Category");
 
                     b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Domain.Models.Booking.ServiceImage", b =>
                 {
-                    b.HasOne("Domain.Models.Booking.LeisureService", null)
-                        .WithMany("Images")
-                        .HasForeignKey("LeisureServiceId");
-
                     b.HasOne("Domain.Models.Booking.LeisureService", "Service")
-                        .WithMany()
+                        .WithMany("Images")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

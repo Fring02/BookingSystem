@@ -1,7 +1,11 @@
 ﻿using Domain.Interfaces.Repositories.Booking;
+using Domain.Interfaces.Repositories.Users;
 using Domain.Interfaces.Services.Booking;
+using Domain.Interfaces.Services.Users;
 using Infrastructure.Repositories.Booking;
+using Infrastructure.Repositories.Users;
 using Infrastructure.Services.Booking;
+using Infrastructure.Services.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace API.Extensions
@@ -14,6 +18,7 @@ namespace API.Extensions
             services.AddScoped<IServiceImageRepository, ServiceImagesRepository>();
             services.AddScoped<IBookingRequestsRepository, BookingRequestsRepository>();
             services.AddScoped<ILeisureServicesCategoriesRepository, LeisureServicesCategoriesRepository>();
+            services.AddScoped<IOwnersRepository, OwnersRepository>();
             return services;
         }
 
@@ -23,6 +28,7 @@ namespace API.Extensions
             services.AddScoped<IBookingRequestsService, BookingRequestsService>();
             services.AddScoped<IServiceImagesService, ServiceImagesService>();
             services.AddScoped<ILeisureServicesCategoriesService, LeisureServicesCategoriesService>();
+            services.AddScoped<IOwnersService, OwnersService>();
             return services;
         }
     }

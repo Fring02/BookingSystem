@@ -14,10 +14,14 @@ namespace Infrastructure.Repositories.Booking
         public ServiceImagesRepository(BookingContext context) : base(context)
         {
         }
-
+        public override async Task<ServiceImage> GetByIdAsync(Guid id)
+        {
+            return await _context.ServicesImages.Include(i => i.Service).FirstOrDefaultAsync(i => i.Id == id);
+        }
         public async Task<IEnumerable<ServiceImage>> GetByServiceId(Guid serviceId)
         {
-            return await _context.ServicesImages.Where(i => i.ServiceId == serviceId).ToListAsync();
+            var images = await _context.ServicesImages.Where(i => i.ServiceId == serviceId).Include(i => i.Service).ToListAsync();
+            return images;
         }
     }
 }

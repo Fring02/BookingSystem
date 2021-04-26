@@ -13,7 +13,6 @@ namespace Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<LeisureService>().HasMany<ServiceImage>().WithOne(i => i.Service);
             modelBuilder.Entity<Owner>().HasData(new Owner
             {
                 Id = Guid.NewGuid(),

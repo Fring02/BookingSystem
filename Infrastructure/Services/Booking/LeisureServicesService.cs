@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Interfaces.Repositories.Booking;
+using Domain.Interfaces.Repositories.Users;
 using Domain.Interfaces.Services.Booking;
 using Domain.Models.Booking;
 
@@ -11,7 +12,6 @@ namespace Infrastructure.Services.Booking
     {
         private readonly ILeisureServicesRepository _repository;
         private readonly ILeisureServicesCategoriesRepository _categoriesRepository;
-        
         public LeisureServicesService(ILeisureServicesRepository repository, ILeisureServicesCategoriesRepository categoriesRepository)
         {
             _repository = repository;
@@ -21,9 +21,10 @@ namespace Infrastructure.Services.Booking
         public async Task<LeisureService> CreateAsync(LeisureService model)
         {
             var category = await _categoriesRepository.GetByIdAsync(model.CategoryId);
-            if(category != null)
-            return await _repository.CreateAsync(model);
-
+            if (category != null)
+            {
+                    return await _repository.CreateAsync(model);
+            }
             return null;
         }
 
@@ -57,9 +58,5 @@ namespace Infrastructure.Services.Booking
             return _repository.GetByWorkingTime(workingTime);
         }
 
-        public Task<bool> CheckOwner(Guid ownerId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

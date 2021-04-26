@@ -63,15 +63,14 @@ namespace Infrastructure.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     WorkingTime = table.Column<string>(type: "text", nullable: true),
                     OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LeisureServiceCategoryId = table.Column<Guid>(type: "uuid", nullable: true)
+                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LeisureServices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LeisureServices_LeisureServiceCategories_LeisureServiceCate~",
-                        column: x => x.LeisureServiceCategoryId,
+                        name: "FK_LeisureServices_LeisureServiceCategories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "LeisureServiceCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -117,18 +116,11 @@ namespace Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
                     Path = table.Column<string>(type: "text", nullable: true),
-                    PublishedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LeisureServiceId = table.Column<Guid>(type: "uuid", nullable: true)
+                    PublishedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServicesImages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ServicesImages_LeisureServices_LeisureServiceId",
-                        column: x => x.LeisureServiceId,
-                        principalTable: "LeisureServices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ServicesImages_LeisureServices_ServiceId",
                         column: x => x.ServiceId,
@@ -136,6 +128,11 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "LeisureServicesOwners",
+                columns: new[] { "Id", "Email", "Firstname", "Lastname", "MobilePhone", "Password" },
+                values: new object[] { new Guid("b69dbf88-8281-40aa-ac15-a4928562b1b0"), "hasenovsultanbek@gmail.com", "Sultanbek", "Hasenov", "+7(776)-166-70-60", "qwerty123" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookingRequests_ServiceId",
@@ -148,19 +145,14 @@ namespace Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeisureServices_LeisureServiceCategoryId",
+                name: "IX_LeisureServices_CategoryId",
                 table: "LeisureServices",
-                column: "LeisureServiceCategoryId");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LeisureServices_OwnerId",
                 table: "LeisureServices",
                 column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServicesImages_LeisureServiceId",
-                table: "ServicesImages",
-                column: "LeisureServiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServicesImages_ServiceId",
