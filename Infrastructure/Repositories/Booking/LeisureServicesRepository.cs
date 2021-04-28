@@ -40,5 +40,25 @@ namespace Infrastructure.Repositories.Booking
         {
             return await _context.LeisureServices.Where(s => s.CategoryId == categoryId).Include(s => s.Images).Include(s => s.Category).ToListAsync();
         }
+
+        public async Task<IEnumerable<LeisureService>> GetByFilter(Guid categoryId = default, string workingTime = null, int rating = 0)
+        {
+            IQueryable<LeisureService> services = null;
+                if (categoryId != default)
+                {
+                    services = _context.LeisureServices.Where(s => s.CategoryId == categoryId);
+                }
+                if (workingTime != null)
+                {
+                    if (services == null) services = _context.LeisureServices.Where(s => s.WorkingTime == workingTime);
+                    else services = services.Where(s => s.WorkingTime == workingTime);
+                }
+                if (rating > 0)
+                {
+                    if (services == null) services = _context.LeisureServices.Where(s => s.Rating == rating);
+                    else services = services.Where(s => s.Rating == rating);
+                }
+                return await services.Include(s => s.Images).Include(s => s.Category).ToListAsync();
+        }
     }
 }

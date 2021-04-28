@@ -28,10 +28,16 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int rating, string startTime, string endTime, string categoryName)
+        public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int rating = 0, string workingTime = null, string categoryName = null)
         {
-            IEnumerable<LeisureService> services;
-            if (rating > 0)
+            if (!string.IsNullOrEmpty(categoryName))
+            {
+                var category = await _categoryService.GetByName(categoryName);
+                if (category == null) return null;
+                return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilter(category.Id, workingTime, rating)
+                    ?? new List<LeisureService>());
+            }
+            /*if (rating > 0)
             {
                 services = await _leisureService.GetByRating(rating);
             }
@@ -49,8 +55,9 @@ namespace API.Controllers
             {
                 services = await _leisureService.GetByWorkingTime("00:00-" + endTime);
             }
-            else services = await _leisureService.GetAllAsync();
-            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(services ?? new List<LeisureService>());
+            else services = await _leisureService.GetAllAsync();*/
+            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilter(default, workingTime, rating)
+                ?? new List<LeisureService>());
         }
 
         [HttpGet("{id}")]

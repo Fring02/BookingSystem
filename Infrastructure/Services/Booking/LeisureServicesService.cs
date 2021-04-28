@@ -23,7 +23,7 @@ namespace Infrastructure.Services.Booking
             var category = await _categoriesRepository.GetByIdAsync(model.CategoryId);
             if (category != null)
             {
-                    return await _repository.CreateAsync(model);
+              return await _repository.CreateAsync(model);
             }
             return null;
         }
@@ -62,6 +62,15 @@ namespace Infrastructure.Services.Booking
         {
             if (categoryId == Guid.Empty) return null;
             return _repository.GetByCategoryId(categoryId);
+        }
+
+        public Task<IEnumerable<LeisureService>> GetByFilter(Guid categoryId = default, string workingTime = null, int rating = 0)
+        {
+            if (categoryId == default && workingTime == null && rating == 0)
+            {
+                return GetAllAsync();
+            }
+            return _repository.GetByFilter(categoryId, workingTime, rating);
         }
     }
 }
