@@ -9,5 +9,6 @@ namespace Domain.Interfaces.Services.Booking
     {
         Task<IEnumerable<LeisureService>> GetByRating(int rating);
         Task<IEnumerable<LeisureService>> GetByWorkingTime(string workingTime);
+        Task<IEnumerable<LeisureService>> GetByCategoryId(Guid categoryId);
     }
 }

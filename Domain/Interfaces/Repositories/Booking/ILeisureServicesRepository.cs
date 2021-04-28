@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Models.Booking;
 
@@ -8,5 +9,6 @@ namespace Domain.Interfaces.Repositories.Booking
     {
         Task<IEnumerable<LeisureService>> GetByRating(int rating);
         Task<IEnumerable<LeisureService>> GetByWorkingTime(string workingTime);
+        Task<IEnumerable<LeisureService>> GetByCategoryId(Guid categoryId);
     }
 }

@@ -28,14 +28,29 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int rating, string startTime, string endTime)
+        public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int rating, string startTime, string endTime, string categoryName)
         {
-            if (rating > 0) return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByRating(rating));
-            if (!string.IsNullOrEmpty(startTime))
-                return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByWorkingTime(startTime + "-24:00"));
-            if(!string.IsNullOrEmpty(endTime))
-                return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByWorkingTime("00:00-" + endTime));
-            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetAllAsync());
+            IEnumerable<LeisureService> services;
+            if (rating > 0)
+            {
+                services = await _leisureService.GetByRating(rating);
+            }
+            else if (!string.IsNullOrEmpty(categoryName))
+            {
+                var category = await _categoryService.GetByName(categoryName);
+                if (category == null) return null;
+                services = await _leisureService.GetByCategoryId(category.Id);
+            }
+            else if (!string.IsNullOrEmpty(startTime))
+            {
+                services = await _leisureService.GetByWorkingTime(startTime + "-24:00");
+            }
+            else if (!string.IsNullOrEmpty(endTime))
+            {
+                services = await _leisureService.GetByWorkingTime("00:00-" + endTime);
+            }
+            else services = await _leisureService.GetAllAsync();
+            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(services ?? new List<LeisureService>());
         }
 
         [HttpGet("{id}")]

@@ -58,5 +58,10 @@ namespace Infrastructure.Services.Booking
             return _repository.GetByWorkingTime(workingTime);
         }
 
+        public Task<IEnumerable<LeisureService>> GetByCategoryId(Guid categoryId)
+        {
+            if (categoryId == Guid.Empty) return null;
+            return _repository.GetByCategoryId(categoryId);
+        }
     }
 }

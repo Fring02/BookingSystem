@@ -35,5 +35,10 @@ namespace Infrastructure.Repositories.Booking
             return await _context.LeisureServices.Include(s => s.Images).Include(s => s.Category).
                 Where(s => s.WorkingTime == workingTime).ToListAsync();
         }
+
+        public async Task<IEnumerable<LeisureService>> GetByCategoryId(Guid categoryId)
+        {
+            return await _context.LeisureServices.Where(s => s.CategoryId == categoryId).Include(s => s.Images).Include(s => s.Category).ToListAsync();
+        }
     }
 }
