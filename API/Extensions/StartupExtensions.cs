@@ -36,6 +36,7 @@ namespace API.Extensions
             services.AddScoped<ILeisureServicesCategoriesService, LeisureServicesCategoriesService>();
             services.AddScoped<IOwnersService, OwnersService>();
             services.AddScoped<IUserService, UsersService>();
+            services.AddSingleton<NotificationService>();
             return services;
         }
     }

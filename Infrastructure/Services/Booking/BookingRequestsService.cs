@@ -16,39 +16,39 @@ namespace Infrastructure.Services.Booking
             _repository = repository;
         }
 
-        public Task<BookingRequest> CreateAsync(BookingRequest model)
+        public async Task<BookingRequest> CreateAsync(BookingRequest model)
         {
             model.LeftAt = DateTime.Now;
-            return _repository.CreateAsync(model);
+            return await _repository.CreateAsync(model).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<BookingRequest>> GetAllAsync()
+        public async Task<IEnumerable<BookingRequest>> GetAllAsync()
         {
-            return _repository.GetAllAsync();
+            return await _repository.GetAllAsync().ConfigureAwait(false);
         }
 
-        public Task<BookingRequest> GetByIdAsync(Guid id)
+        public async Task<BookingRequest> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty) return null;
-            return _repository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(id).ConfigureAwait(false);
         }
 
-        public Task<bool> UpdateAsync(BookingRequest model)
+        public async Task<bool> UpdateAsync(BookingRequest model)
         {
-            if (model.Id == Guid.Empty) return null;
-            return _repository.UpdateAsync(model);
+            if (model.Id == Guid.Empty) return false;
+            return await _repository.UpdateAsync(model).ConfigureAwait(false);
         }
 
-        public Task<bool> DeleteAsync(BookingRequest model)
+        public async Task<bool> DeleteAsync(BookingRequest model)
         {
-            if (model.Id == Guid.Empty) return null;
-            return _repository.DeleteAsync(model);
+            if (model.Id == Guid.Empty) return false;
+            return await _repository.DeleteAsync(model).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<BookingRequest>> GetByServiceId(Guid serviceId)
+        public async Task<IEnumerable<BookingRequest>> GetByServiceId(Guid serviceId)
         {
             if (serviceId == Guid.Empty) return null;
-            return _repository.GetByServiceId(serviceId);
+            return await _repository.GetByServiceId(serviceId).ConfigureAwait(false);
         }
     }
 }

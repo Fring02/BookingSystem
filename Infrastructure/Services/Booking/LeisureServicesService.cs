@@ -20,57 +20,57 @@ namespace Infrastructure.Services.Booking
 
         public async Task<LeisureService> CreateAsync(LeisureService model)
         {
-            var category = await _categoriesRepository.GetByIdAsync(model.CategoryId);
+            var category = await _categoriesRepository.GetByIdAsync(model.CategoryId).ConfigureAwait(false);
             if (category != null)
             {
-              return await _repository.CreateAsync(model);
+              return await _repository.CreateAsync(model).ConfigureAwait(false);
             }
             return null;
         }
 
-        public Task<IEnumerable<LeisureService>> GetAllAsync()
+        public async Task<IEnumerable<LeisureService>> GetAllAsync()
         {
-            return _repository.GetAllAsync();
+            return await _repository.GetAllAsync().ConfigureAwait(false);
         }
 
-        public Task<LeisureService> GetByIdAsync(Guid id)
+        public async Task<LeisureService> GetByIdAsync(Guid id)
         {
-            return _repository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(id).ConfigureAwait(false);
         }
 
-        public Task<bool> UpdateAsync(LeisureService model)
+        public async Task<bool> UpdateAsync(LeisureService model)
         {
-            return _repository.UpdateAsync(model);
+            return await _repository.UpdateAsync(model).ConfigureAwait(false);
         }
 
-        public Task<bool> DeleteAsync(LeisureService model)
+        public async Task<bool> DeleteAsync(LeisureService model)
         {
-            return _repository.DeleteAsync(model);
+            return await _repository.DeleteAsync(model).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<LeisureService>> GetByRating(int rating)
+        public async Task<IEnumerable<LeisureService>> GetByRating(int rating)
         {
-            return _repository.GetByRating(rating);
+            return await _repository.GetByRating(rating).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<LeisureService>> GetByWorkingTime(string workingTime)
+        public async Task<IEnumerable<LeisureService>> GetByWorkingTime(string workingTime)
         {
-            return _repository.GetByWorkingTime(workingTime);
+            return await _repository.GetByWorkingTime(workingTime).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<LeisureService>> GetByCategoryId(Guid categoryId)
+        public async Task<IEnumerable<LeisureService>> GetByCategoryId(Guid categoryId)
         {
             if (categoryId == Guid.Empty) return null;
-            return _repository.GetByCategoryId(categoryId);
+            return await _repository.GetByCategoryId(categoryId).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<LeisureService>> GetByFilter(Guid categoryId = default, string workingTime = null, int rating = 0)
+        public async Task<IEnumerable<LeisureService>> GetByFilter(Guid categoryId = default, string workingTime = null, int rating = 0)
         {
             if (categoryId == default && workingTime == null && rating == 0)
             {
-                return GetAllAsync();
+                return await GetAllAsync();
             }
-            return _repository.GetByFilter(categoryId, workingTime, rating);
+            return await _repository.GetByFilter(categoryId, workingTime, rating).ConfigureAwait(false);
         }
     }
 }

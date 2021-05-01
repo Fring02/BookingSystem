@@ -16,7 +16,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Microsoft.IdentityModel.Tokens;
-
+using Infrastructure;
 
 namespace API
 {
@@ -35,6 +35,7 @@ namespace API
             services.AddDbContext<BookingContext>(o =>
                 o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddRepositories().AddServices();
+           // services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
             services.AddAutoMapper(typeof(BookingProfile));
             services.AddSwaggerGen(c =>
             {
