@@ -28,35 +28,16 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int rating = 0, string workingTime = null, string categoryName = null)
+        public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int? rating, string workingTime = null, string categoryName = null)
         {
             if (!string.IsNullOrEmpty(categoryName))
             {
                 var category = await _categoryService.GetByName(categoryName);
                 if (category == null) return null;
-                return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilter(category.Id, workingTime, rating)
+                return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilter(category.Id, workingTime, rating.GetValueOrDefault())
                     ?? new List<LeisureService>());
             }
-            /*if (rating > 0)
-            {
-                services = await _leisureService.GetByRating(rating);
-            }
-            else if (!string.IsNullOrEmpty(categoryName))
-            {
-                var category = await _categoryService.GetByName(categoryName);
-                if (category == null) return null;
-                services = await _leisureService.GetByCategoryId(category.Id);
-            }
-            else if (!string.IsNullOrEmpty(startTime))
-            {
-                services = await _leisureService.GetByWorkingTime(startTime + "-24:00");
-            }
-            else if (!string.IsNullOrEmpty(endTime))
-            {
-                services = await _leisureService.GetByWorkingTime("00:00-" + endTime);
-            }
-            else services = await _leisureService.GetAllAsync();*/
-            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilter(default, workingTime, rating)
+            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilter(default, workingTime, rating.GetValueOrDefault())
                 ?? new List<LeisureService>());
         }
 
@@ -75,11 +56,11 @@ namespace API.Controllers
                 var error = ModelState.Values.First().Errors.First();
                 return BadRequest(error.ErrorMessage);
             }
-            var category = await _categoryService.GetByName(dto.CategoryName);
+            var category = await _categoryService.GetByIdAsync(dto.CategoryId);
             if (category == null) return BadRequest("Such category doesn't exist.");
             if (!await _ownersService.OwnerExists(dto.OwnerId)) return BadRequest("Such services owner doesn't exist");
+            if (await _leisureService.ServiceExists(dto.Name)) return BadRequest("Service already exists");
             var model = _mapper.Map<LeisureService>(dto);
-            model.CategoryId = category.Id;
             model = await _leisureService.CreateAsync(model);
             if (model == null) return StatusCode(500, "Failed to create leisure service");
             return Ok("Created new leisure service");
@@ -90,10 +71,12 @@ namespace API.Controllers
         {
             var model = await _leisureService.GetByIdAsync(id);
             if (model == null) return BadRequest("Failed to find leisure service by id " + id);
+            if (dto.Rating > 5) return BadRequest("Max rating is 5");
             UpdateService(model, dto);
-            if (!string.IsNullOrEmpty(dto.CategoryName))
+            if (Guid.Empty != dto.CategoryId)
             {
-                var category = await _categoryService.GetByName(dto.CategoryName);
+                var category = await _categoryService.GetByIdAsync(dto.CategoryId);
+                if(category != null)
                 model.CategoryId = category.Id;
             }
             if (await _leisureService.UpdateAsync(model)) return Ok("Updated leisure service by id " + id);

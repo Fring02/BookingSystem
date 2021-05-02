@@ -1,7 +1,9 @@
 ﻿using Domain.Models.Users;
 using MailKit.Net.Smtp;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services
@@ -10,9 +12,9 @@ namespace Infrastructure.Services
     {
         private readonly EmailConfiguration _conf;
 
-        public NotificationService(/*EmailConfiguration conf*/)
+        public NotificationService(IOptions<EmailConfiguration> conf)
         {
-           // _conf = conf;
+            _conf = conf.Value;
         }
 
         public async Task SendEmailAsync(string toEmail)
@@ -29,10 +31,6 @@ namespace Infrastructure.Services
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     await client.AuthenticateAsync(_conf.Username, _conf.Password);
                     await client.SendAsync(emailMessage).ConfigureAwait(false);
-                }
-                catch (Exception)
-                {
-                    throw;
                 }
                 finally
                 {

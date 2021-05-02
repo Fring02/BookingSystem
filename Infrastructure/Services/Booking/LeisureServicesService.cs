@@ -11,21 +11,14 @@ namespace Infrastructure.Services.Booking
     public class LeisureServicesService : ILeisureServicesService
     {
         private readonly ILeisureServicesRepository _repository;
-        private readonly ILeisureServicesCategoriesRepository _categoriesRepository;
-        public LeisureServicesService(ILeisureServicesRepository repository, ILeisureServicesCategoriesRepository categoriesRepository)
+        public LeisureServicesService(ILeisureServicesRepository repository)
         {
             _repository = repository;
-            _categoriesRepository = categoriesRepository;
         }
 
         public async Task<LeisureService> CreateAsync(LeisureService model)
         {
-            var category = await _categoriesRepository.GetByIdAsync(model.CategoryId).ConfigureAwait(false);
-            if (category != null)
-            {
-              return await _repository.CreateAsync(model).ConfigureAwait(false);
-            }
-            return null;
+          return await _repository.CreateAsync(model).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<LeisureService>> GetAllAsync()
@@ -71,6 +64,11 @@ namespace Infrastructure.Services.Booking
                 return await GetAllAsync();
             }
             return await _repository.GetByFilter(categoryId, workingTime, rating).ConfigureAwait(false);
+        }
+
+        public async Task<bool> ServiceExists(string name)
+        {
+            return await _repository.ServiceExists(name).ConfigureAwait(false);
         }
     }
 }

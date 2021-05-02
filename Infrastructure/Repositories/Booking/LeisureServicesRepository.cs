@@ -60,5 +60,10 @@ namespace Infrastructure.Repositories.Booking
                 }
                 return await services.Include(s => s.Images).Include(s => s.Category).ToListAsync();
         }
+
+        public async Task<bool> ServiceExists(string name)
+        {
+            return await _context.LeisureServices.AnyAsync(s => s.Name == name);
+        }
     }
 }

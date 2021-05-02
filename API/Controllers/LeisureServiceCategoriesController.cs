@@ -44,6 +44,7 @@ namespace Booking.API.Controllers
                 var error = ModelState.Values.First().Errors.First();
                 return BadRequest(error.ErrorMessage);
             }
+            if ((await _categoryService.GetByName(dto.Name)) != null) return BadRequest("This category already exists");
             var model = _mapper.Map<LeisureServiceCategory>(dto);
             model = await _categoryService.CreateAsync(model);
             if (model == null) return StatusCode(500, "Failed to create leisure service category");

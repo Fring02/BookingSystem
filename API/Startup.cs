@@ -35,7 +35,7 @@ namespace API
             services.AddDbContext<BookingContext>(o =>
                 o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddRepositories().AddServices();
-           // services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
+            services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
             services.AddAutoMapper(typeof(BookingProfile));
             services.AddSwaggerGen(c =>
             {
