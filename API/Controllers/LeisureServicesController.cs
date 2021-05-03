@@ -13,13 +13,13 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("/api/v1/services/")]
-    public class LeisureServiceController : ControllerBase
+    public class LeisureServicesController : ControllerBase
     {
         private readonly ILeisureServicesService _leisureService;
         private readonly ILeisureServicesCategoriesService _categoryService;
         private readonly IOwnersService _ownersService;
         private readonly IMapper _mapper;
-        public LeisureServiceController(ILeisureServicesService leisureService, IMapper mapper, ILeisureServicesCategoriesService categoryService, IOwnersService ownersService)
+        public LeisureServicesController(ILeisureServicesService leisureService, IMapper mapper, ILeisureServicesCategoriesService categoryService, IOwnersService ownersService)
         {
             _leisureService = leisureService;
             _mapper = mapper;
@@ -30,14 +30,14 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int? rating, string workingTime = null, string categoryName = null)
         {
+            Guid categoryId = default;
             if (!string.IsNullOrEmpty(categoryName))
             {
                 var category = await _categoryService.GetByName(categoryName);
                 if (category == null) return null;
-                return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilter(category.Id, workingTime, rating.GetValueOrDefault())
-                    ?? new List<LeisureService>());
+                categoryId = category.Id;
             }
-            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilter(default, workingTime, rating.GetValueOrDefault())
+            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilter(categoryId, workingTime, rating.GetValueOrDefault())
                 ?? new List<LeisureService>());
         }
 

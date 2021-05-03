@@ -7,7 +7,6 @@ namespace Domain.Dtos
     {
         public Guid Id { get; set; }
         public Guid ServiceId { get; set; }
-        public DateTime LeftAt { get; set; }
         public TimeSpan BookingTime { get; set; }
     }
 }

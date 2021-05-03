@@ -18,7 +18,6 @@ namespace Infrastructure.Services.Booking
 
         public async Task<BookingRequest> CreateAsync(BookingRequest model)
         {
-            model.LeftAt = DateTime.Now;
             return await _repository.CreateAsync(model).ConfigureAwait(false);
         }
 
@@ -49,6 +48,11 @@ namespace Infrastructure.Services.Booking
         {
             if (serviceId == Guid.Empty) return null;
             return await _repository.GetByServiceId(serviceId).ConfigureAwait(false);
+        }
+
+        public async Task<bool> HasRequest(BookingRequest request)
+        {
+            return await _repository.HasRequest(request).ConfigureAwait(false);
         }
     }
 }
