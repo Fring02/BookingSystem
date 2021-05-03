@@ -54,5 +54,10 @@ namespace Infrastructure.Services.Booking
         {
             return await _repository.HasRequest(request).ConfigureAwait(false);
         }
+
+        public async Task<IEnumerable<BookingRequest>> GetByUserId(Guid userId)
+        {
+            return await _repository.GetByUserId(userId).ConfigureAwait(false);
+        }
     }
 }

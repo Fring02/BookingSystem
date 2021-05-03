@@ -23,8 +23,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<BookingRequestViewDto>> GetAllBookingRequestsAsync()
+        public async Task<IEnumerable<BookingRequestViewDto>> GetAllBookingRequestsAsync(Guid serviceId, Guid userId)
         {
+            if(serviceId != default)
+                return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetByServiceId(serviceId) ?? new List<BookingRequest>());
+            if(userId != default)
+                return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetByUserId(userId) ?? new List<BookingRequest>());
+
             return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetAllAsync() ?? new List<BookingRequest>());
         }
 
@@ -56,6 +61,7 @@ namespace API.Controllers
             var model = await _requestsService.GetByIdAsync(id);
             if (model == null) return BadRequest("Can't find booking request for id " + id);
             if (dto.BookingTime != default) model.BookingTime = dto.BookingTime;
+            if (!string.IsNullOrEmpty(dto.Info)) model.Info = dto.Info;
             if (await _requestsService.UpdateAsync(model)) return Ok("Updated booking request for id " + id);
             return StatusCode(500, "Failed to update booking request for id " + id);
         }

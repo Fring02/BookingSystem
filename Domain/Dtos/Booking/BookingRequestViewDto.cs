@@ -10,5 +10,6 @@ namespace Domain.Dtos
         public LeisureServiceViewDto Service { get; set; }
         public DateTime LeftAt { get; set; }
         public TimeSpan BookingTime { get; set; }
+        public string Info { get; set; }
     }
 }

@@ -31,5 +31,10 @@ namespace Infrastructure.Repositories.Booking
         {
             return await _context.BookingRequests.AnyAsync(r => r.ServiceId == request.ServiceId && r.UserId == request.UserId);
         }
+
+        public async Task<IEnumerable<BookingRequest>> GetByUserId(Guid userId)
+        {
+            return await _context.BookingRequests.Where(r => r.UserId == userId).ToListAsync();
+        }
     }
 }

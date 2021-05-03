@@ -14,5 +14,6 @@ namespace Domain.Dtos
         public TimeSpan BookingTime { get; set; }
         [Required(ErrorMessage = "Enter user id")]
         public Guid UserId { get; set; }
+        public string Info { get; set; }
     }
 }

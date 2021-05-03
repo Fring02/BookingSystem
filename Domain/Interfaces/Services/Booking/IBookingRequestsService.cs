@@ -8,6 +8,7 @@ namespace Domain.Interfaces.Services.Booking
     public interface IBookingRequestsService : IModelService<BookingRequest>
     {
         Task<IEnumerable<BookingRequest>> GetByServiceId(Guid serviceId);
+        Task<IEnumerable<BookingRequest>> GetByUserId(Guid userId);
         Task<bool> HasRequest(BookingRequest request);
     }
 }
