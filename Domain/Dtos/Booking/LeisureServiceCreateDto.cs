@@ -19,8 +19,8 @@ namespace Domain.Dtos
         [RegularExpression("^([01]?[0-9]|2[0-3]):[0-5][0-9]-([01]?[0-9]|2[0-3]):[0-5][0-9]$",
             ErrorMessage = "Enter working time in working time format: 00:00-24:59")]
         public string WorkingTime { get; set; }
-        [Required(ErrorMessage = "Enter category name")]
-        public string CategoryName { get; set; }
+        [Required(ErrorMessage = "Enter category id")]
+        public Guid CategoryId { get; set; }
         [Required(ErrorMessage = "Enter owner id")]
         public Guid OwnerId { get; set; }
     }

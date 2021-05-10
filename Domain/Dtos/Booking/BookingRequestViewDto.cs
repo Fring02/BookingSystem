@@ -7,8 +7,9 @@ namespace Domain.Dtos
     {
         public Guid Id { get; set; }
         public Guid ServiceId { get; set; }
-        public LeisureService Service { get; set; }
+        public LeisureServiceViewDto Service { get; set; }
         public DateTime LeftAt { get; set; }
         public TimeSpan BookingTime { get; set; }
+        public string Info { get; set; }
     }
 }

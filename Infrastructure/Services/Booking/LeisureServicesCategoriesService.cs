@@ -17,34 +17,34 @@ namespace Infrastructure.Services.Booking
             _categoryRepository = categoryRepository;
         }
 
-        public Task<LeisureServiceCategory> GetByName(string categoryName)
+        public async Task<LeisureServiceCategory> GetByNameAsync(string categoryName)
         {
-            return _categoryRepository.GetByName(categoryName);
+            return await _categoryRepository.GetByName(categoryName).ConfigureAwait(false);
         }
 
-        public Task<LeisureServiceCategory> CreateAsync(LeisureServiceCategory model)
+        public async Task<LeisureServiceCategory> CreateAsync(LeisureServiceCategory model)
         {
-            return _categoryRepository.CreateAsync(model);
+            return await _categoryRepository.CreateAsync(model).ConfigureAwait(false);
         }
 
-        public Task<bool> DeleteAsync(LeisureServiceCategory model)
+        public async Task<bool> DeleteAsync(LeisureServiceCategory model)
         {
-            return _categoryRepository.DeleteAsync(model);
+            return await _categoryRepository.DeleteAsync(model).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<LeisureServiceCategory>> GetAllAsync()
+        public async Task<IEnumerable<LeisureServiceCategory>> GetAllAsync()
         {
-            return _categoryRepository.GetAllAsync();
+            return await _categoryRepository.GetAllAsync().ConfigureAwait(false);
         }
 
-        public Task<LeisureServiceCategory> GetByIdAsync(Guid id)
+        public async Task<LeisureServiceCategory> GetByIdAsync(Guid id)
         {
-            return _categoryRepository.GetByIdAsync(id);
+            return await _categoryRepository.GetByIdAsync(id).ConfigureAwait(false);
         }
 
-        public Task<bool> UpdateAsync(LeisureServiceCategory model)
+        public async Task<bool> UpdateAsync(LeisureServiceCategory model)
         {
-            return _categoryRepository.UpdateAsync(model);
+            return await _categoryRepository.UpdateAsync(model).ConfigureAwait(false);
         }
     }
 }

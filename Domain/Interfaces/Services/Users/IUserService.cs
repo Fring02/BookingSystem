@@ -8,9 +8,8 @@ namespace Domain.Interfaces.Services
 {
     public interface IUserService : IModelService<User>
     { 
-        Task<User> Login(string email, string password);
-        Task<User> Register(User user, string password);
-        Task<bool> UpdateUser(User userParam, string password = null);
-        Task<bool> DeleteByIdAsync(Guid id);
+        Task<User> LoginAsync(string email, string password);
+        Task<User> RegisterAsync(User user, string password);
+        Task<bool> UpdateUserWithPasswordAsync(User userParam, string password = null);
     }
 }

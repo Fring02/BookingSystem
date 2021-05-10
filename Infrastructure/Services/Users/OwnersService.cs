@@ -17,34 +17,34 @@ namespace Infrastructure.Services.Users
             _ownersRepository = ownersRepository;
         }
 
-        public Task<Owner> CreateAsync(Owner model)
+        public async Task<Owner> CreateAsync(Owner model)
         {
-            return _ownersRepository.CreateAsync(model);
+            return await _ownersRepository.CreateAsync(model).ConfigureAwait(false);
         }
 
-        public Task<bool> DeleteAsync(Owner model)
+        public async Task<bool> DeleteAsync(Owner model)
         {
-            return _ownersRepository.DeleteAsync(model);
+            return await _ownersRepository.DeleteAsync(model).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<Owner>> GetAllAsync()
+        public async Task<IEnumerable<Owner>> GetAllAsync()
         {
-            return _ownersRepository.GetAllAsync();
+            return await _ownersRepository.GetAllAsync().ConfigureAwait(false);
         }
 
-        public Task<Owner> GetByIdAsync(Guid id)
+        public async Task<Owner> GetByIdAsync(Guid id)
         {
-            return _ownersRepository.GetByIdAsync(id);
+            return await _ownersRepository.GetByIdAsync(id).ConfigureAwait(false);
         }
 
-        public Task<bool> OwnerExists(Guid ownerId)
+        public async Task<bool> OwnerExists(Guid ownerId)
         {
-            return _ownersRepository.OwnerExists(ownerId);
+            return await _ownersRepository.OwnerExists(ownerId).ConfigureAwait(false);
         }
 
-        public Task<bool> UpdateAsync(Owner model)
+        public async Task<bool> UpdateAsync(Owner model)
         {
-            return _ownersRepository.UpdateAsync(model);
+            return await _ownersRepository.UpdateAsync(model).ConfigureAwait(false);
         }
     }
 }

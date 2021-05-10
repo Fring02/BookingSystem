@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Dtos;
+using Domain.Dtos.Users;
 using Domain.Models.Booking;
+using Domain.Models.Users;
 
 namespace Domain.Mapping
 {
@@ -19,6 +21,9 @@ namespace Domain.Mapping
             CreateMap<LeisureServiceCategory, LeisureServiceCategoryCreateDto>().ReverseMap();
             CreateMap<LeisureServiceCategory, LeisureServiceCategoryUpdateDto>().ReverseMap();
             CreateMap<LeisureServiceCategory, LeisureServiceCategoryViewDto>().ReverseMap();
+            CreateMap<User, UserViewDto>().ReverseMap();
+            CreateMap<RegisterDto, User>().ReverseMap();
+            CreateMap<UpdateDto, User>().ReverseMap();
         }
     }
 }

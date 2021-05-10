@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Repositories.Users
 {
-    public interface IUserRepository : IModelRepository<User>
+    public interface IUsersRepository : IModelRepository<User>
     {
         Task<User> GetByEmailAsync(string Email);
-        Task<bool> GetAnyEmail(string Email);
-        Task<bool> UpdateUser(User userParam, string password = null);
+        Task<bool> UserExistsAsync(string Email);
         
     }
 }

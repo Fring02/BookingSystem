@@ -8,6 +8,6 @@ namespace Domain.Interfaces.Services.Booking
 {
     public interface ILeisureServicesCategoriesService : IModelService<LeisureServiceCategory>
     {
-        Task<LeisureServiceCategory> GetByName(string categoryName);
+        Task<LeisureServiceCategory> GetByNameAsync(string categoryName);
     }
 }

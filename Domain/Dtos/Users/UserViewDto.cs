@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Domain.Dtos.Users
 {
-    public class UserDto
+    public class UserViewDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string MobilePhone { get; set; }
     }
 }

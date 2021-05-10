@@ -16,13 +16,13 @@ using System.Collections.Generic;
 
 namespace Booking.API.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = Roles.ADMIN)]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private IUserService _userService;
-        private IMapper _mapper;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
 
         public UsersController(
@@ -39,7 +39,7 @@ namespace Booking.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
-            var user = await _userService.Login(model.Email, model.Password);
+            var user = await _userService.LoginAsync(model.Email, model.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Email or password is incorrect" });
@@ -50,10 +50,11 @@ namespace Booking.API.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
@@ -61,17 +62,13 @@ namespace Booking.API.Controllers
             // return basic user info and authentication token
             return  Ok(new
             {
-                Id = user.Id,
-                Email = user.Email,
-                FirstName = user.Firstname,
-                LastName = user.Lastname,
-                Token = tokenString
+                token = tokenString
             });
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterDto model)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterDto model)
         {
             // map model to entity
             var user = _mapper.Map<User>(model);
@@ -79,8 +76,27 @@ namespace Booking.API.Controllers
             try
             {
                 // create user
-                _userService.Register(user, model.Password);
-                return Ok();
+                user = await _userService.RegisterAsync(user, model.Password);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
+
+                // return basic user info and authentication token
+                return Ok(new
+                {
+                    token = tokenString
+                });
             }
             catch (AppException ex)
             {
@@ -90,23 +106,23 @@ namespace Booking.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            var users = _userService.GetAllAsync();
-            var model = _mapper.Map<IList<UserDto>>(users);
+            var users = await _userService.GetAllAsync();
+            var model = _mapper.Map<IList<UserViewDto>>(users);
             return Ok(model);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            var user = _userService.GetByIdAsync(id);
-            var model = _mapper.Map<UserDto>(user);
+            var user = await _userService.GetByIdAsync(id);
+            var model = _mapper.Map<UserViewDto>(user);
             return Ok(model);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] UpdateDto model)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateDto model)
         {
             // map model to entity and set id
             var user = _mapper.Map<User>(model);
@@ -115,7 +131,7 @@ namespace Booking.API.Controllers
             try
             {
                 // update user 
-                _userService.UpdateUser(user, model.Password);
+               await _userService.UpdateUserWithPasswordAsync(user, model.Password);
                 return Ok();
             }
             catch (AppException ex)
@@ -126,9 +142,10 @@ namespace Booking.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            _userService.DeleteByIdAsync(id);
+            var user = new User { Id = id };
+            await _userService.DeleteAsync(user);
             return Ok();
         }
     }

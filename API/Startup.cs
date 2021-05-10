@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-=======
 using System;
 using System.Text;
 using System.Threading.Tasks;
->>>>>>> f3337821cdfc417096ac2cc0c77929f7fb77bbb4
 using API.Extensions;
 using Domain.Helpers;
 using Domain.Interfaces.Services;
@@ -16,26 +13,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-<<<<<<< HEAD
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-=======
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Infrastructure;
 
-
->>>>>>> f3337821cdfc417096ac2cc0c77929f7fb77bbb4
 namespace API
 {
     public class Startup
     {
-        private readonly IWebHostEnvironment _env;
-        private readonly IConfiguration _configuration;
-
-        public Startup(IWebHostEnvironment env, IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
-            _env = env;
-            _configuration = configuration;
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -46,26 +35,20 @@ namespace API
             services.AddDbContext<BookingContext>(o =>
                 o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddRepositories().AddServices();
+            services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
             services.AddAutoMapper(typeof(BookingProfile));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Booking API", Version = "v1" });
             });
-<<<<<<< HEAD
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
-=======
-            services.AddControllers();
-
-            // configure strongly typed settings objects
-            var appSettingsSection = _configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
-
             #region Jwt
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+            var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Secret").Value);
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -99,7 +82,6 @@ namespace API
                 };
             });
             #endregion
->>>>>>> f3337821cdfc417096ac2cc0c77929f7fb77bbb4
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

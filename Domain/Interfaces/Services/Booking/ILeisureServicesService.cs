@@ -7,9 +7,11 @@ namespace Domain.Interfaces.Services.Booking
 {
     public interface ILeisureServicesService : IModelService<LeisureService>
     {
-        Task<IEnumerable<LeisureService>> GetByRating(int rating);
-        Task<IEnumerable<LeisureService>> GetByWorkingTime(string workingTime);
-        Task<IEnumerable<LeisureService>> GetByCategoryId(Guid categoryId);
-        Task<IEnumerable<LeisureService>> GetByFilter(Guid categoryId = default, string workingTime = null, int rating = 0);
+        Task<IEnumerable<LeisureService>> GetByRatingAsync(int rating);
+        Task<IEnumerable<LeisureService>> GetByWorkingTimeAsync(string workingTime);
+        Task<IEnumerable<LeisureService>> GetByCategoryIdAsync(Guid categoryId);
+        Task<IEnumerable<LeisureService>> GetByOwnerIdAsync(Guid ownerId);
+        Task<IEnumerable<LeisureService>> GetByFilterAsync(Guid categoryId = default, string workingTime = null, int rating = 0);
+        Task<bool> ServiceExistsAsync(string name);
     }
 }

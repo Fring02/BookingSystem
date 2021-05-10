@@ -7,6 +7,6 @@ namespace Domain.Interfaces.Services.Booking
 {
     public interface IServiceImagesService : IModelService<ServiceImage>
     {
-        Task<IEnumerable<ServiceImage>> GetByServiceId(Guid serviceId);
+        Task<IEnumerable<ServiceImage>> GetByServiceIdAsync(Guid serviceId);
     }
 }

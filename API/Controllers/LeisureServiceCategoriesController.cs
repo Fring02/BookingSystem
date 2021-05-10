@@ -4,14 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Dtos;
+using Domain.Helpers;
 using Domain.Interfaces.Services.Booking;
 using Domain.Models.Booking;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.API.Controllers
 {
     [Route("api/v1/categories")]
+    [Authorize(Roles = Roles.ADMIN)]
     [ApiController]
     public class LeisureServiceCategoriesController : ControllerBase
     {
@@ -22,13 +25,13 @@ namespace Booking.API.Controllers
             _mapper = mapper;
             _categoryService = categoryService;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<LeisureServiceCategoryViewDto>> GetAllCategoriesAsync()
         {
             return _mapper.Map<IEnumerable<LeisureServiceCategoryViewDto>>(await _categoryService.GetAllAsync());
         }
-
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<LeisureServiceCategoryViewDto> GetLeisureServiceCategoryByIdAsync(Guid id)
         {
@@ -44,6 +47,7 @@ namespace Booking.API.Controllers
                 var error = ModelState.Values.First().Errors.First();
                 return BadRequest(error.ErrorMessage);
             }
+            if ((await _categoryService.GetByNameAsync(dto.Name)) != null) return BadRequest("This category already exists");
             var model = _mapper.Map<LeisureServiceCategory>(dto);
             model = await _categoryService.CreateAsync(model);
             if (model == null) return StatusCode(500, "Failed to create leisure service category");

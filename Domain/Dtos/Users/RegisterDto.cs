@@ -19,5 +19,7 @@ namespace Domain.Dtos.Users
 
         [Required]
         public string Password { get; set; }
+        [Required]
+        public string MobilePhone { get; set; }
     }
 }
