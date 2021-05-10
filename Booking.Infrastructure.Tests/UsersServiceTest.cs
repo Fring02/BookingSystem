@@ -11,6 +11,7 @@ using Xunit;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure;
+using Domain.Helpers;
 
 namespace Booking.Infrastructure.Tests
 {
