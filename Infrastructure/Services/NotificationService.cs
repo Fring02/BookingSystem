@@ -12,10 +12,16 @@ namespace Infrastructure.Services
     public class NotificationService
     {
         private readonly EmailConfiguration _conf;
+        private EmailConfiguration conf;
 
         public NotificationService(IOptions<EmailConfiguration> conf)
         {
             _conf = conf.Value;
+        }
+
+        public NotificationService(EmailConfiguration conf)
+        {
+            this.conf = conf;
         }
 
         public async Task SendEmailAsync(string toEmail)
