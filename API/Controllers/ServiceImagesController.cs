@@ -4,13 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Dtos;
+using Domain.Helpers;
 using Domain.Interfaces.Services.Booking;
 using Domain.Models.Booking;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.OWNER)]
     [Route("/api/v1/services/{id?}/images/")]
     public class ServiceImagesController : ControllerBase
     {
@@ -25,7 +28,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IEnumerable<ServiceImageDto>> GetServiceImagesAsync(Guid id)
         {
-            return _mapper.Map<IEnumerable<ServiceImageDto>>(await _imagesService.GetByServiceId(id));
+            return _mapper.Map<IEnumerable<ServiceImageDto>>(await _imagesService.GetByServiceIdAsync(id));
         }
 
         [HttpGet("{imageId}")]

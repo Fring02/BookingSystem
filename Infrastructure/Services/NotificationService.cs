@@ -1,4 +1,5 @@
-﻿using Domain.Models.Users;
+﻿using Domain.Helpers;
+using Domain.Models.Users;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;

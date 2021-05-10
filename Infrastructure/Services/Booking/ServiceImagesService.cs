@@ -42,9 +42,9 @@ namespace Infrastructure.Services.Booking
             return await _repository.DeleteAsync(model).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<ServiceImage>> GetByServiceId(Guid serviceId)
+        public async Task<IEnumerable<ServiceImage>> GetByServiceIdAsync(Guid serviceId)
         {
-            return await _repository.GetByServiceId(serviceId).ConfigureAwait(false);
+            return await _repository.GetByServiceIdAsync(serviceId).ConfigureAwait(false);
         }
     }
 }

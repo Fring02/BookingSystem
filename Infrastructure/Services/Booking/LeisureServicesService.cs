@@ -41,34 +41,40 @@ namespace Infrastructure.Services.Booking
             return await _repository.DeleteAsync(model).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<LeisureService>> GetByRating(int rating)
+        public async Task<IEnumerable<LeisureService>> GetByRatingAsync(int rating)
         {
-            return await _repository.GetByRating(rating).ConfigureAwait(false);
+            return await _repository.GetByRatingAsync(rating).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<LeisureService>> GetByWorkingTime(string workingTime)
+        public async Task<IEnumerable<LeisureService>> GetByWorkingTimeAsync(string workingTime)
         {
-            return await _repository.GetByWorkingTime(workingTime).ConfigureAwait(false);
+            return await _repository.GetByWorkingTimeAsync(workingTime).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<LeisureService>> GetByCategoryId(Guid categoryId)
+        public async Task<IEnumerable<LeisureService>> GetByCategoryIdAsync(Guid categoryId)
         {
             if (categoryId == Guid.Empty) return null;
-            return await _repository.GetByCategoryId(categoryId).ConfigureAwait(false);
+            return await _repository.GetByCategoryIdAsync(categoryId).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<LeisureService>> GetByFilter(Guid categoryId = default, string workingTime = null, int rating = 0)
+        public async Task<IEnumerable<LeisureService>> GetByFilterAsync(Guid categoryId = default, string workingTime = null, int rating = 0)
         {
             if (categoryId == default && workingTime == null && rating == 0)
             {
                 return await GetAllAsync();
             }
-            return await _repository.GetByFilter(categoryId, workingTime, rating).ConfigureAwait(false);
+            return await _repository.GetByFilterAsync(categoryId, workingTime, rating).ConfigureAwait(false);
         }
 
-        public async Task<bool> ServiceExists(string name)
+        public async Task<bool> ServiceExistsAsync(string name)
         {
-            return await _repository.ServiceExists(name).ConfigureAwait(false);
+            return await _repository.ServiceExistsAsync(name).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<LeisureService>> GetByOwnerIdAsync(Guid ownerId)
+        {
+            if (ownerId == default) return null;
+            return await _repository.GetByOwnerIdAsync(ownerId).ConfigureAwait(false);
         }
     }
 }

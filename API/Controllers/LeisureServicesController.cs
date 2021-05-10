@@ -4,14 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Dtos;
+using Domain.Helpers;
 using Domain.Interfaces.Services.Booking;
 using Domain.Interfaces.Services.Users;
 using Domain.Models.Booking;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.OWNER)]
     [Route("/api/v1/services/")]
     public class LeisureServicesController : ControllerBase
     {
@@ -26,21 +29,30 @@ namespace API.Controllers
             _categoryService = categoryService;
             _ownersService = ownersService;
         }
-
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int? rating, string workingTime = null, string categoryName = null)
+        public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int? rating, string workingTime = null, string categoryName = null
+            )
         {
             Guid categoryId = default;
             if (!string.IsNullOrEmpty(categoryName))
             {
-                var category = await _categoryService.GetByName(categoryName);
+                var category = await _categoryService.GetByNameAsync(categoryName);
                 if (category == null) return null;
                 categoryId = category.Id;
             }
-            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilter(categoryId, workingTime, rating.GetValueOrDefault())
+            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilterAsync(categoryId, workingTime, rating.GetValueOrDefault())
                 ?? new List<LeisureService>());
         }
 
+        [HttpGet("ownerId={ownerId}")]
+        public async Task<IEnumerable<LeisureServiceViewDto>> GetLeisureServicesByOwnerId(Guid ownerId)
+        {
+            var services = await _leisureService.GetByOwnerIdAsync(ownerId);
+            if (services == null) return null;
+            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(services);
+        }
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<LeisureServiceViewDto> GetLeisureServiceByIdAsync(Guid id)
         {
@@ -59,7 +71,7 @@ namespace API.Controllers
             var category = await _categoryService.GetByIdAsync(dto.CategoryId);
             if (category == null) return BadRequest("Such category doesn't exist.");
             if (!await _ownersService.OwnerExists(dto.OwnerId)) return BadRequest("Such services owner doesn't exist");
-            if (await _leisureService.ServiceExists(dto.Name)) return BadRequest("Service already exists");
+            if (await _leisureService.ServiceExistsAsync(dto.Name)) return BadRequest("Service already exists");
             var model = _mapper.Map<LeisureService>(dto);
             model = await _leisureService.CreateAsync(model);
             if (model == null) return StatusCode(500, "Failed to create leisure service");

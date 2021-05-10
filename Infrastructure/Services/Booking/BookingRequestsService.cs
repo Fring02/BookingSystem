@@ -44,20 +44,20 @@ namespace Infrastructure.Services.Booking
             return await _repository.DeleteAsync(model).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<BookingRequest>> GetByServiceId(Guid serviceId)
+        public async Task<IEnumerable<BookingRequest>> GetByServiceIdAsync(Guid serviceId)
         {
             if (serviceId == Guid.Empty) return null;
-            return await _repository.GetByServiceId(serviceId).ConfigureAwait(false);
+            return await _repository.GetByServiceIdAsync(serviceId).ConfigureAwait(false);
         }
 
-        public async Task<bool> HasRequest(BookingRequest request)
+        public async Task<bool> HasRequestAsync(BookingRequest request)
         {
-            return await _repository.HasRequest(request).ConfigureAwait(false);
+            return await _repository.HasRequestAsync(request).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<BookingRequest>> GetByUserId(Guid userId)
+        public async Task<IEnumerable<BookingRequest>> GetByUserIdAsync(Guid userId)
         {
-            return await _repository.GetByUserId(userId).ConfigureAwait(false);
+            return await _repository.GetByUserIdAsync(userId).ConfigureAwait(false);
         }
     }
 }

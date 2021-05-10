@@ -10,7 +10,6 @@ namespace Domain.Interfaces.Repositories.Users
     {
         Task<User> GetByEmailAsync(string Email);
         Task<bool> UserExistsAsync(string Email);
-        Task<bool> UpdateUserWithPasswordAsync(User userParam, string password = null);
         
     }
 }

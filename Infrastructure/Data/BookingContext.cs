@@ -24,7 +24,6 @@ namespace Infrastructure.Data
             });
             base.OnModelCreating(modelBuilder);
         }
-
         public DbSet<LeisureService> LeisureServices { get; set; }
         public DbSet<LeisureServiceCategory> LeisureServiceCategories { get; set; }
         public DbSet<ServiceImage> ServicesImages { get; set; }

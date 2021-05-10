@@ -17,7 +17,7 @@ namespace Infrastructure.Services.Booking
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<LeisureServiceCategory> GetByName(string categoryName)
+        public async Task<LeisureServiceCategory> GetByNameAsync(string categoryName)
         {
             return await _categoryRepository.GetByName(categoryName).ConfigureAwait(false);
         }

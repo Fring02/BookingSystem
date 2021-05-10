@@ -4,13 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Dtos;
+using Domain.Helpers;
 using Domain.Interfaces.Services.Booking;
 using Domain.Models.Booking;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.USER)]
     [Route("/api/v1/requests/")]
     public class BookingRequestsController : ControllerBase
     {
@@ -26,9 +29,9 @@ namespace API.Controllers
         public async Task<IEnumerable<BookingRequestViewDto>> GetAllBookingRequestsAsync(Guid serviceId, Guid userId)
         {
             if(serviceId != default)
-                return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetByServiceId(serviceId) ?? new List<BookingRequest>());
+                return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetByServiceIdAsync(serviceId) ?? new List<BookingRequest>());
             if(userId != default)
-                return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetByUserId(userId) ?? new List<BookingRequest>());
+                return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetByUserIdAsync(userId) ?? new List<BookingRequest>());
 
             return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetAllAsync() ?? new List<BookingRequest>());
         }
@@ -49,7 +52,7 @@ namespace API.Controllers
                 return BadRequest(error.ErrorMessage);
             }
             var model = _mapper.Map<BookingRequest>(dto);
-            if (await _requestsService.HasRequest(model)) return BadRequest("This request already exists");
+            if (await _requestsService.HasRequestAsync(model)) return BadRequest("This request already exists");
             model = await _requestsService.CreateAsync(model);
             if (model == null) return StatusCode(500, "Failed to create booking request");
             return Ok("Created new booking request");

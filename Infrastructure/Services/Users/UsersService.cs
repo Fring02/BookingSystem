@@ -83,10 +83,47 @@ namespace Infrastructure.Services
 
         public async Task<bool> UpdateUserWithPasswordAsync(User userParam, string password = null)
         {
-            return await _userRepository.UpdateUserWithPasswordAsync(userParam, password).ConfigureAwait(false);
-        }
-        
+            var user = await GetByIdAsync(userParam.Id);
+            if (user == null)
+                throw new AppException("User not found");
 
-        
+            // update username if it has changed
+            if (!string.IsNullOrWhiteSpace(userParam.Email) && userParam.Email != user.Email)
+            {
+                // throw error if the new username is already taken
+                if ((await _userRepository.GetByEmailAsync(userParam.Email)) != null)
+                    throw new AppException("Email " + userParam.Email + " is already taken");
+
+                user.Email = userParam.Email;
+            }
+
+            // update user properties if provided
+            if (!string.IsNullOrWhiteSpace(userParam.Firstname))
+                user.Firstname = userParam.Firstname;
+
+            if (!string.IsNullOrWhiteSpace(userParam.Lastname))
+                user.Lastname = userParam.Lastname;
+
+            // update password if provided
+            if (!string.IsNullOrWhiteSpace(password))
+            {
+                CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+            }
+            return await _userRepository.UpdateAsync(user).ConfigureAwait(false);
+        }
+
+
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+
+            using var hmac = new System.Security.Cryptography.HMACSHA512();
+            passwordSalt = hmac.Key;
+            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        }
     }
 }

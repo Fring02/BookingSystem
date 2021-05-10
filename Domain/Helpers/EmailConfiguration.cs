@@ -1,4 +1,4 @@
-﻿namespace Infrastructure
+﻿namespace Domain.Helpers
 {
     public class EmailConfiguration
     {
