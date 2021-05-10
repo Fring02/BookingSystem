@@ -6,9 +6,8 @@ namespace Domain.Models.Booking
 {
     public class LeisureServiceCategory
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
-        public Guid ServiceId { get; set; }
-        public LeisureService Service { get; set; }
+        public List<LeisureService> Services { get; set; }
     }
 }

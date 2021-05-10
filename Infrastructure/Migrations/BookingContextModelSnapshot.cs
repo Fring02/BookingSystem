@@ -28,15 +28,23 @@ namespace Infrastructure.Migrations
                     b.Property<TimeSpan>("BookingTime")
                         .HasColumnType("interval");
 
+                    b.Property<string>("Info")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("LeftAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BookingRequests");
                 });
@@ -47,6 +55,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -55,6 +66,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
@@ -67,16 +81,31 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("OwnerId");
+
                     b.ToTable("LeisureServices");
+                });
+
+            modelBuilder.Entity("Domain.Models.Booking.LeisureServiceCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeisureServiceCategories");
                 });
 
             modelBuilder.Entity("Domain.Models.Booking.ServiceImage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("LeisureServiceId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Path")
@@ -90,11 +119,75 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeisureServiceId");
-
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServicesImages");
+                });
+
+            modelBuilder.Entity("Domain.Models.Users.Owner", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Firstname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Lastname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MobilePhone")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeisureServicesOwners");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e190d168-2520-41a4-a8ae-25735dfa2fb0"),
+                            Email = "hasenovsultanbek@gmail.com",
+                            Firstname = "Sultanbek",
+                            Lastname = "Hasenov",
+                            MobilePhone = "+7(776)-166-70-60",
+                            Password = "qwerty123"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Models.Users.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Firstname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Lastname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MobilePhone")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("bytea");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("bytea");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Domain.Models.Booking.BookingRequest", b =>
@@ -105,17 +198,40 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Models.Users.User", "User")
+                        .WithMany("BookingRequests")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Service");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Models.Booking.LeisureService", b =>
+                {
+                    b.HasOne("Domain.Models.Booking.LeisureServiceCategory", "Category")
+                        .WithMany("Services")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Users.Owner", "Owner")
+                        .WithMany("Services")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Domain.Models.Booking.ServiceImage", b =>
                 {
-                    b.HasOne("Domain.Models.Booking.LeisureService", null)
-                        .WithMany("Images")
-                        .HasForeignKey("LeisureServiceId");
-
                     b.HasOne("Domain.Models.Booking.LeisureService", "Service")
-                        .WithMany()
+                        .WithMany("Images")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -128,6 +244,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("BookingRequests");
 
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("Domain.Models.Booking.LeisureServiceCategory", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Models.Users.Owner", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Models.Users.User", b =>
+                {
+                    b.Navigation("BookingRequests");
                 });
 #pragma warning restore 612, 618
         }

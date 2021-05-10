@@ -1,5 +1,7 @@
 ﻿using Domain.Models.Booking;
+using Domain.Models.Users;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Infrastructure.Data
 {
@@ -11,12 +13,22 @@ namespace Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<LeisureService>().HasMany<ServiceImage>().WithOne(i => i.Service);
+            modelBuilder.Entity<Owner>().HasData(new Owner
+            {
+                Id = Guid.NewGuid(),
+                Email = "hasenovsultanbek@gmail.com",
+                Firstname = "Sultanbek",
+                Lastname = "Hasenov",
+                MobilePhone = "+7(776)-166-70-60",
+                Password = "qwerty123"
+            });
             base.OnModelCreating(modelBuilder);
         }
-
         public DbSet<LeisureService> LeisureServices { get; set; }
+        public DbSet<LeisureServiceCategory> LeisureServiceCategories { get; set; }
         public DbSet<ServiceImage> ServicesImages { get; set; }
         public DbSet<BookingRequest> BookingRequests { get; set; }
+        public DbSet<Owner> LeisureServicesOwners { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

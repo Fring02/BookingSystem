@@ -15,7 +15,8 @@ namespace Domain.Models.Booking
         public string WorkingTime { get; set; }
         public Guid OwnerId { get; set; }
         public Owner Owner { get; set; }
-        public LeisureServiceCategory LeisureServiceCategory { get; set; }
+        public Guid CategoryId { get; set; }
+        public LeisureServiceCategory Category { get; set; }
         public List<ServiceImage> Images { get; set; }
         public List<BookingRequest> BookingRequests { get; set; }
     }

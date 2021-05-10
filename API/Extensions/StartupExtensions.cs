@@ -1,7 +1,16 @@
 ﻿using Domain.Interfaces.Repositories.Booking;
+using Domain.Interfaces.Repositories.Users;
 using Domain.Interfaces.Services.Booking;
+using Domain.Interfaces.Services.Users;
 using Infrastructure.Repositories.Booking;
+using Infrastructure.Repositories.Users;
+using Domain.Interfaces.Services;
+using Domain.Interfaces.Services.Booking;
+using Infrastructure.Repositories;
+using Infrastructure.Repositories.Booking;
+using Infrastructure.Services;
 using Infrastructure.Services.Booking;
+using Infrastructure.Services.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace API.Extensions
@@ -10,9 +19,12 @@ namespace API.Extensions
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<ILeisureServiceRepository, LeisureServiceRepository>();
-            services.AddScoped<IServiceImageRepository, ServiceImageRepository>();
+            services.AddScoped<ILeisureServicesRepository, LeisureServicesRepository>();
+            services.AddScoped<IServiceImageRepository, ServiceImagesRepository>();
             services.AddScoped<IBookingRequestsRepository, BookingRequestsRepository>();
+            services.AddScoped<ILeisureServicesCategoriesRepository, LeisureServicesCategoriesRepository>();
+            services.AddScoped<IOwnersRepository, OwnersRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
             return services;
         }
 
@@ -20,6 +32,11 @@ namespace API.Extensions
         {
             services.AddScoped<ILeisureServicesService, LeisureServicesService>();
             services.AddScoped<IBookingRequestsService, BookingRequestsService>();
+            services.AddScoped<IServiceImagesService, ServiceImagesService>();
+            services.AddScoped<ILeisureServicesCategoriesService, LeisureServicesCategoriesService>();
+            services.AddScoped<IOwnersService, OwnersService>();
+            services.AddScoped<IUserService, UsersService>();
+            services.AddSingleton<NotificationService>();
             return services;
         }
     }

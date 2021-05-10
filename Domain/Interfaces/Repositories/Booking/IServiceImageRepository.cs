@@ -7,6 +7,6 @@ namespace Domain.Interfaces.Repositories.Booking
 {
     public interface IServiceImageRepository : IModelRepository<ServiceImage>
     {
-        Task<IEnumerable<ServiceImage>> GetByServiceId(Guid serviceId);
+        Task<IEnumerable<ServiceImage>> GetByServiceIdAsync(Guid serviceId);
     }
 }

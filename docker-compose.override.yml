@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+
+  bookingdb:
+        image: postgres
+        container_name: bookingdb
+        restart: always
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: Rubin1!!
+            POSTGRES_DB: booking
+        ports:
+            - "5432:5432"
+  booking.api:
+    depends_on:
+        - bookingdb
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:80
+    ports:
+      - "5001:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

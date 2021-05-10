@@ -7,6 +7,8 @@ namespace Domain.Interfaces.Repositories.Booking
 {
     public interface IBookingRequestsRepository : IModelRepository<BookingRequest>
     {
-        Task<IEnumerable<BookingRequest>> GetByServiceId(Guid serviceId);
+        Task<IEnumerable<BookingRequest>> GetByServiceIdAsync(Guid serviceId);
+        Task<IEnumerable<BookingRequest>> GetByUserIdAsync(Guid userId);
+        Task<bool> HasRequestAsync(BookingRequest request);
     }
 }

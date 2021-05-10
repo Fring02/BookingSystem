@@ -17,34 +17,34 @@ namespace Infrastructure.Services.Booking
             _repository = repository;
         }
 
-        public Task<ServiceImage> CreateAsync(ServiceImage model)
+        public async Task<ServiceImage> CreateAsync(ServiceImage model)
         {
-            return _repository.CreateAsync(model);
+            return await _repository.CreateAsync(model).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<ServiceImage>> GetAllAsync()
+        public async Task<IEnumerable<ServiceImage>> GetAllAsync()
         {
-            return _repository.GetAllAsync();
+            return await _repository.GetAllAsync().ConfigureAwait(false);
         }
 
-        public Task<ServiceImage> GetByIdAsync(Guid id)
+        public async Task<ServiceImage> GetByIdAsync(Guid id)
         {
-            return _repository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(id).ConfigureAwait(false);
         }
 
-        public Task<bool> UpdateAsync(ServiceImage model)
+        public async Task<bool> UpdateAsync(ServiceImage model)
         {
-            return _repository.UpdateAsync(model);
+            return await _repository.UpdateAsync(model).ConfigureAwait(false);
         }
 
-        public Task<bool> DeleteAsync(ServiceImage model)
+        public async Task<bool> DeleteAsync(ServiceImage model)
         {
-            return _repository.DeleteAsync(model);
+            return await _repository.DeleteAsync(model).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<ServiceImage>> GetByServiceId(Guid serviceId)
+        public async Task<IEnumerable<ServiceImage>> GetByServiceIdAsync(Guid serviceId)
         {
-            return _repository.GetByServiceId(serviceId);
+            return await _repository.GetByServiceIdAsync(serviceId).ConfigureAwait(false);
         }
     }
 }
