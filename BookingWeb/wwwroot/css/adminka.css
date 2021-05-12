@@ -117,11 +117,6 @@ p {
         color: #E34C43;
     }
 
-#sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #15db95;
-    background: #6d7fcc;
-}
-
 
 a[data-toggle="collapse"] {
     position: relative;
@@ -164,10 +159,10 @@ a[data-toggle="collapse"] {
     text-decoration: none;
 }
 
-    #btn:hover {
-        transition: 0.5s ease-in-out;
-        background: #E34C43;
-    }
+#btn:hover {
+    transition: 0.5s ease-in-out;
+    background: #E34C43;
+}
 
 .el {
     padding: 0vh 2vh;
@@ -181,91 +176,12 @@ a[data-toggle="collapse"] {
     text-align: center;
     font-size: 1.3em;
     text-decoration: underline;
+    color: #15db95;
+    background: #6d7fcc;
 }
 
 #render-place {
     height: 100%;
     width: 100%;
     padding: 0px;
-}
-
-/* ---------------------------------------------------
-    Profile page styles
------------------------------------------------------ */
-
-#profile-form-box {
-    height: auto;
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 2vh;
-    box-shadow: 0 0 1vh rgba(0,0,0,0.5);
-}
-
-    #profile-form-box > div {
-        background: #f5f5f5;
-        border-radius: 3px;
-        padding: 2vh;
-    }
-
-#general-info {
-    height: auto;
-    width: 68%;
-    align-self: flex-start;
-    display: flex;
-    flex-direction: column;
-}
-
-    #general-info > input {
-        width: 50%;
-    }
-
-#password-info {
-    height: auto;
-    width: 30%;
-}
-
-#header-image {
-    width: 100%;
-    height: 5vh;
-}
-
-label {
-    margin: 0;
-}
-
-input {
-    height: auto;
-    width: 100%;
-    border: none;
-    margin-bottom: 2vh;
-    font-size: 1em;
-    outline: none;
-    display: block;
-    border: none;
-    border-bottom: 1px solid #000;
-    background: transparent;
-    text-align: center;
-    transition: all 0.3s;
-}
-
-    input:disabled {
-        border-bottom: 1px solid #15db95;
-    }
-
-    input:focus {
-        border-bottom: 1px solid #E34C43;
-    }
-
-.confirm-buttons {
-    border-radius: 3.5vh;
-    background: #15db95;
-    padding: 1vh 1.4vh;
-    transition: 0.5s ease-in-out;
-}
-
-.confirm-buttons:hover {
-        color: white;
-        transition: 0.5s ease-in-out;
 }
