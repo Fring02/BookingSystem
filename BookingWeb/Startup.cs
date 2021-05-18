@@ -1,3 +1,5 @@
+using BookingWeb.ApiCollection.APIs;
+using BookingWeb.ApiCollection.Interfaces;
 using BookingWeb.ApiCollection.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +33,7 @@ namespace BookingWeb
             services.AddTransient<IBasketApi, BasketApi>();
             services.AddTransient<IOrderingApi, OrderingApi>();
             */
+            services.AddTransient<IUsersApi, UsersApi>();
             #endregion
 
             services.AddRazorPages();

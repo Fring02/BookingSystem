@@ -1,0 +1,27 @@
+﻿@page
+
+@{
+    Layout = "_AuthLayout";
+}
+
+
+@model BookingWeb.Pages.LoginModel
+@{ ViewData["Title"] = "Login";}
+
+
+<div id="right">
+    <div class="loginBox">
+        <form asp-page-handler="LoginOwner" method="post" id="loginform">
+
+            <label asp-for="LoginForm.Email" for="email">Email <span class="text-muted">(Required)</span></label>
+            <input asp-for="LoginForm.Email" type="email" id="email" placeholder="you@example.com">
+
+            <label asp-for="LoginForm.Password" for="pass">Password</label>
+            <input asp-for="LoginForm.Password" type="password" id="pass" placeholder="**********" required>
+
+            <hr class="mb-4">
+            <button class="knopka" id="loginbtn">Sign in</button>
+            <a asp-page="/Register">You do not have an account?</a>
+        </form>
+    </div>
+</div>

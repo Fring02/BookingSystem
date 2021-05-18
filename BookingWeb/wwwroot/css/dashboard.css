@@ -1,0 +1,117 @@
+.container{
+  height: 100vh;
+  width: 100vw;
+  font-size: 1em;
+}
+.side-bar{
+  width: 20vw;
+  height: 100vh;
+  background: #030a30;
+  box-shadow: 0 3vh 6vh rgba(0,0,0,0.5), 0 2vh 4vh rgba(0,0,0,0.5);
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+.row-heading{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.row-heading>h2{
+  color: #ffffff;
+  padding: 2vh 3vh;
+}
+
+#logo{
+  height: 9vh;
+  width: 9vh;
+  padding: 2vh;
+}
+
+.navigation{
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 10vh 0;
+}
+
+.navigation>a{
+  color:#ffffff;
+  margin: 0vh 5vh;
+  color: #ffffff;
+  transition: 0.5s ease-in-out;
+}
+
+.navigation>a:hover{
+  color: #E34C43;
+}
+
+/*side-bar div style end*/
+
+.content{
+  width: 100vw;
+  height: 100vh;
+}
+
+.content>.data{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-row-heading{
+  height: 10vh;
+  box-shadow: 0 1vh 2vh rgba(0,0,0,0.2), 0 1.5vh 3vh rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.avatar{
+  height: 5vh;
+  width: 2vh;
+  background-color: #030a30;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+#btn{
+  border-radius: 3.5vh;
+  background: #15db95;
+  color: #ffffff;
+  box-shadow: 0 0 0.5vh rgba(0,0,0,0.7);
+  margin-right: 5vh;
+}
+
+#btn:hover{
+  transition: 0.5s ease-in-out;
+  background: #E34C43;
+}
+
+.el{
+  padding: 0vh 2vh;
+}
+
+#architecture{
+  position: relative;
+  top: 15vh;
+  left: 20vh;
+}
+
+#architecture>img{
+  height: 55vh;
+  width: 75vh;
+}
+
+.profile-data, .service-data, .booking-data{
+  position: relative;
+  left: 20vw;
+}
