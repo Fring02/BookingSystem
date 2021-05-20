@@ -11,6 +11,7 @@ namespace Domain.Dtos
         public string Location { get; set; }
         public string Website { get; set; }
         public int Rating { get; set; }
+        public int RatedCount { get; set; }
         public string Description { get; set; }
         public string WorkingTime { get; set; }
         public List<ServiceImageDto> Images { get; set; }

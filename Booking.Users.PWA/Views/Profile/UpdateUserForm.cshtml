@@ -1,0 +1,20 @@
+﻿@model UpdateUserViewModel
+<form asp-controller="Users" asp-action="UpdateUser">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Mobile phone</label>
+        <input asp-for="@Model.Id" value="@Model.Id" type="hidden"/>
+        <input asp-for="@Model.MobilePhone" value="@Model.MobilePhone" type="text" class="form-control" id="exampleInputEmail1" placeholder="Format: +x(xxx)xxx-xx-xx">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input asp-for="@Model.Email" value="@Model.Email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input asp-for="@Model.Password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Your new password">
+    </div>
+    <div class="form-group d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>

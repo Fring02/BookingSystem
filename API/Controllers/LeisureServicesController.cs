@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Authorize(Roles = Roles.OWNER)]
+    //[Authorize(Roles = Roles.OWNER)]
     [Route("/api/v1/services/")]
     public class LeisureServicesController : ControllerBase
     {
@@ -31,8 +31,8 @@ namespace API.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int? rating, string workingTime = null, string categoryName = null
-            )
+        public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int? rating, string workingTime = null, 
+            string categoryName = null)
         {
             Guid categoryId = default;
             if (!string.IsNullOrEmpty(categoryName))
@@ -42,6 +42,14 @@ namespace API.Controllers
                 categoryId = category.Id;
             }
             return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByFilterAsync(categoryId, workingTime, rating.GetValueOrDefault())
+                ?? new List<LeisureService>());
+        }
+
+        [AllowAnonymous]
+        [HttpGet("popular")]
+        public async Task<IEnumerable<LeisureServiceViewDto>> GetPopularLeisureServicesAsync(int count)
+        {
+            return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByPopularity(count)
                 ?? new List<LeisureService>());
         }
 

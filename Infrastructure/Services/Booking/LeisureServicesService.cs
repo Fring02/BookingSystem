@@ -33,6 +33,7 @@ namespace Infrastructure.Services.Booking
 
         public async Task<bool> UpdateAsync(LeisureService model)
         {
+            if (model.Rating > 0) model.RatedCount++;
             return await _repository.UpdateAsync(model).ConfigureAwait(false);
         }
 
@@ -41,15 +42,6 @@ namespace Infrastructure.Services.Booking
             return await _repository.DeleteAsync(model).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<LeisureService>> GetByRatingAsync(int rating)
-        {
-            return await _repository.GetByRatingAsync(rating).ConfigureAwait(false);
-        }
-
-        public async Task<IEnumerable<LeisureService>> GetByWorkingTimeAsync(string workingTime)
-        {
-            return await _repository.GetByWorkingTimeAsync(workingTime).ConfigureAwait(false);
-        }
 
         public async Task<IEnumerable<LeisureService>> GetByCategoryIdAsync(Guid categoryId)
         {
@@ -75,6 +67,12 @@ namespace Infrastructure.Services.Booking
         {
             if (ownerId == default) return null;
             return await _repository.GetByOwnerIdAsync(ownerId).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<LeisureService>> GetByPopularity(int count)
+        {
+            if (count <= 0) return null;
+            return await _repository.GetByPopularity(count).ConfigureAwait(false);
         }
     }
 }

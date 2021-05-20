@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Authorize(Roles = Roles.OWNER)]
+    //[Authorize(Roles = Roles.OWNER)]
     [Route("/api/v1/services/{id?}/images/")]
     public class ServiceImagesController : ControllerBase
     {

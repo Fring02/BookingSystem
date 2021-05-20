@@ -1,0 +1,23 @@
+﻿@inject IHttpContextAccessor accessor
+<nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
+    <ul class="nav sidebar-nav">
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <a href="#">Booking.Net</a>
+            </div>
+        </div>
+        <li><a asp-controller="Home" asp-action="Index"><i class="fas fa-home sidebar-icon"></i>Home</a></li>
+        <li><a asp-controller="Services" asp-action="ServicesSection"><i class="fas fa-archive sidebar-icon"></i>Services</a></li>
+        @if (accessor.HttpContext.Session.Keys.Any())
+        {
+            <li><a asp-controller="Profile" asp-action="ProfilePage"><i class="fas fa-user sidebar-icon"></i>Profile</a></li>
+        }
+        else
+        {
+            <li><a style="cursor: pointer;" class="text-light" data-toggle="modal" data-target="#loginModal"><i class="fas fa-user sidebar-icon"></i>Login</a></li>
+            <li><a style="cursor: pointer;" class="text-light" data-toggle="modal" data-target="#registerModal"><i class="fas fa-user sidebar-icon"></i>Register</a></li>
+        }
+        <li><a href="#events"><i class="far fa-address-card sidebar-icon"></i>Contacts</a></li>
+        <li><a href="#followme"><i class="fab fa-instagram sidebar-icon"></i>Follow us</a></li>
+    </ul>
+</nav>

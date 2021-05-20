@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Booking.API.Controllers
 {
     [Route("api/v1/categories")]
-    [Authorize(Roles = Roles.ADMIN)]
+    //[Authorize(Roles = Roles.ADMIN)]
     [ApiController]
     public class LeisureServiceCategoriesController : ControllerBase
     {

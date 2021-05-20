@@ -96,7 +96,7 @@ namespace Infrastructure.Services
 
                 user.Email = userParam.Email;
             }
-
+            if (!string.IsNullOrWhiteSpace(userParam.MobilePhone)) user.MobilePhone = userParam.MobilePhone;
             // update user properties if provided
             if (!string.IsNullOrWhiteSpace(userParam.Firstname))
                 user.Firstname = userParam.Firstname;

@@ -11,5 +11,6 @@ namespace Domain.Dtos.Users
         public string LastName { get; set; }
         public string Email { get; set; }
         public string MobilePhone { get; set; }
+        public List<BookingRequestViewDto> BookingRequests { get; set; }
     }
 }

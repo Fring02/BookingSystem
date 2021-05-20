@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace Booking.API.Controllers
 {
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.ADMIN + "," + Roles.USER)]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -42,7 +42,7 @@ namespace Booking.API.Controllers
             var user = await _userService.LoginAsync(model.Email, model.Password);
 
             if (user == null)
-                return BadRequest(new { message = "Email or password is incorrect" });
+                return BadRequest("Email or password is incorrect");
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -60,10 +60,7 @@ namespace Booking.API.Controllers
             var tokenString = tokenHandler.WriteToken(token);
 
             // return basic user info and authentication token
-            return  Ok(new
-            {
-                token = tokenString
-            });
+            return  Ok(tokenString);
         }
 
         [AllowAnonymous]
@@ -93,15 +90,12 @@ namespace Booking.API.Controllers
                 var tokenString = tokenHandler.WriteToken(token);
 
                 // return basic user info and authentication token
-                return Ok(new
-                {
-                    token = tokenString
-                });
+                return Ok(tokenString);
             }
             catch (AppException ex)
             {
                 // return error message if there was an exception
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 

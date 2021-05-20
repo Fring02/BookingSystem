@@ -42,7 +42,15 @@ namespace API.Controllers
             var request = await _requestsService.GetByIdAsync(id);
             return (request != null) ? _mapper.Map<BookingRequestViewDto>(request) : null;
         }
-
+        [HttpGet("userId={userId}&serviceId={serviceId}")]
+        public async Task<IActionResult> CheckBookingRequest(Guid userId, Guid serviceId)
+        {
+           if(await _requestsService.HasRequestAsync(new BookingRequest { UserId = userId, ServiceId = serviceId }))
+            {
+                return Ok("true");
+            }
+            return NotFound("false");
+        }
         [HttpPost]
         public async Task<IActionResult> CreateBookingRequestAsync(BookingRequestCreateDto dto)
         {

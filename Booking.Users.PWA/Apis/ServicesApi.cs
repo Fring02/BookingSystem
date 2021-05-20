@@ -1,0 +1,104 @@
+﻿using Booking.Users.PWA.Apis.Http;
+using Booking.Users.PWA.Apis.Interfaces;
+using Booking.Users.PWA.Apis.Settings;
+using Booking.Users.PWA.ViewModels;
+using Domain.Dtos;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace Booking.Users.PWA.Apis
+{
+    public class ServicesApi : BaseHttpClientFactory, IServicesApi
+    {
+        private readonly ApiConfiguration _config;
+        private readonly ILogger<ServicesApi> _log;
+        public ServicesApi(IHttpClientFactory factory, IOptions<ApiConfiguration> options,
+            ILogger<ServicesApi> log) : base(factory)
+        {
+            _config = options.Value;
+            _builder = new HttpRequestBuilder(_config.BaseAddress);
+            _builder.AddToPath(_config.ServicesPath);
+            _log = log;
+        }
+
+        public async Task<IEnumerable<LeisureServiceElementViewModel>> GetAllServices()
+        {
+            using var message = _builder
+             .HttpMethod(HttpMethod.Get)
+             .HttpMessage;
+            try
+            {
+                var services = await GetResponseAsync<IEnumerable<LeisureServiceElementViewModel>>(message);
+                if (services == null) _log.LogWarning("Did not found services by uri " + _builder.HttpMessage.RequestUri.LocalPath);
+                return services;
+            }
+            catch (ApiException e)
+            {
+                _log.LogError(e.Message);
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<LeisureServiceElementViewModel>> GetFilteredServices(string categoryName = null, int? rating = null, string workingTime = null)
+        {
+            try
+            {
+                if (categoryName != null) _builder = _builder.AddQueryString("categoryName", categoryName);
+                if (rating.HasValue) _builder = _builder.AddQueryString("rating", rating.ToString());
+                if (workingTime != null) _builder = _builder.AddQueryString("workingTime", workingTime);
+                var services = await GetResponseAsync<IEnumerable<LeisureServiceElementViewModel>>(_builder.HttpMethod(HttpMethod.Get).HttpMessage);
+                if (services == null) _log.LogWarning("Did not found services by uri " + _builder.HttpMessage.RequestUri.LocalPath);
+                return services;
+            }
+            catch (ApiException e)
+            {
+                _log.LogError(e.Message);
+                return null;
+            } finally
+            {
+                _builder.Dispose();
+            }
+        }
+
+        public async Task<IEnumerable<LeisureServiceElementViewModel>> GetPopularServices(int count)
+        {
+            using var message = _builder.AddToPath("/popular").AddQueryString("count", count.ToString())
+             .HttpMethod(HttpMethod.Get)
+             .HttpMessage;
+            try
+            {
+                var services = await GetResponseAsync<IEnumerable<LeisureServiceElementViewModel>>(message);
+                if (services == null) _log.LogWarning("Did not found services by uri " + _builder.HttpMessage.RequestUri.LocalPath);
+                return services;
+            } 
+            catch (ApiException e)
+            {
+                _log.LogError(e.Message);
+                return null;
+            }
+        }
+
+        public async Task<LeisureServiceViewModel> GetServiceById(Guid id)
+        {
+            using var message = _builder.AddToPath("/" + id)
+             .HttpMethod(HttpMethod.Get)
+             .HttpMessage;
+            try
+            {
+                var service = await GetResponseAsync<LeisureServiceViewModel>(message);
+                if (service == null) _log.LogWarning("Did not found service by uri " + _builder.HttpMessage.RequestUri.LocalPath);
+                return service;
+            }
+            catch (ApiException e)
+            {
+                _log.LogError(e.Message);
+                return null;
+            }
+        }
+    }
+}

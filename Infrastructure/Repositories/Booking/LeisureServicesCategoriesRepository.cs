@@ -16,7 +16,7 @@ namespace Infrastructure.Repositories.Booking
         }
         public override async Task<IEnumerable<LeisureServiceCategory>> GetAllAsync()
         {
-            return await _context.LeisureServiceCategories.AsNoTracking().Include(c => c.Services).ToListAsync();
+            return await _context.LeisureServiceCategories.AsNoTracking().ToListAsync();
         }
         public override async Task<LeisureServiceCategory> GetByIdAsync(Guid id)
         {

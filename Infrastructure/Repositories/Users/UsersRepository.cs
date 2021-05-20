@@ -16,7 +16,10 @@ namespace Infrastructure.Repositories
         public UsersRepository(BookingContext context) : base(context)
         { 
         }
-
+        public override async Task<User> GetByIdAsync(Guid id)
+        {
+            return await _context.Users.AsNoTracking().Include(u => u.BookingRequests).ThenInclude(r => r.Service).FirstOrDefaultAsync(u => u.Id == id);
+        }
         public async Task<bool> UserExistsAsync(string Email)
         {
             return await _context.Users.AnyAsync(u => u.Email == Email);

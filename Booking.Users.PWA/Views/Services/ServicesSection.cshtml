@@ -1,0 +1,51 @@
+﻿@{ 
+    ViewData["Title"] = "Services";
+    Layout = "_Layout";
+}
+@model ServicesSectionViewModel
+<div class="justify-content-center p-5">
+        <a class="btn btn-primary text-center d-block mb-5" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Search by
+        </a>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            @await Html.PartialAsync("FilterForm", new FilterFormViewModel
+       {
+           Categories = Model.Categories
+       }) 
+        </div>
+    </div>
+    <div class="services-section">
+        @if (Model.Services != null && Model.Services.Any())
+        {
+        @foreach (var service in Model.Services)
+        {
+            var image = service.Images.FirstOrDefault();
+            string imageUrl = "https://yandex.kz/images/search?pos=0&from=tabbar&img_url=https%3A%2F%2Fwww.ikiparagraf.com%2Finfo%2Fbilinmeyen.png&text=unknown+image&rpt=simage";
+            if (image != null) imageUrl = image.Path;
+            <div class="service-el">
+                <a href="/services/@service.Id">
+                    <img src="@imageUrl" class="img-fluid">
+                </a>
+                <h3 class="text-light">
+                    @service.Name <br />
+                    @{
+                        int rating = service.Rating;
+                        for (int i = 1; i <= rating; i++)
+                        {
+                            <i class="fas fa-star text-warning"></i>
+                        }
+                    }
+                    <br />
+                    <p class="lead">
+                        Working time: @service.WorkingTime
+                    </p>
+                </h3>
+            </div>
+          }
+          } else
+          {
+                <div class="alert alert-warning text-center">Sorry, we did not relevant services</div>
+          }
+    </div>
+</div>

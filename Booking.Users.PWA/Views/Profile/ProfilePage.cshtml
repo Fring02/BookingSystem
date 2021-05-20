@@ -1,0 +1,95 @@
+﻿@model UserViewModel
+<div class="bg-light">
+    <div class="emp-profile">
+            <div class="row">
+                <div class="col-lg-3 text-center">
+                    <div class="profile-img">
+                        <img src="https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png" alt="" />
+                    </div>
+                    <a class="btn btn-outline-success mt-3" data-toggle="collapse" href="#editProfileCollapse" role="button" aria-expanded="false" aria-controls="editProfileCollapse">
+                        Edit profile
+                    </a>
+                </div>
+                <div class="col-lg-9">
+                    <div class="profile-head">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Personal</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="services-tab" data-toggle="tab" href="#services" role="tab" aria-controls="services" aria-selected="false">Ordered services</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <h3>@Model.Firstname @Model.Lastname</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-9">
+                    <div class="tab-content personal-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>@Model.Email</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Phone</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>@Model.MobilePhone</p>
+                                </div>
+                            </div>
+
+
+                            <div class="collapse" id="editProfileCollapse">
+                                <div class="card card-body">
+                                    @await Html.PartialAsync("UpdateUserForm", new UpdateUserViewModel
+                               {
+                                   Email = Model.Email,
+                                   MobilePhone = Model.MobilePhone,
+                                   Id = Model.Id
+                               })
+                               </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="services" role="tabpanel" aria-labelledby="services-tab">
+                            @{
+                                int i = 1;
+                                if (Model.BookingRequests != null)
+                                {
+                                    foreach (var req in Model.BookingRequests)
+                                    {
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between">
+                                                <div>#@(i++)</div>
+                                                <div>
+                                                    @for (int j = 0; j < req.Service.Rating; j++)
+                                                    {
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    }
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">@req.Service.Name</h5>
+                                            <a href="/services/@req.ServiceId" class="btn btn-primary">Learn more</a>
+                                        </div>
+                                    </div>
+                                    }
+                                } else
+                                {
+                                    <div class="alert alert-primary">You did not order any services yet.</div>
+                                }
+                            }
+                        </div>
+                </div>
+            </div>
+    </div>
+</div>

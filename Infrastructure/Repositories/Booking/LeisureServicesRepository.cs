@@ -57,5 +57,13 @@ namespace Infrastructure.Repositories.Booking
         {
             return await _context.LeisureServices.AsNoTracking().Where(s => s.OwnerId == ownerId).Include(s => s.Images).Include(s => s.Category).ToListAsync();
         }
+
+        public async Task<IEnumerable<LeisureService>> GetByPopularity(int count)
+        {
+            return await _context.LeisureServices.AsNoTracking().Include(s => s.Images).
+                OrderByDescending(s => s.RatedCount).
+                Take(count).
+                ToListAsync();
+        }
     }
 }

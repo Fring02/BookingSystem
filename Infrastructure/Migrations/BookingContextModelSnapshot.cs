@@ -70,6 +70,9 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("RatedCount")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
 
@@ -152,7 +155,7 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e190d168-2520-41a4-a8ae-25735dfa2fb0"),
+                            Id = new Guid("3fab1933-b8fb-4d45-9718-b3b8694b0fc7"),
                             Email = "hasenovsultanbek@gmail.com",
                             Firstname = "Sultanbek",
                             Lastname = "Hasenov",
