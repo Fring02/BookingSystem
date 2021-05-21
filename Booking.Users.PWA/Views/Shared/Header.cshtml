@@ -11,6 +11,7 @@
         @if (accessor.HttpContext.Session.Keys.Any())
         {
             <li><a asp-controller="Profile" asp-action="ProfilePage"><i class="fas fa-user sidebar-icon"></i>Profile</a></li>
+            <li><a asp-controller="Profile" asp-action="Signout" class="text-danger"><i class="fas fa-window-close sidebar-icon"></i>Sign out</a></li>
         }
         else
         {

@@ -32,9 +32,9 @@ namespace Booking.Users.PWA.Controllers
         }
 
         [HttpPost("/services")]
-        public async Task<IActionResult> FilterServicesAsync(FilterFormViewModel filter)
+        public async Task<IActionResult> FilterServicesAsync(FilterFormViewModel filter, string name)
         {
-            var services = await _servicesApi.GetFilteredServices(filter.CategoryName, filter.Rating, filter.WorkingTime);
+            var services = await _servicesApi.GetFilteredServices(filter.CategoryName, filter.Rating, filter.WorkingTime, name);
             var categories = await _categoriesApi.GetAllCategories();
             return View("ServicesSection",new ServicesSectionViewModel
             {

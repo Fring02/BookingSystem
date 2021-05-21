@@ -3,6 +3,7 @@ using Domain.Interfaces.Repositories.Users;
 using Domain.Interfaces.Services;
 using Domain.Models.Users;
 using Infrastructure.Data;
+using Infrastructure.Helpers;
 using Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,12 @@ namespace Infrastructure.Services
     {
         private readonly IUsersRepository _userRepository;
         private readonly NotificationService notificationService;
-        public UsersService(IUsersRepository userRepository, NotificationService notificationService)
+        private readonly IPasswordEncryptor _encryptor;
+        public UsersService(IUsersRepository userRepository, NotificationService notificationService, IPasswordEncryptor encryptor)
         {
             _userRepository = userRepository;
             this.notificationService = notificationService;
+            _encryptor = encryptor;
         }
 
         public async Task<User> CreateAsync(User model)
@@ -51,7 +54,7 @@ namespace Infrastructure.Services
             // check if username exists
             if (user == null) return null;
             // check if password is correct
-            if (!PasswordHashService.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            if (!_encryptor.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
             // authentication successful
@@ -67,7 +70,7 @@ namespace Infrastructure.Services
             if (await _userRepository.UserExistsAsync(user.Email))
                 throw new AppException("Email \"" + user.Email + "\" is already taken");
 
-            PasswordHashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+            _encryptor.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;

@@ -24,5 +24,13 @@ namespace Booking.Users.PWA.Controllers
             var user = await _usersApi.GetUserByIdAsync(id, token);
             return View(user);
         }
+
+
+
+        public IActionResult SignoutAsync()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

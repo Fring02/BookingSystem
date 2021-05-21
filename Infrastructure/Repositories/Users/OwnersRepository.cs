@@ -17,7 +17,7 @@ namespace Infrastructure.Repositories.Users
         }
         public async Task<bool> OwnerExists(Guid ownerId)
         {
-            return await _context.LeisureServicesOwners.AnyAsync(o => o.Id == ownerId);
+            return await _context.LeisureServicesOwners.AnyAsync(o => o.Id == ownerId).ConfigureAwait(false);
         }
     }
 }

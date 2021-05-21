@@ -32,8 +32,12 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<LeisureServiceViewDto>> GetAllLeisureServicesAsync(int? rating, string workingTime = null, 
-            string categoryName = null)
+            string categoryName = null, string name = null)
         {
+            if (!string.IsNullOrEmpty(name))
+            {
+                return _mapper.Map<IEnumerable<LeisureServiceViewDto>>(await _leisureService.GetByName(name));
+            }
             Guid categoryId = default;
             if (!string.IsNullOrEmpty(categoryName))
             {

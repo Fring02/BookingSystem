@@ -12,6 +12,7 @@ using Infrastructure.Services;
 using Infrastructure.Services.Booking;
 using Infrastructure.Services.Users;
 using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Helpers;
 
 namespace API.Extensions
 {
@@ -36,8 +37,10 @@ namespace API.Extensions
             services.AddScoped<ILeisureServicesCategoriesService, LeisureServicesCategoriesService>();
             services.AddScoped<IOwnersService, OwnersService>();
             services.AddScoped<IUserService, UsersService>();
+            services.AddSingleton<IPasswordEncryptor, SHA512PasswordEncryptor>();
             services.AddSingleton<NotificationService>();
             return services;
         }
+
     }
 }

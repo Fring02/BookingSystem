@@ -16,15 +16,15 @@ namespace Infrastructure.Repositories.Booking
         }
         public override async Task<IEnumerable<LeisureServiceCategory>> GetAllAsync()
         {
-            return await _context.LeisureServiceCategories.AsNoTracking().ToListAsync();
+            return await _context.LeisureServiceCategories.AsNoTracking().ToListAsync().ConfigureAwait(false);
         }
         public override async Task<LeisureServiceCategory> GetByIdAsync(Guid id)
         {
-            return await _context.LeisureServiceCategories.AsNoTracking().Include(c => c.Services).FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.LeisureServiceCategories.AsNoTracking().Include(c => c.Services).FirstOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);
         }
         public async Task<LeisureServiceCategory> GetByName(string categoryName)
         {
-            return await _context.LeisureServiceCategories.FirstOrDefaultAsync(c => c.Name == categoryName);
+            return await _context.LeisureServiceCategories.FirstOrDefaultAsync(c => c.Name == categoryName).ConfigureAwait(false);
         }
     }
 }

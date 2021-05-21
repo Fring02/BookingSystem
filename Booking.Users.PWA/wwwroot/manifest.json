@@ -1,0 +1,9 @@
+{
+  "name": "Booking.NET",
+  "short_name": "Booking.NET",
+  "start_url": "https://localhost:44362",
+  "display": "standalone",
+  "background_color": "#fdfdfd",
+  "theme_color": "#db4938",
+  "orientation": "portrait-primary"
+}

@@ -11,7 +11,7 @@ namespace Booking.Users.PWA.Apis.Interfaces
     {
         Task<IEnumerable<LeisureServiceElementViewModel>> GetPopularServices(int count);
         Task<IEnumerable<LeisureServiceElementViewModel>> GetAllServices();
-        Task<IEnumerable<LeisureServiceElementViewModel>> GetFilteredServices(string categoryName = null, int? rating = null, string workingTime = null);
+        Task<IEnumerable<LeisureServiceElementViewModel>> GetFilteredServices(string categoryName = null, int? rating = null, string workingTime = null, string name = null);
         Task<LeisureServiceViewModel> GetServiceById(Guid id);
     }
 }

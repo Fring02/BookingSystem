@@ -7,6 +7,7 @@ namespace Booking.Users.PWA.ViewModels
 {
     public class FilterFormViewModel
     {
+        public string Name { get; set; }
         public string CategoryName { get; set; }
         public string WorkingTime { get; set; }
         public int? Rating { get; set; }

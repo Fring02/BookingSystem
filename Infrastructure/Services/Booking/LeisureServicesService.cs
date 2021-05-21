@@ -49,7 +49,8 @@ namespace Infrastructure.Services.Booking
             return await _repository.GetByCategoryIdAsync(categoryId).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<LeisureService>> GetByFilterAsync(Guid categoryId = default, string workingTime = null, int rating = 0)
+        public async Task<IEnumerable<LeisureService>> GetByFilterAsync(Guid categoryId = default, 
+            string workingTime = null, int rating = 0)
         {
             if (categoryId == default && workingTime == null && rating == 0)
             {
@@ -73,6 +74,11 @@ namespace Infrastructure.Services.Booking
         {
             if (count <= 0) return null;
             return await _repository.GetByPopularity(count).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<LeisureService>> GetByName(string name)
+        {
+            return await _repository.GetByName(name).ConfigureAwait(false);
         }
     }
 }

@@ -16,11 +16,11 @@ namespace Infrastructure.Repositories.Booking
         }
         public override async Task<ServiceImage> GetByIdAsync(Guid id)
         {
-            return await _context.ServicesImages.AsNoTracking().Include(i => i.Service).FirstOrDefaultAsync(i => i.Id == id);
+            return await _context.ServicesImages.AsNoTracking().Include(i => i.Service).FirstOrDefaultAsync(i => i.Id == id).ConfigureAwait(false);
         }
         public async Task<IEnumerable<ServiceImage>> GetByServiceIdAsync(Guid serviceId)
         {
-           return await _context.ServicesImages.AsNoTracking().Where(i => i.ServiceId == serviceId).Include(i => i.Service).ToListAsync();
+           return await _context.ServicesImages.AsNoTracking().Where(i => i.ServiceId == serviceId).Include(i => i.Service).ToListAsync().ConfigureAwait(false);
         }
     }
 }

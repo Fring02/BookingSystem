@@ -44,10 +44,15 @@ namespace Booking.Users.PWA.Apis
             }
         }
 
-        public async Task<IEnumerable<LeisureServiceElementViewModel>> GetFilteredServices(string categoryName = null, int? rating = null, string workingTime = null)
+        public async Task<IEnumerable<LeisureServiceElementViewModel>> GetFilteredServices(string categoryName = null, int? rating = null,
+            string workingTime = null, string name = null)
         {
             try
             {
+                if(name != null)
+                {
+                    _builder = _builder.AddQueryString("name", name);
+                }
                 if (categoryName != null) _builder = _builder.AddQueryString("categoryName", categoryName);
                 if (rating.HasValue) _builder = _builder.AddQueryString("rating", rating.ToString());
                 if (workingTime != null) _builder = _builder.AddQueryString("workingTime", workingTime);

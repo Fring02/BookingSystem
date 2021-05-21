@@ -5,19 +5,19 @@
 @model IndexViewModel
 <div class="row justify-content-center p-5" style="background-color: rgba(0, 0, 0, 0.5);">
     <div class="col-lg-8 col-lg-offset-2">
-        <div class="input-group rounded">
-            <input type="search" class="form-control rounded" placeholder="Search for leisure services..." aria-label="Search"
+        <form class="input-group rounded" asp-controller="Services" asp-action="FilterServices">
+            <input type="search" name="name" class="form-control rounded" placeholder="Search for leisure services..." aria-label="Search"
                    aria-describedby="search-addon" />
-            <button class="btn btn-primary input-group-text border-0" id="search-addon">
+            <button class="btn btn-primary input-group-text border-0" id="search-addon" type="submit">
                 <i class="fas fa-search"></i>
             </button>
-        </div>
+        </form>
     </div>
     <div class="presenting">
         <div class="container">
             <h1 class="display-4 text-info">Order your leisure services!</h1>
             <a href="#" class="lead text-primary">Learn more about us.</a><br />
-            <h3 class="text-center text-light mt-4">Categories</h3>
+            <h3 class="text-center text-light mt-4">Categories</h3>  
         </div>
     </div>
     <div class="container categories-grid">

@@ -18,16 +18,16 @@ namespace Infrastructure.Repositories
         }
         public override async Task<User> GetByIdAsync(Guid id)
         {
-            return await _context.Users.AsNoTracking().Include(u => u.BookingRequests).ThenInclude(r => r.Service).FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Users.AsNoTracking().Include(u => u.BookingRequests).ThenInclude(r => r.Service).FirstOrDefaultAsync(u => u.Id == id).ConfigureAwait(false);
         }
         public async Task<bool> UserExistsAsync(string Email)
         {
-            return await _context.Users.AnyAsync(u => u.Email == Email);
+            return await _context.Users.AnyAsync(u => u.Email == Email).ConfigureAwait(false);
         }
 
         public async Task<User> GetByEmailAsync(string Email)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Email == Email);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email == Email).ConfigureAwait(false);
         }
     }
 }

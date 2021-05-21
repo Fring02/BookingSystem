@@ -67,6 +67,8 @@ namespace Booking.Users.PWA.Controllers
             }
         }
 
+
+
         public async Task<IActionResult> UpdateUserAsync(UpdateUserViewModel user)
         {
             if (await _usersApi.UpdateUserAsync(user, HttpContext.Session.GetString("token")))
