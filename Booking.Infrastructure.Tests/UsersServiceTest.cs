@@ -11,6 +11,7 @@ using Xunit;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure;
+using Domain.Helpers;
 
 namespace Booking.Infrastructure.Tests
 {
@@ -37,18 +38,8 @@ namespace Booking.Infrastructure.Tests
                 Email = "a.yergaliev@gmail.com",
                 MobilePhone = "8(800)555-35-35"
             };*/
-            _conf = new EmailConfiguration
-            {
-                From = "hasenovsultanbek@gmail.com",
-                SmtpServer = "smtp.gmail.com",
-                Username = "hasenovsultanbek@gmail.com",
-                Port = 465,
-                Password = "Rubin1!!"
-            };
-            _notifyService = new NotificationService(_conf);
             //_userService = new UsersService(new UsersRepository(context));
             //Act
-            await _notifyService.SendEmailAsync("hasenovsultanbek@gmail.com");
             //var t = await _userService.RegisterAsync(user, password);
             //Assert
             //Assert.Throws>();

@@ -74,7 +74,7 @@ namespace Infrastructure.Services
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            await Task.WhenAll(notificationService.SendEmailAsync(user.Email), _userRepository.CreateAsync(user)).ConfigureAwait(false);
+                await Task.WhenAll(notificationService.SendEmailAsync(user.Email, password), _userRepository.CreateAsync(user)).ConfigureAwait(false);
             return user;
         }
 

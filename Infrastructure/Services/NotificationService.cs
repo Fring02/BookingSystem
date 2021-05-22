@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.Diagnostics;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services
@@ -18,41 +19,33 @@ namespace Infrastructure.Services
             _conf = conf.Value;
         }
 
-        public async Task SendEmailAsync(string toEmail)
+        public async Task SendEmailAsync(string toEmail, string password)
         {
-            string content = "<h1>Confirm your registration</h1><br><p>Proceed to this link in order to finish registration:<br>" +
-                @"<a href=""https://localhost:5000/api/v1/services"">Finish</a></p>";
-            var message = new NotifyMessage(new string[] { toEmail }, "Confirm your registration", content, string.Empty);
-            var emailMessage = CreateEmailMessage(message);
-            using (var client = new SmtpClient())
-            {
-                try
-                {
-                    await client.ConnectAsync(_conf.SmtpServer, _conf.Port, true);
-                    client.AuthenticationMechanisms.Remove("XOAUTH2");
-                    await client.AuthenticateAsync(_conf.Username, _conf.Password);
-                    await client.SendAsync(emailMessage).ConfigureAwait(false);
-                }
-                finally
-                {
-                    await client.DisconnectAsync(true).ConfigureAwait(false);
-                }
-            }
+            if (string.IsNullOrEmpty(toEmail)) throw new ArgumentException("Recipient message is null or empty");
+            MimeMessage message = RegistrationMessage(toEmail);
+            using var smtpClient = new SmtpClient();
+            smtpClient.Connect(_conf.SmtpServer, _conf.Port, MailKit.Security.SecureSocketOptions.StartTls);
+            smtpClient.AuthenticationMechanisms.Remove("XOAUTH2");
+            smtpClient.Authenticate(toEmail, password);
+            await smtpClient.SendAsync(message);
+            smtpClient.Disconnect(true);
         }
 
 
-        private MimeMessage CreateEmailMessage(NotifyMessage message)
+
+        private MimeMessage RegistrationMessage(string toEmail)
         {
-            var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress(_conf.From));
-            emailMessage.To.AddRange(message.To);
-            emailMessage.Subject = message.Subject;
-            var messageBody = new BodyBuilder
+            string content = "<h1>Confirm your registration</h1><br><p>Proceed to this link in order to finish registration:<br>" +
+                $@"<a href=""{_conf.Url}"">Finish</a></p>";
+            var mailMessage = new MimeMessage();
+            mailMessage.From.Add(new MailboxAddress("Booking.NET Service", _conf.Username));
+            mailMessage.To.Add(new MailboxAddress(toEmail, toEmail));
+            mailMessage.Subject = "Confirm your registration";
+            mailMessage.Body = new TextPart("html")
             {
-                HtmlBody = message.Content
+                Text = content
             };
-            emailMessage.Body = messageBody.ToMessageBody();
-            return emailMessage;
+            return mailMessage;
         }
     }
 }
