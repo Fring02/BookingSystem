@@ -57,7 +57,7 @@ namespace Booking.Users.PWA.Controllers
                 string id = claims.First(claim => claim.Type == "nameid").Value;
                 if (!string.IsNullOrEmpty(id)) HttpContext.Session.SetString("id", id);
                 HttpContext.Session.SetString("token", responseString);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Confirm", "Home", new { check = true });
             }
             catch
             {

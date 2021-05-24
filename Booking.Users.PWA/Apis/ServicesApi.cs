@@ -2,13 +2,14 @@
 using Booking.Users.PWA.Apis.Interfaces;
 using Booking.Users.PWA.Apis.Settings;
 using Booking.Users.PWA.ViewModels;
-using Domain.Dtos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Booking.Users.PWA.Apis
@@ -102,6 +103,36 @@ namespace Booking.Users.PWA.Apis
             catch (ApiException e)
             {
                 _log.LogError(e.Message);
+                return null;
+            }
+        }
+
+        public async Task<bool> UpdateService(Guid id, int rating, string token)
+        {
+            var service = new LeisureServiceViewModel
+            {
+                Rating = rating
+            };
+            using var message = _builder.AddToPath("/" + id).Content(new StringContent(JsonConvert.SerializeObject(service), Encoding.UTF8, 
+                "application/json")).Headers(h =>
+            {
+                h.Add("Authorization", "Bearer " + token);
+            })
+             .HttpMethod(HttpMethod.Put)
+             .HttpMessage;
+            return await GetResponseStringAsync(message) != null;
+        }
+        public override async Task<string> GetResponseStringAsync(HttpRequestMessage request)
+        {
+            using var client = Client;
+            using var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            try
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch
+            {
                 return null;
             }
         }

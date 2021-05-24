@@ -49,9 +49,14 @@ namespace API.Controllers
             }
             var model = _mapper.Map<ServiceImage>(dto);
             model.ServiceId = id;
-            model = await _imagesService.CreateAsync(model);
-            if (model == null) return StatusCode(500, "Failed to create image for service by id " + id);
-            return Ok("Created image for service by id " + id);
+            try
+            {
+                model = await _imagesService.CreateAsync(model);
+                return Ok("Created image for service by id " + id);
+            } catch
+            {
+                return StatusCode(500, "Failed to create image for service by id " + id);
+            }
         }
         
         [HttpPut("{imageId}")]

@@ -35,11 +35,11 @@ namespace Booking.Users.PWA.Controllers
         {
             return View();
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [ResponseCache(Duration = 300)]
+        [HttpGet("/confirm")]
+        public IActionResult Confirm(bool check)
         {
-            return View();
+            return View(check);
         }
     }
 }

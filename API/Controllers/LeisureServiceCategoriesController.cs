@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Dtos;
 using Domain.Helpers;
+using Domain.Helpers.Exceptions;
 using Domain.Interfaces.Services.Booking;
 using Domain.Models.Booking;
 using Microsoft.AspNetCore.Authorization;
@@ -47,11 +48,18 @@ namespace Booking.API.Controllers
                 var error = ModelState.Values.First().Errors.First();
                 return BadRequest(error.ErrorMessage);
             }
-            if ((await _categoryService.GetByNameAsync(dto.Name)) != null) return BadRequest("This category already exists");
-            var model = _mapper.Map<LeisureServiceCategory>(dto);
-            model = await _categoryService.CreateAsync(model);
-            if (model == null) return StatusCode(500, "Failed to create leisure service category");
-            return Ok("Created new leisure service category");
+            try
+            {
+                var model = _mapper.Map<LeisureServiceCategory>(dto);
+                await _categoryService.CreateAsync(model);
+                return Ok("Created new leisure service category");
+            } catch (AlreadyPresentException e)
+            {
+                return BadRequest(e.Message);
+            } catch (Exception)
+            {
+                return StatusCode(500, "Failed to create leisure service category");
+            }
         }
 
         [HttpPut("{id}")]

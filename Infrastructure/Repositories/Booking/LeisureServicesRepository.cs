@@ -28,7 +28,7 @@ namespace Infrastructure.Repositories.Booking
         public async Task<IEnumerable<LeisureService>> GetByRatingAsync(int rating)
         {
             return await _context.LeisureServices.AsNoTracking().Include(s => s.Images).Include(s => s.Category).
-                Where(s => s.Rating == rating).ToListAsync().ConfigureAwait(false);
+                Where(s => Math.Round(s.Rating) == rating).ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<LeisureService>> GetByWorkingTimeAsync(string workingTime)

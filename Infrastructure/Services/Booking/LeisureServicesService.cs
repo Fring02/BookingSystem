@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Helpers.Exceptions;
 using Domain.Interfaces.Repositories.Booking;
 using Domain.Interfaces.Repositories.Users;
 using Domain.Interfaces.Services.Booking;
@@ -11,14 +12,23 @@ namespace Infrastructure.Services.Booking
     public class LeisureServicesService : ILeisureServicesService
     {
         private readonly ILeisureServicesRepository _repository;
-        public LeisureServicesService(ILeisureServicesRepository repository)
+        private readonly ILeisureServicesCategoriesRepository _categoriesRepository;
+        private readonly IOwnersRepository _ownersRepository;
+        public LeisureServicesService(ILeisureServicesRepository repository, ILeisureServicesCategoriesRepository categoriesRepository, 
+            IOwnersRepository ownersRepository)
         {
             _repository = repository;
+            _categoriesRepository = categoriesRepository;
+            _ownersRepository = ownersRepository;
         }
 
         public async Task<LeisureService> CreateAsync(LeisureService model)
         {
-          return await _repository.CreateAsync(model).ConfigureAwait(false);
+            var category = await _categoriesRepository.GetByIdAsync(model.CategoryId).ConfigureAwait(false);
+            if (category == null) throw new EntityNotFoundException("Such category does not exist");
+            if (!await _ownersRepository.OwnerExists(model.OwnerId).ConfigureAwait(false)) throw new EntityNotFoundException("Such services owner doesn't exist");
+            if (await _repository.ServiceExistsAsync(model.Name).ConfigureAwait(false)) throw new AlreadyPresentException("Service already exists");
+            return await _repository.CreateAsync(model).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<LeisureService>> GetAllAsync()
@@ -33,7 +43,11 @@ namespace Infrastructure.Services.Booking
 
         public async Task<bool> UpdateAsync(LeisureService model)
         {
-            if (model.Rating > 0) model.RatedCount++;
+            var category = await _categoriesRepository.GetByIdAsync(model.CategoryId);
+            if (category == null)
+            {
+                throw new EntityNotFoundException("Category not found by id " + model.CategoryId);
+            }
             return await _repository.UpdateAsync(model).ConfigureAwait(false);
         }
 

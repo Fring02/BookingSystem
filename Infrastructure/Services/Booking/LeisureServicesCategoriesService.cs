@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Repositories.Booking;
+﻿using Domain.Helpers.Exceptions;
+using Domain.Interfaces.Repositories.Booking;
 using Domain.Interfaces.Services.Booking;
 using Domain.Models.Booking;
 using System;
@@ -24,6 +25,10 @@ namespace Infrastructure.Services.Booking
 
         public async Task<LeisureServiceCategory> CreateAsync(LeisureServiceCategory model)
         {
+            if((await _categoryRepository.GetByName(model.Name)) != null)
+            {
+                throw new AlreadyPresentException("This category already exists");
+            }
             return await _categoryRepository.CreateAsync(model).ConfigureAwait(false);
         }
 

@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Registration confirmed";
+    Layout = "_Layout";
+}
+@model bool
+
+@if (Model)
+{
+    <div class="jumbotron">
+        <h1 class="display-4 text-center mb-3">Please, check your email for complete registration.</h1>
+    </div>
+}
+else
+{
+    <div class="jumbotron">
+        <h1 class="display-4 text-center mb-3">You successfully signed up.</h1>
+        <p class="lead">Now you can <a asp-controller="Home" asp-action="Index">sign in.</a></p>
+    </div>
+}

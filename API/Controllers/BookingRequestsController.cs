@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Dtos;
 using Domain.Helpers;
+using Domain.Helpers.Exceptions;
 using Domain.Interfaces.Services.Booking;
 using Domain.Models.Booking;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Authorize(Roles = Roles.USER)]
+    //[Authorize(Roles = Roles.USER)]
     [Route("/api/v1/requests/")]
     public class BookingRequestsController : ControllerBase
     {
@@ -60,10 +61,22 @@ namespace API.Controllers
                 return BadRequest(error.ErrorMessage);
             }
             var model = _mapper.Map<BookingRequest>(dto);
-            if (await _requestsService.HasRequestAsync(model)) return BadRequest("This request already exists");
-            model = await _requestsService.CreateAsync(model);
-            if (model == null) return StatusCode(500, "Failed to create booking request");
-            return Ok("Created new booking request");
+            try
+            {
+                await _requestsService.CreateAsync(model);
+                return Ok("Created new booking request");
+            } catch (AlreadyPresentException e)
+            {
+                return BadRequest(e.Message);
+            } 
+            catch (EntityNotFoundException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Failed to create booking request");
+            }
         }
 
         [HttpPut("{id}")]

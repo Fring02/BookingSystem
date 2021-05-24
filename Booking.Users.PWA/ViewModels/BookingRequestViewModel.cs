@@ -1,5 +1,4 @@
-﻿using Domain.Models.Booking;
-using System;
+﻿using System;
 
 namespace Booking.Users.PWA.ViewModels
 {
@@ -7,7 +6,7 @@ namespace Booking.Users.PWA.ViewModels
     {
         public Guid Id { get; set; }
         public Guid ServiceId { get; set; }
-        public LeisureService Service { get; set; }
+        public LeisureServiceViewModel Service { get; set; }
         public DateTime LeftAt { get; set; } = DateTime.Now;
         public TimeSpan BookingTime { get; set; }
         public int Days { get; set; }

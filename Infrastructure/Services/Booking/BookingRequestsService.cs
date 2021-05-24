@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Helpers.Exceptions;
 using Domain.Interfaces.Repositories.Booking;
+using Domain.Interfaces.Repositories.Users;
 using Domain.Interfaces.Services.Booking;
 using Domain.Models.Booking;
 
@@ -10,14 +12,20 @@ namespace Infrastructure.Services.Booking
     public class BookingRequestsService : IBookingRequestsService
     {
         private readonly IBookingRequestsRepository _repository;
-
-        public BookingRequestsService(IBookingRequestsRepository repository)
+        private readonly ILeisureServicesRepository _servicesRepository;
+        private readonly IOwnersRepository _ownersRepository;
+        public BookingRequestsService(IBookingRequestsRepository repository, ILeisureServicesRepository servicesRepository, IOwnersRepository ownersRepository)
         {
             _repository = repository;
+            _servicesRepository = servicesRepository;
+            _ownersRepository = ownersRepository;
         }
 
         public async Task<BookingRequest> CreateAsync(BookingRequest model)
         {
+            if ((await _servicesRepository.GetByIdAsync(model.ServiceId)) == null) throw new EntityNotFoundException("Not found service by id " + model.ServiceId);
+            if((await _ownersRepository.GetByIdAsync(model.UserId)) == null) throw new EntityNotFoundException("Not found user by id " + model.UserId);
+            if (await _repository.HasRequestAsync(model)) throw new AlreadyPresentException("This request already exists");
             return await _repository.CreateAsync(model).ConfigureAwait(false);
         }
 

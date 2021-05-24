@@ -21,8 +21,9 @@
         @foreach (var service in Model.Services)
         {
             var image = service.Images.FirstOrDefault();
-            string imageUrl = "https://yandex.kz/images/search?pos=0&from=tabbar&img_url=https%3A%2F%2Fwww.ikiparagraf.com%2Finfo%2Fbilinmeyen.png&text=unknown+image&rpt=simage";
-            if (image != null) imageUrl = image.Path;
+            string imageUrl;
+            if (image != null && !string.IsNullOrEmpty(image.Path)) imageUrl = image.Path;
+            else imageUrl = "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg";
             <div class="service-el">
                 <a href="/services/@service.Id">
                     <img src="@imageUrl" class="img-fluid">

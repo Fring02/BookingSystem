@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Dtos;
 using Domain.Helpers;
+using Domain.Helpers.Exceptions;
 using Domain.Interfaces.Services.Booking;
 using Domain.Interfaces.Services.Users;
 using Domain.Models.Booking;
@@ -20,14 +21,12 @@ namespace API.Controllers
     {
         private readonly ILeisureServicesService _leisureService;
         private readonly ILeisureServicesCategoriesService _categoryService;
-        private readonly IOwnersService _ownersService;
         private readonly IMapper _mapper;
-        public LeisureServicesController(ILeisureServicesService leisureService, IMapper mapper, ILeisureServicesCategoriesService categoryService, IOwnersService ownersService)
+        public LeisureServicesController(ILeisureServicesService leisureService, IMapper mapper, ILeisureServicesCategoriesService categoryService)
         {
             _leisureService = leisureService;
             _mapper = mapper;
             _categoryService = categoryService;
-            _ownersService = ownersService;
         }
         [AllowAnonymous]
         [HttpGet]
@@ -80,31 +79,44 @@ namespace API.Controllers
                 var error = ModelState.Values.First().Errors.First();
                 return BadRequest(error.ErrorMessage);
             }
-            var category = await _categoryService.GetByIdAsync(dto.CategoryId);
-            if (category == null) return BadRequest("Such category doesn't exist.");
-            if (!await _ownersService.OwnerExists(dto.OwnerId)) return BadRequest("Such services owner doesn't exist");
-            if (await _leisureService.ServiceExistsAsync(dto.Name)) return BadRequest("Service already exists");
-            var model = _mapper.Map<LeisureService>(dto);
-            model = await _leisureService.CreateAsync(model);
-            if (model == null) return StatusCode(500, "Failed to create leisure service");
-            return Ok("Created new leisure service");
+            try
+            {
+                var model = _mapper.Map<LeisureService>(dto);
+                await _leisureService.CreateAsync(model);
+                return Ok("Created new leisure service");
+            } catch (EntityNotFoundException e)
+            {
+                return BadRequest(e.Message);
+            } catch (AlreadyPresentException e)
+            {
+                return BadRequest(e.Message);
+            } catch (Exception)
+            {
+                return StatusCode(500, "Failed to create leisure service");
+            }
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.OWNER + "," + Roles.USER)]
         public async Task<IActionResult> UpdateLeisureServiceAsync(LeisureServiceUpdateDto dto, Guid id)
         {
             var model = await _leisureService.GetByIdAsync(id);
             if (model == null) return BadRequest("Failed to find leisure service by id " + id);
             if (dto.Rating > 5) return BadRequest("Max rating is 5");
             UpdateService(model, dto);
-            if (Guid.Empty != dto.CategoryId)
+            try
             {
-                var category = await _categoryService.GetByIdAsync(dto.CategoryId);
-                if(category != null)
-                model.CategoryId = category.Id;
+                await _leisureService.UpdateAsync(model);
+                return Ok("Updated leisure service by id " + id);
+            } 
+            catch (EntityNotFoundException e)
+            {
+                return BadRequest(e.Message);
+            } 
+            catch (Exception)
+            {
+                return StatusCode(500, "Failed to update leisure service by id" + id);
             }
-            if (await _leisureService.UpdateAsync(model)) return Ok("Updated leisure service by id " + id);
-            return BadRequest("Failed to update leisure service by id" + id);
         }
 
         [HttpDelete("{id}")]
@@ -124,7 +136,12 @@ namespace API.Controllers
             if (!string.IsNullOrEmpty(dto.Website)) model.Website = dto.Website;
             if (!string.IsNullOrEmpty(dto.Description)) model.Description = dto.Description;
             if (!string.IsNullOrEmpty(dto.WorkingTime)) model.WorkingTime = dto.WorkingTime;
-            if (dto.Rating > 0) model.Rating = dto.Rating;
+            if (dto.CategoryId != default) model.CategoryId = dto.CategoryId;
+            if (dto.Rating > 0)
+            {
+                model.RatedCount++;
+                model.Rating = (model.Rating + dto.Rating) / model.RatedCount;
+            }
         }
     }
 }

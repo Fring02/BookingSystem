@@ -46,9 +46,10 @@
             {
                 var firstService = Model.Services.First();
                 var image = firstService.Images.FirstOrDefault();
-                string imageUrl = "https://yandex.kz/images/search?pos=0&from=tabbar&img_url=https%3A%2F%2Fwww.ikiparagraf.com%2Finfo%2Fbilinmeyen.png&text=unknown+image&rpt=simage";
-                if (image != null) imageUrl = image.Path;
-                <div class="carousel-item active">
+                string imageUrl;
+                if (image != null && !string.IsNullOrEmpty(image.Path)) imageUrl = image.Path;
+                else imageUrl = "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg";
+                 <div class="carousel active">
                     <img src="@imageUrl" class="d-block w-100" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <h3><a class="text-light" href="/services/@firstService.Id">@firstService.Name</a></h3>
@@ -67,8 +68,8 @@
                 @foreach (var service in Model.Services.Skip(1))
                 {
                     image = service.Images.FirstOrDefault();
-                    imageUrl = "https://yandex.kz/images/search?pos=0&from=tabbar&img_url=https%3A%2F%2Fwww.ikiparagraf.com%2Finfo%2Fbilinmeyen.png&text=unknown+image&rpt=simage";
-                    if (image != null) imageUrl = image.Path;
+                    if (image != null && !string.IsNullOrEmpty(image.Path)) imageUrl = image.Path;
+                    else imageUrl = "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg";
                     <div class="carousel-item">
                         <img src="@imageUrl" class="d-block w-100" alt="...">
                         <div class="carousel-caption d-none d-md-block">

@@ -28,7 +28,7 @@ namespace Infrastructure.Helpers
         {
             if (rating != default)
             {
-                _services = _services.Where(s => s.Rating == rating);
+                _services = _services.Where(s => Math.Round(s.Rating) == rating);
             }
             return this;
         }
