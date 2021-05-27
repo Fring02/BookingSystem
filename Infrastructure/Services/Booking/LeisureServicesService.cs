@@ -43,11 +43,6 @@ namespace Infrastructure.Services.Booking
 
         public async Task<bool> UpdateAsync(LeisureService model)
         {
-            var category = await _categoriesRepository.GetByIdAsync(model.CategoryId);
-            if (category == null)
-            {
-                throw new EntityNotFoundException("Category not found by id " + model.CategoryId);
-            }
             return await _repository.UpdateAsync(model).ConfigureAwait(false);
         }
 

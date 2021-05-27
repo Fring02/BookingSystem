@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories.Booking
         }
         public async Task<IEnumerable<ServiceImage>> GetByServiceIdAsync(Guid serviceId)
         {
-           return await _context.ServicesImages.AsNoTracking().Where(i => i.ServiceId == serviceId).Include(i => i.Service).ToListAsync().ConfigureAwait(false);
+           return await _context.ServicesImages.AsNoTracking().Where(i => i.ServiceId == serviceId).ToListAsync().ConfigureAwait(false);
         }
     }
 }
