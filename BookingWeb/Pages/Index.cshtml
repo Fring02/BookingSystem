@@ -1,0 +1,87 @@
+﻿@page
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Booking.Net platform for business owners">
+    <meta name="author" content="SeriousCoders">
+    <title>Booking system</title>
+    <link rel="shortcut icon" type="image/png" href="favicon.ico" />
+    <link href="~/css/general.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/index.css">
+</head>
+<body>
+    <div class="mainframe">
+        <div class="top-row">
+            <a asp-page="/Index"><img id="logo" src="~/booking.png" alt=""></a>
+
+            <div class="navigation">
+                <!--THIS MUST BE DELETED AFTER COMPLETION OF AUTHORIZATION/Registration logic-->
+                <a asp-page="Profile">TODELETE: Profile</a>
+                <a href="#feature-view">Our solutions</a>
+                <a href="#feedback-view">Contact us</a>
+                <a id="loginbtn" asp-page="/Login">Login</a>
+                <a id="btn" asp-area="" asp-page="/Register">Sign Up</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <img class="content-image" src="~/images/content1.png" alt="content">
+            <div class="text-info">
+                <h1 class="heading" id="topic">Booking.Net platform</h1>
+                <p>Manage booking requests and analyze your clients needs. Booking system developed for business management</p>
+                <a class="actbtn" asp-page="/Register">Try it now!</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="features" id="feature-view">
+        <h1 class="heading">Our solutions</h1>
+        <div class="cols">
+            <div class="col">
+                <h2>Mobile app</h2> <p>Booking.Net Mobile application allows your clients make reservations everywhere and everytime</p><br><br> <a class="actbtn" href="#">Download app</a>
+            </div>
+
+            <div class="col">
+                <h2>Web platform</h2> <p>Booking.Net is a platform where business owners can manage the booking requests</p>
+                <br>
+                <img src="~/booking.png" alt="logo">
+            </div>
+
+            <div class="col">
+                <h2>Booking analysis</h2> <p>Booking.Net platform provides administration panel to manage everything related to reservation system</p><br><br> <a class="actbtn" asp-page="/Register">Register your business</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="feedback" id="feedback-view">
+        <!--<a href='https://www.freepik.com/vectors/infographic'></a>-->
+        <div class="feedback-form">
+            <h2 class="heading">
+                Contact us</h2>
+                <span>Let us know what to improve!</span>
+                <form asp-page-handler="SendFeedback" class="fdbk-form" method="post">
+                    <input type="text" name="" value="" placeholder="Your Name" required>
+                    <input type="text" name="" value="" placeholder="Your Email" required>
+                    <input type="text" name="" value="" placeholder="Your message" required>
+                    <button type="submit" id="fdbtn" class="actbtn" name="button">Send feedback</button>
+                </form>
+        </div>
+        <img class="content-image" src="~/images/content2.png" alt="content">
+    </div>
+
+    <div class="footer">
+        <div>
+            Sultanbek Khassenov   Rakhat Toleu   Magauiya Mazhit
+        </div>
+        <br>
+        SeriousCoders &copy Booking.Net 2021
+    </div>
+</body>
+</html>
+

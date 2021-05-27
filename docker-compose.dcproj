@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>9b8da6bf-51dc-43f3-9115-ad14dc898b78</ProjectGuid>
+    <ProjectGuid>28c4e381-eaef-4eab-a1f6-fcc3d52d3495</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>booking.api</DockerServiceName>
