@@ -13,11 +13,34 @@ namespace BookingWeb.ApiCollection.Infrastructure
         {
             _factory = factory;
         }
-        public HttpClient Client { get => _factory.CreateClient(); }
+        public HttpClient GetHttpClient()
+        {
+            return _factory.CreateClient();
+        }
 
+
+        public virtual async Task<T> GetResponseAsync<T>(HttpRequestMessage request) where T : class
+        {
+            using var client = GetHttpClient();
+            using var response = await client.SendAsync(request);
+            T result = null;
+            try
+            {
+                response.EnsureSuccessStatusCode();
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<T>(GetFormatters());
+                }
+            }
+            catch
+            {
+                result = null;
+            }
+            return result;
+        }
         public virtual async Task<T> SendRequestAsync<T>(HttpRequestMessage request) where T : class
         {
-            using var client = Client;
+            using var client = GetHttpClient();
             var response = await client.SendAsync(request);
             T result = null;
             try
@@ -37,7 +60,7 @@ namespace BookingWeb.ApiCollection.Infrastructure
 
         public virtual async Task<string> GetResponseStringAsync(HttpRequestMessage request)
         {
-            using var client = Client;
+            using var client = GetHttpClient();
             var response = await client.SendAsync(request);
             try
             {
