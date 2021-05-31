@@ -26,17 +26,17 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ServiceImageDto>> GetServiceImagesAsync(Guid id)
+        public async Task<IEnumerable<ServiceImageViewDto>> GetServiceImagesAsync(Guid id)
         {
-            return _mapper.Map<IEnumerable<ServiceImageDto>>(await _imagesService.GetByServiceIdAsync(id));
+            return _mapper.Map<IEnumerable<ServiceImageViewDto>>(await _imagesService.GetByServiceIdAsync(id));
         }
 
         [HttpGet("{imageId}")]
-        public async Task<ServiceImageDto> GetServiceImageByIdAsync(Guid imageId)
+        public async Task<ServiceImageViewDto> GetServiceImageByIdAsync(Guid imageId)
         {
             var image = await _imagesService.GetByIdAsync(imageId);
             if (image == null) return null;
-            return _mapper.Map<ServiceImageDto>(image);
+            return _mapper.Map<ServiceImageViewDto>(image);
         }
 
         [HttpPost]
@@ -60,7 +60,7 @@ namespace API.Controllers
         }
         
         [HttpPut("{imageId}")]
-        public async Task<IActionResult> UpdateServiceImageDto(Guid imageId, ServiceImageDto dto)
+        public async Task<IActionResult> UpdateServiceImageDto(Guid imageId, ServiceImageViewDto dto)
         {
             var model = await _imagesService.GetByIdAsync(imageId);
             if (model == null) return BadRequest("Can't find image by id " + imageId);
@@ -78,7 +78,7 @@ namespace API.Controllers
             return StatusCode(500, "Failed to delete image by id " + imageId);
         }
 
-        private void UpdateImage(ServiceImage model, ServiceImageDto dto)
+        private void UpdateImage(ServiceImage model, ServiceImageViewDto dto)
         {
             if (dto.ServiceId != Guid.Empty) model.ServiceId = dto.ServiceId;
             if (!string.IsNullOrEmpty(dto.Path)) model.Path = dto.Path;

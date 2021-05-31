@@ -6,7 +6,6 @@ namespace Domain.Dtos
 {
     public class BookingRequestCreateDto
     {
-        public Guid Id { get; set; }
         [Required(ErrorMessage = "Enter service id")]
         public Guid ServiceId { get; set; }
         public DateTime LeftAt { get; set; } = DateTime.Now;

@@ -1,10 +1,11 @@
-﻿using Domain.Models.Users;
+﻿using Domain.Interfaces.Models;
+using Domain.Models.Users;
 using System;
 using System.Collections.Generic;
 
 namespace Domain.Models.Booking
 {
-    public class LeisureService
+    public class LeisureService : IEntity<Guid>
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

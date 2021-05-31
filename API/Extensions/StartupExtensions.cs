@@ -38,7 +38,7 @@ namespace API.Extensions
             services.AddScoped<IOwnersService, OwnersService>();
             services.AddScoped<IUserService, UsersService>();
             services.AddSingleton<IPasswordEncryptor, SHA512PasswordEncryptor>();
-            services.AddSingleton<NotificationService>();
+            services.AddSingleton<Notifier>();
             return services;
         }
 

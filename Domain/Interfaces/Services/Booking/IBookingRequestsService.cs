@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Interfaces.Repositories.Booking;
 using Domain.Models.Booking;
 
 namespace Domain.Interfaces.Services.Booking
 {
-    public interface IBookingRequestsService : IModelService<BookingRequest>
+    public interface IBookingRequestsService : IModelService<IBookingRequestsRepository, BookingRequest>
     {
         Task<IEnumerable<BookingRequest>> GetByServiceIdAsync(Guid serviceId);
         Task<IEnumerable<BookingRequest>> GetByUserIdAsync(Guid userId);

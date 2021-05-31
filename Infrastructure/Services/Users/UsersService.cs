@@ -13,35 +13,14 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class UsersService : IUserService
+    public class UsersService : BaseService<IUsersRepository, User>, IUserService
     {
-        private readonly IUsersRepository _userRepository;
-        private readonly NotificationService notificationService;
+        private readonly Notifier _notificationService;
         private readonly IPasswordEncryptor _encryptor;
-        public UsersService(IUsersRepository userRepository, NotificationService notificationService, IPasswordEncryptor encryptor)
+        public UsersService(IUsersRepository userRepository, Notifier notificationService, IPasswordEncryptor encryptor) : base(userRepository)
         {
-            _userRepository = userRepository;
-            this.notificationService = notificationService;
+            _notificationService = notificationService;
             _encryptor = encryptor;
-        }
-
-        public async Task<User> CreateAsync(User model)
-        {
-            return await _userRepository.CreateAsync(model).ConfigureAwait(false);
-        }
-
-        public async Task<bool> DeleteAsync(User model)
-        {
-            return await _userRepository.DeleteAsync(model).ConfigureAwait(false);
-        }
-        public async Task<IEnumerable<User>> GetAllAsync()
-        {
-            return await _userRepository.GetAllAsync().ConfigureAwait(false);
-        }
-
-        public async Task<User> GetByIdAsync(Guid id)
-        {
-            return await _userRepository.GetByIdAsync(id).ConfigureAwait(false);
         }
 
         public async Task<User> LoginAsync(string email, string password)
@@ -49,7 +28,7 @@ namespace Infrastructure.Services
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = await _userRepository.GetByEmailAsync(email).ConfigureAwait(false);
+            var user = await _repository.GetByEmailAsync(email).ConfigureAwait(false);
 
             // check if username exists
             if (user == null) return null;
@@ -67,22 +46,17 @@ namespace Infrastructure.Services
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
 
-            if (await _userRepository.UserExistsAsync(user.Email))
+            if (await _repository.UserExistsAsync(user.Email))
                 throw new AppException("Email \"" + user.Email + "\" is already taken");
 
             _encryptor.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-                await Task.WhenAll(notificationService.SendEmailAsync(user.Email, password), _userRepository.CreateAsync(user)).ConfigureAwait(false);
+            user.Role = Roles.USER;
+            await Task.WhenAll(_notificationService.SendEmailAsync(user.Email, password), _repository.CreateAsync(user)).ConfigureAwait(false);
             return user;
         }
-
-        public async Task<bool> UpdateAsync(User userParam)
-        {
-            return await _userRepository.UpdateAsync(userParam).ConfigureAwait(false);
-        }
-
 
         public async Task<bool> UpdateUserWithPasswordAsync(User userParam, string password = null)
         {
@@ -94,7 +68,7 @@ namespace Infrastructure.Services
             if (!string.IsNullOrWhiteSpace(userParam.Email) && userParam.Email != user.Email)
             {
                 // throw error if the new username is already taken
-                if ((await _userRepository.GetByEmailAsync(userParam.Email)) != null)
+                if ((await _repository.GetByEmailAsync(userParam.Email)) != null)
                     throw new AppException("Email " + userParam.Email + " is already taken");
 
                 user.Email = userParam.Email;
@@ -115,9 +89,8 @@ namespace Infrastructure.Services
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
             }
-            return await _userRepository.UpdateAsync(user).ConfigureAwait(false);
+            return await _repository.UpdateAsync(user).ConfigureAwait(false);
         }
-
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {

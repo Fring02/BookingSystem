@@ -1,4 +1,5 @@
-﻿using Domain.Models.Booking;
+﻿using Domain.Helpers;
+using Domain.Models.Booking;
 using Domain.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,7 +21,8 @@ namespace Infrastructure.Data
                 Firstname = "Sultanbek",
                 Lastname = "Hasenov",
                 MobilePhone = "+7(776)-166-70-60",
-                Password = "qwerty123"
+                Password = "qwerty123",
+                Role = Roles.ADMIN
             });
             base.OnModelCreating(modelBuilder);
         }

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Domain.Interfaces.Models;
+using System;
 
 namespace Domain.Models.Booking
 {
-    public class ServiceImage
+    public class ServiceImage : IEntity<Guid>
     {
         public Guid Id { get; set; }
         public Guid ServiceId { get; set; }

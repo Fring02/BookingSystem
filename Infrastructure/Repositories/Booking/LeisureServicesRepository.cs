@@ -45,7 +45,8 @@ namespace Infrastructure.Repositories.Booking
         public async Task<IEnumerable<LeisureService>> GetByFilterAsync(Guid categoryId = default, string workingTime = null, int rating = 0)
         {
             _builder = new FilterBuilder(_context.LeisureServices);
-            return await _builder.WithCategory(categoryId).WithRating(rating).WithWorkingTime(workingTime).Build();
+            var filteredServices = _builder.WithCategory(categoryId).WithRating(rating).WithWorkingTime(workingTime).Build();
+            return await filteredServices.AsNoTracking().Include(s => s.Images).Include(s => s.Category).ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> ServiceExistsAsync(string name)
@@ -58,17 +59,23 @@ namespace Infrastructure.Repositories.Booking
             return await _context.LeisureServices.AsNoTracking().Where(s => s.OwnerId == ownerId).Include(s => s.Images).Include(s => s.Category).ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<LeisureService>> GetByPopularity(int count)
+        public async Task<IEnumerable<LeisureService>> GetByPopularityAsync(int count)
         {
-            return await _context.LeisureServices.AsNoTracking().Include(s => s.Images).
-                OrderByDescending(s => s.RatedCount).
-                Take(count).
-                ToListAsync().ConfigureAwait(false);
+            var services = _context.LeisureServices.AsNoTracking().Include(s => s.Images).
+                OrderByDescending(s => s.RatedCount);
+            if (count > 0) return await services.Take(count).ToListAsync().ConfigureAwait(false);
+            else return await services.ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<LeisureService>> GetByName(string name)
+        public async Task<IEnumerable<LeisureService>> GetByNameAsync(string name)
         {
             return await _context.LeisureServices.AsNoTracking().Where(s => s.Name.Contains(name)).
+                Include(s => s.Images).Include(s => s.Category).ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<LeisureService>> GetByPageAsync(int page, int count)
+        {
+            return await _context.LeisureServices.AsNoTracking().Skip(page * count).Take(count).
                 Include(s => s.Images).Include(s => s.Category).ToListAsync().ConfigureAwait(false);
         }
     }

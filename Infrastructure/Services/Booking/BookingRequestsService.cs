@@ -9,44 +9,39 @@ using Domain.Models.Booking;
 
 namespace Infrastructure.Services.Booking
 {
-    public class BookingRequestsService : IBookingRequestsService
+    public class BookingRequestsService : BaseService<IBookingRequestsRepository, BookingRequest> ,IBookingRequestsService
     {
-        private readonly IBookingRequestsRepository _repository;
         private readonly ILeisureServicesRepository _servicesRepository;
-        private readonly IOwnersRepository _ownersRepository;
-        public BookingRequestsService(IBookingRequestsRepository repository, ILeisureServicesRepository servicesRepository, IOwnersRepository ownersRepository)
+        private readonly IUsersRepository _usersRepository;
+        public BookingRequestsService(IBookingRequestsRepository repository, 
+            ILeisureServicesRepository servicesRepository, 
+            IUsersRepository usersRepository) : base(repository)
         {
-            _repository = repository;
             _servicesRepository = servicesRepository;
-            _ownersRepository = ownersRepository;
+            _usersRepository = usersRepository;
         }
 
-        public async Task<BookingRequest> CreateAsync(BookingRequest model)
+        public override async Task<BookingRequest> CreateAsync(BookingRequest model)
         {
             if ((await _servicesRepository.GetByIdAsync(model.ServiceId)) == null) throw new EntityNotFoundException("Not found service by id " + model.ServiceId);
-            if((await _ownersRepository.GetByIdAsync(model.UserId)) == null) throw new EntityNotFoundException("Not found user by id " + model.UserId);
+            if((await _usersRepository.GetByIdAsync(model.UserId)) == null) throw new EntityNotFoundException("Not found user by id " + model.UserId);
             if (await _repository.HasRequestAsync(model)) throw new AlreadyPresentException("This request already exists");
             return await _repository.CreateAsync(model).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<BookingRequest>> GetAllAsync()
-        {
-            return await _repository.GetAllAsync().ConfigureAwait(false);
-        }
-
-        public async Task<BookingRequest> GetByIdAsync(Guid id)
+        public override async Task<BookingRequest> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty) return null;
             return await _repository.GetByIdAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<bool> UpdateAsync(BookingRequest model)
+        public override async Task<bool> UpdateAsync(BookingRequest model)
         {
             if (model.Id == Guid.Empty) return false;
             return await _repository.UpdateAsync(model).ConfigureAwait(false);
         }
 
-        public async Task<bool> DeleteAsync(BookingRequest model)
+        public override async Task<bool> DeleteAsync(BookingRequest model)
         {
             if (model.Id == Guid.Empty) return false;
             return await _repository.DeleteAsync(model).ConfigureAwait(false);
