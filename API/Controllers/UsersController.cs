@@ -116,7 +116,7 @@ namespace Booking.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateDto model)
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UserUpdateDto model)
         {
             // map model to entity and set id
             var user = _mapper.Map<User>(model);

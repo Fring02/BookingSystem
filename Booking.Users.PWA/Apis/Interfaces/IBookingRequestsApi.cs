@@ -8,7 +8,8 @@ namespace Booking.Users.PWA.Apis.Interfaces
 {
     public interface IBookingRequestsApi
     {
-        Task<bool> CreateBookingRequest(BookingRequestViewModel request, string token = default);
-        Task<bool> CheckBookingRequest(BookingRequestViewModel request, string token = default);
+        Task<bool> CreateBookingRequest(BookingRequestViewModel request, string token);
+        Task<bool> CheckBookingRequest(BookingRequestViewModel request, string token);
+        Task<bool> DeleteBookingRequest(Guid id, string token);
     }
 }

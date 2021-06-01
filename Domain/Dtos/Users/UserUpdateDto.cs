@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain.Dtos.Users
 {
-    public class UpdateDto
+    public class UserUpdateDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

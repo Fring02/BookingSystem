@@ -25,16 +25,20 @@ namespace API.Controllers
             _requestsService = requestsService;
             _mapper = mapper;
         }
-
         [HttpGet]
-        public async Task<IEnumerable<BookingRequestViewDto>> GetAllBookingRequestsAsync(Guid serviceId, Guid userId)
+        public async Task<IEnumerable<BookingRequestViewDto>> GetAllBookingRequestsAsync()
         {
-            if(serviceId != default)
-                return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetByServiceIdAsync(serviceId) ?? new List<BookingRequest>());
-            if(userId != default)
-                return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetByUserIdAsync(userId) ?? new List<BookingRequest>());
-
             return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetAllAsync() ?? new List<BookingRequest>());
+        }
+        [HttpGet("serviceId={serviceId}")]
+        public async Task<IEnumerable<BookingRequestViewDto>> GetBookingRequestsByServiceIdAsync(Guid serviceId)
+        {
+            return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetByServiceIdAsync(serviceId) ?? new List<BookingRequest>());
+        }
+        [HttpGet("userId={userId}")]
+        public async Task<IEnumerable<BookingRequestViewDto>> GetBookingRequestsByUserIdAsync(Guid userId)
+        {
+            return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetByUserIdAsync(userId) ?? new List<BookingRequest>());
         }
 
         [HttpGet("{id}")]
@@ -43,14 +47,10 @@ namespace API.Controllers
             var request = await _requestsService.GetByIdAsync(id);
             return (request != null) ? _mapper.Map<BookingRequestViewDto>(request) : null;
         }
-        [HttpGet("userId={userId}&serviceId={serviceId}")]
-        public async Task<IActionResult> CheckBookingRequest(Guid userId, Guid serviceId)
+        [HttpGet("check/userId={userId}&serviceId={serviceId}")]
+        public async Task<bool> CheckBookingRequest(Guid userId, Guid serviceId)
         {
-           if(await _requestsService.HasRequestAsync(new BookingRequest { UserId = userId, ServiceId = serviceId }))
-            {
-                return Ok("true");
-            }
-            return NotFound("false");
+           return await _requestsService.HasRequestAsync(new BookingRequest { UserId = userId, ServiceId = serviceId });
         }
         [HttpPost]
         public async Task<IActionResult> CreateBookingRequestAsync(BookingRequestCreateDto dto)
@@ -82,6 +82,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBookingRequestAsync(Guid id, BookingRequestUpdateDto dto)
         {
+            if (id == default) return BadRequest("Id for service is required");
             var model = await _requestsService.GetByIdAsync(id);
             if (model == null) return BadRequest("Can't find booking request for id " + id);
             if (dto.BookingTime != default) model.BookingTime = dto.BookingTime;

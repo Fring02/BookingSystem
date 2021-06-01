@@ -5,10 +5,9 @@ namespace Domain.Dtos
 {
     public class ServiceImageCreateDto
     {
-        [Required]
+        [Required(ErrorMessage = "Specify service id for image")]
         public Guid ServiceId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Specify path url for image")]
         public string Path { get; set; }
-        public LeisureServiceCreateDto Service { get; set; }
     }
 }

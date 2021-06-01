@@ -25,5 +25,17 @@ namespace Booking.Users.PWA.Controllers
             else return Redirect("/services/" + request.ServiceId + "?reqError=Failed to order service");
         }
 
+
+        public async Task<IActionResult> DeleteBookingRequestAsync(Guid id)
+        {
+            if(await _requestsApi.DeleteBookingRequest(id, HttpContext.Session.GetString("token")))
+            {
+                return RedirectToAction("ProfilePage", "Profile");
+            } else
+            {
+                return RedirectToAction("ProfilePage", "Profile", new { reqError = "Failed to delete request" });
+            }
+        }
+
     }
 }

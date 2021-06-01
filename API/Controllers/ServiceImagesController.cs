@@ -51,7 +51,7 @@ namespace API.Controllers
             model.ServiceId = id;
             try
             {
-                model = await _imagesService.CreateAsync(model);
+                await _imagesService.CreateAsync(model);
                 return Ok("Created image for service by id " + id);
             } catch
             {

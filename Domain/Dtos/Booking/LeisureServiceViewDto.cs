@@ -15,7 +15,7 @@ namespace Domain.Dtos
         public string Description { get; set; }
         public string WorkingTime { get; set; }
         public List<ServiceImageViewDto> Images { get; set; }
-        public DateTime BookingTime { get; set; } = DateTime.Now;
+        public DateTime BookingTime { get; set; }
         public Guid CategoryId { get; set; }
         public LeisureServiceCategoryViewDto Category { get; set; }
     }

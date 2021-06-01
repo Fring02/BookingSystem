@@ -13,7 +13,6 @@ namespace Domain.Dtos
         public int Rating { get; set; }
         public string Description { get; set; }
         public string WorkingTime { get; set; }
-        public DateTime BookingTime { get; set; }
         public Guid CategoryId { get; set; } = default;
     }
 }

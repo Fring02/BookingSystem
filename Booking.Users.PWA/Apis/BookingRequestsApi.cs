@@ -29,7 +29,7 @@ namespace Booking.Users.PWA.Apis
 
         public async Task<bool> CheckBookingRequest(BookingRequestViewModel request, string token = default)
         {
-            using var message = _builder.HttpMethod(HttpMethod.Get).AddToPath($"userId={request.UserId}&serviceId={request.ServiceId}").Headers(h =>
+            using var message = _builder.HttpMethod(HttpMethod.Get).AddToPath($"check/userId={request.UserId}&serviceId={request.ServiceId}").Headers(h =>
                 {
                     h.Add("Authorization", "Bearer " + token);
                 }).HttpMessage;
@@ -53,6 +53,20 @@ namespace Booking.Users.PWA.Apis
             }
         }
 
-
+        public async Task<bool> DeleteBookingRequest(Guid id, string token)
+        {
+            using var message = _builder.HttpMethod(HttpMethod.Delete).AddToPath(id.ToString()).Headers(h =>
+            {
+                h.Add("Authorization", "Bearer " + token);
+            }).HttpMessage;
+            try
+            {
+                return await GetResponseStringAsync(message) != null;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

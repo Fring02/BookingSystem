@@ -23,7 +23,7 @@ namespace Domain.Mapping
             CreateMap<LeisureServiceCategory, LeisureServiceCategoryViewDto>().ReverseMap();
             CreateMap<User, UserViewDto>().ReverseMap();
             CreateMap<RegisterDto, User>().ReverseMap();
-            CreateMap<UpdateDto, User>().ReverseMap();
+            CreateMap<UserUpdateDto, User>().ReverseMap();
         }
     }
 }

@@ -31,35 +31,37 @@ namespace Infrastructure.Services.Booking
 
         public override async Task<BookingRequest> GetByIdAsync(Guid id)
         {
-            if (id == Guid.Empty) return null;
+            if (id == default) return null;
             return await _repository.GetByIdAsync(id).ConfigureAwait(false);
         }
 
         public override async Task<bool> UpdateAsync(BookingRequest model)
         {
-            if (model.Id == Guid.Empty) return false;
+            if (model.Id == default) return false;
             return await _repository.UpdateAsync(model).ConfigureAwait(false);
         }
 
         public override async Task<bool> DeleteAsync(BookingRequest model)
         {
-            if (model.Id == Guid.Empty) return false;
+            if (model.Id == default) return false;
             return await _repository.DeleteAsync(model).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<BookingRequest>> GetByServiceIdAsync(Guid serviceId)
         {
-            if (serviceId == Guid.Empty) return null;
+            if (serviceId == default) return null;
             return await _repository.GetByServiceIdAsync(serviceId).ConfigureAwait(false);
         }
 
         public async Task<bool> HasRequestAsync(BookingRequest request)
         {
+            if (request.UserId == default || request.ServiceId == default) return false;
             return await _repository.HasRequestAsync(request).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<BookingRequest>> GetByUserIdAsync(Guid userId)
         {
+            if (userId == default) return null;
             return await _repository.GetByUserIdAsync(userId).ConfigureAwait(false);
         }
     }

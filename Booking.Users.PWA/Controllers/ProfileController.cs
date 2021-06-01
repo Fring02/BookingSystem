@@ -17,9 +17,10 @@ namespace Booking.Users.PWA.Controllers
             _usersApi = usersApi;
         }
         [HttpGet("/profile")]
-        public async Task<IActionResult> ProfilePageAsync()
+        public async Task<IActionResult> ProfilePageAsync(string reqError)
         {
             Guid id = Guid.Parse(HttpContext.Session.GetString("id"));
+            ViewBag.ReqError = reqError;
             string token = HttpContext.Session.GetString("token");
             var user = await _usersApi.GetUserByIdAsync(id, token);
             return View(user);

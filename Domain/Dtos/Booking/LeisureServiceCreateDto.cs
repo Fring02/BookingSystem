@@ -14,7 +14,6 @@ namespace Domain.Dtos
         [Required(ErrorMessage = "Enter leisure service description")]
         public string Description { get; set; }
         [Required(ErrorMessage = "Enter leisure service working time")]
-        //TODO(Write regex for working time format)
         [RegularExpression("^([01]?[0-9]|2[0-3]):[0-5][0-9]-([01]?[0-9]|2[0-3]):[0-5][0-9]$",
             ErrorMessage = "Enter working time in working time format: 00:00-23:59")]
         public string WorkingTime { get; set; }
