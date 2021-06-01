@@ -5,6 +5,6 @@ namespace BookingWeb.ApiCollection.Interfaces
 {
     public interface IUsersApi
     {
-        Task RegisterOwner(RegisterDTO registerForm);
+        Task<string> RegisterOwnerAsync(RegisterDTO registerForm);
     }
 }

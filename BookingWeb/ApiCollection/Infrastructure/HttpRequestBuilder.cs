@@ -5,13 +5,16 @@ using System.Net.Http.Headers;
 
 namespace BookingWeb.ApiCollection.Infrastructure
 {
-    public class HttpRequestBuilder : IDisposable
+    public class HttpRequestBuilder
     {
-        private readonly HttpRequestMessage _request;
+        private HttpRequestMessage _request;
         private string _baseAddress;
-        private readonly ApiBuilder _apiBuilder;
-        public HttpRequestBuilder(string uri) : this(new ApiBuilder(uri)) { }
-        public HttpRequestBuilder(ApiBuilder apiBuilder)
+        private readonly HttpUriBuilder _apiBuilder;
+        public HttpRequestBuilder(string uri) : this(new HttpUriBuilder(uri))
+        {
+
+        }
+        public HttpRequestBuilder(HttpUriBuilder apiBuilder)
         {
             _request = new HttpRequestMessage();
             _apiBuilder = apiBuilder;
@@ -39,13 +42,13 @@ namespace BookingWeb.ApiCollection.Infrastructure
         public HttpRequestBuilder AddToPath(string path)
         {
             _apiBuilder.AddToPath(path);
-            _request.RequestUri = _apiBuilder.GetUri();
+            _request.RequestUri = _apiBuilder.Uri;
             return this;
         }
         public HttpRequestBuilder SetPath(string path)
         {
             _apiBuilder.SetPath(path);
-            _request.RequestUri = _apiBuilder.GetUri();
+            _request.RequestUri = _apiBuilder.Uri;
             return this;
         }
         public HttpRequestBuilder Content(HttpContent content)
@@ -55,7 +58,7 @@ namespace BookingWeb.ApiCollection.Infrastructure
         }
         public HttpRequestBuilder RequestUri(Uri uri)
         {
-            _request.RequestUri = new ApiBuilder(uri.ToString()).GetUri();
+            _request.RequestUri = new HttpUriBuilder(uri.ToString()).Uri;
             return this;
         }
         public HttpRequestBuilder RequestUri(string uri)
@@ -70,28 +73,25 @@ namespace BookingWeb.ApiCollection.Infrastructure
         public HttpRequestBuilder Subdomain(string subdomain)
         {
             _apiBuilder.SetSubdomain(subdomain);
-            _request.RequestUri = _apiBuilder.GetUri();
+            _request.RequestUri = _apiBuilder.Uri;
             return this;
         }
         public HttpRequestBuilder AddQueryString(string name, string value)
         {
             _apiBuilder.AddQueryString(name, value);
-            _request.RequestUri = _apiBuilder.GetUri();
+            _request.RequestUri = _apiBuilder.Uri;
             return this;
         }
         public HttpRequestBuilder SetQueryString(string qs)
         {
             _apiBuilder.QueryString(qs);
-            _request.RequestUri = _apiBuilder.GetUri();
+            _request.RequestUri = _apiBuilder.Uri;
             return this;
         }
-        public HttpRequestMessage GetHttpMessage()
+        public HttpRequestMessage HttpMessage { get => _request; }
+        public HttpUriBuilder GetApiBuilder()
         {
-            return _request;
-        }
-        public ApiBuilder GetApiBuilder()
-        {
-            return new ApiBuilder(_request.RequestUri.ToString());
+            return new HttpUriBuilder(_request.RequestUri.ToString());
         }
 
         public void Dispose()

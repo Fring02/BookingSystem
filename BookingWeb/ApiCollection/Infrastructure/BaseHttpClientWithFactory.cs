@@ -1,24 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 
 namespace BookingWeb.ApiCollection.Infrastructure
 {
-    public abstract class BaseHttpClientWithFactory
+    public class BaseHttpClientFactory
     {
         private readonly IHttpClientFactory _factory;
         protected HttpRequestBuilder _builder;
-        public BaseHttpClientWithFactory(IHttpClientFactory factory)
+        public BaseHttpClientFactory(IHttpClientFactory factory)
         {
             _factory = factory;
         }
         public HttpClient Client { get => _factory.CreateClient(); }
 
-        public virtual async Task<T> SendRequestAsync<T>(HttpRequestMessage request) where T : class
+        public virtual async Task<T> GetResponseAsync<T>(HttpRequestMessage request) where T : class
         {
             using var client = Client;
-            var response = await client.SendAsync(request);
+            using var response = await client.SendAsync(request);
             T result = null;
             try
             {
@@ -28,9 +29,9 @@ namespace BookingWeb.ApiCollection.Infrastructure
                     return await response.Content.ReadAsAsync<T>(GetFormatters());
                 }
             }
-            catch
+            catch (Exception e)
             {
-                result = null;
+                throw new ApiException("Api error: " + e.Message);
             }
             return result;
         }
@@ -38,20 +39,15 @@ namespace BookingWeb.ApiCollection.Infrastructure
         public virtual async Task<string> GetResponseStringAsync(HttpRequestMessage request)
         {
             using var client = Client;
-            var response = await client.SendAsync(request);
+            using var response = await client.SendAsync(request);
             try
             {
-                response.EnsureSuccessStatusCode();
-                if (response.IsSuccessStatusCode)
-                {
-                    return await response.Content.ReadAsStringAsync();
-                }
+                return await response.Content.ReadAsStringAsync();
             }
             catch
             {
                 return null;
             }
-            return null;
         }
         protected virtual IEnumerable<MediaTypeFormatter> GetFormatters()
         {

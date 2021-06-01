@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using BookingWeb.ApiCollection.Interfaces;
 using BookingWeb.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -21,6 +23,8 @@ namespace BookingWeb.Pages
         [BindProperty]
         public RegisterDTO RegisterForm { get; set; }
 
+        [ViewData]
+        public string Message { get; set; }
         public void OnGet()
         {
         }
@@ -32,8 +36,26 @@ namespace BookingWeb.Pages
                 return Page();
             }
 
-            await _usersApi.RegisterOwner(RegisterForm);
-            return RedirectToPage("Profile");
+            string registerTokenResponse = await _usersApi.RegisterOwnerAsync(RegisterForm);
+
+            try
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var claims = handler.ReadJwtToken(registerTokenResponse).Claims;
+                string id = claims.First(claim => claim.Type == "nameid").Value;
+                if (!string.IsNullOrEmpty(id)) HttpContext.Session.SetString("id", id);
+                HttpContext.Session.SetString("token", registerTokenResponse);
+                return RedirectToPage("Confirmation");
+            }
+            catch
+            {
+                if (registerTokenResponse.Length < 50)
+                {
+                    Message = registerTokenResponse;
+                    return Page();
+                }
+                else throw;
+            }
         }
     }
 }

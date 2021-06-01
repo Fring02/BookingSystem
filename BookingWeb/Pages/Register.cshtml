@@ -9,26 +9,37 @@
 @{ ViewData["Title"] = "Registration";}
 
 <div id="right">
-    <div class="registerBox">
+    <div class="registerBox" id="signupForm">
         <form asp-page-handler="RegisterOwner" method="post" id="regform">
             <label asp-for="RegisterForm.Firstname" for="fname">First name</label>
-            <input asp-for="RegisterForm.Firstname" type="text" id="fname" placeholder="" value="" required>
+            <input asp-for="RegisterForm.Firstname" type="text" id="fname" placeholder="John" value="" required>
+            <span asp-validation-for="RegisterForm.Firstname" class="text-danger"></span>
+
 
             <label asp-for="RegisterForm.Lastname" for="lname">Last name</label>
-            <input asp-for="RegisterForm.Lastname" type="text" id="lname" placeholder="" value="" required>
+            <input asp-for="RegisterForm.Lastname" type="text" id="lname" placeholder="Doe" value="" required>
+            <span asp-validation-for="RegisterForm.Lastname" class="text-danger"></span>
 
             <label asp-for="RegisterForm.Email" for="email">Email <span class="text-muted">(Required)</span></label>
             <input asp-for="RegisterForm.Email" type="email" id="email" placeholder="you@example.com">
+            <span asp-validation-for="RegisterForm.Email" class="text-danger"></span>
 
-            <label asp-for="RegisterForm.Password" for="pass">Password</label>
-            <input asp-for="RegisterForm.Password" type="password" id="pass" placeholder="**********" required>
+            <label asp-for="RegisterForm.Password" for="password">Password</label>
+            <input asp-for="RegisterForm.Password" type="password" id="password" pattern="[a-zA-Z0-9]+" minlength="6" maxlength="15" placeholder="**********" required>
+            <span asp-validation-for="RegisterForm.Password" class="text-danger"></span>
 
             <label asp-for="RegisterForm.MobilePhone" for="mobile">Mobile Phone</label>
-            <input asp-for="RegisterForm.MobilePhone" type="text" id="mobile" placeholder="12345678899" required>
+            <input asp-for="RegisterForm.MobilePhone" type="text" id="mobile" placeholder="79998887654" required>
+            <span asp-validation-for="RegisterForm.MobilePhone" class="text-danger"></span>
 
             <hr class="mb-4">
             <button class="knopka" id="regBtn">Sign up</button>
             <a asp-page="/Login">Already created your account?</a>
         </form>
     </div>
+    @{ if (ViewData["Message"] != null)
+        {
+            <script>alert("@ViewData["Message"]");</script>
+        }
+    }
 </div>

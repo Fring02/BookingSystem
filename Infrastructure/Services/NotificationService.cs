@@ -19,7 +19,7 @@ namespace Infrastructure.Services
             _conf = conf.Value;
         }
 
-        public async Task SendEmailAsync(string toEmail)
+        public async Task SendEmailAsync(string toEmail, string password)
         {
             if (string.IsNullOrEmpty(toEmail)) throw new ArgumentException("Recipient message is null or empty");
             MimeMessage message = RegistrationMessage(toEmail);

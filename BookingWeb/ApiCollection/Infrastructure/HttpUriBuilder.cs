@@ -3,37 +3,37 @@ using System.Web;
 
 namespace BookingWeb.ApiCollection.Infrastructure
 {
-    public class ApiBuilder
+    public class HttpUriBuilder
     {
         private readonly string _fullUrl;
         private UriBuilder _builder;
-        public ApiBuilder(string url)
+        public HttpUriBuilder(string url)
         {
             _fullUrl = url;
             _builder = new UriBuilder(url);
         }
-        public Uri GetUri() => _builder.Uri;
-        public ApiBuilder Scheme(string scheme)
+        public Uri Uri => _builder.Uri;
+        public HttpUriBuilder Scheme(string scheme)
         {
             _builder.Scheme = scheme;
             return this;
         }
-        public ApiBuilder Host(string host)
+        public HttpUriBuilder Host(string host)
         {
             _builder.Host = host;
             return this;
         }
-        public ApiBuilder Port(int port)
+        public HttpUriBuilder Port(int port)
         {
             _builder.Port = port;
             return this;
         }
-        public ApiBuilder AddToPath(string path)
+        public HttpUriBuilder AddToPath(string path)
         {
             IncludePath(path);
             return this;
         }
-        public ApiBuilder SetPath(string path)
+        public HttpUriBuilder SetPath(string path)
         {
             _builder.Path = path;
             return this;
@@ -51,12 +51,12 @@ namespace BookingWeb.ApiCollection.Infrastructure
                 _builder.Path = newPath.Replace("//", "/");
             }
         }
-        public ApiBuilder Fragment(string fragment)
+        public HttpUriBuilder Fragment(string fragment)
         {
             _builder.Fragment = fragment;
             return this;
         }
-        public ApiBuilder SetSubdomain(string subdomain)
+        public HttpUriBuilder SetSubdomain(string subdomain)
         {
             _builder.Host = string.Concat(subdomain, ".", new Uri(_fullUrl).Host);
             return this;
@@ -66,7 +66,7 @@ namespace BookingWeb.ApiCollection.Infrastructure
             return _builder.Uri.HostNameType == UriHostNameType.Dns
             && _builder.Uri.Host.Split('.').Length > 2;
         }
-        public ApiBuilder AddQueryString(string name, string value)
+        public HttpUriBuilder AddQueryString(string name, string value)
         {
             var qsNv = HttpUtility.ParseQueryString(_builder.Query);
             qsNv[name] = string.IsNullOrEmpty(qsNv[name])
@@ -75,7 +75,7 @@ namespace BookingWeb.ApiCollection.Infrastructure
             _builder.Query = qsNv.ToString();
             return this;
         }
-        public ApiBuilder QueryString(string queryString)
+        public HttpUriBuilder QueryString(string queryString)
         {
             if (!string.IsNullOrEmpty(queryString))
             {
@@ -83,12 +83,12 @@ namespace BookingWeb.ApiCollection.Infrastructure
             }
             return this;
         }
-        public ApiBuilder UserName(string username)
+        public HttpUriBuilder UserName(string username)
         {
             _builder.UserName = username;
             return this;
         }
-        public ApiBuilder Password(string password)
+        public HttpUriBuilder Password(string password)
         {
             _builder.Password = password;
             return this;
