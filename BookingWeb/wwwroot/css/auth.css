@@ -16,7 +16,7 @@
     right: 0;
     top: 0;
     width: 50%;
-    font-size: 1.0em;
+    font-size: 0.9em;
 }
 
     #right > div.registerBox {
@@ -25,7 +25,6 @@
         left: 14vh;
         height: 100%;
         width: 60%;
-        font-size: 1em;
         display: flex;
         padding: 5vh;
         border: 2px outset #dce1de;
@@ -38,7 +37,6 @@
         left: 14vh;
         height: 30%;
         width: 60%;
-        font-size: 1em;
         display: flex;
         padding: 5vh;
         border: 2px outset #dce1de;
@@ -55,8 +53,13 @@ form > input {
 }
 
 form > label {
-    font-size: 1em;
+    font-size: 0.9em;
     color: #7363D6;
+}
+
+form > span.text-danger, span.msg{
+    font-size: 0.6em;
+    color: red;
 }
 
 #text {

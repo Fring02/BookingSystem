@@ -8,14 +8,15 @@ using BookingWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 
 namespace BookingWeb.Pages
 {
     public class RegisterModel : PageModel
     {
-        private readonly IUsersApi _usersApi;
+        private readonly IOwnersApi _usersApi;
 
-        public RegisterModel(IUsersApi usersApi)
+        public RegisterModel(IOwnersApi usersApi)
         {
             _usersApi = usersApi ?? throw new ArgumentNullException(nameof(usersApi));
         }
@@ -31,6 +32,7 @@ namespace BookingWeb.Pages
 
         public async Task<IActionResult> OnPostRegisterOwnerAsync()
         {
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -51,7 +53,6 @@ namespace BookingWeb.Pages
             {
                 if (registerTokenResponse.Length < 50)
                 {
-                    Message = registerTokenResponse;
                     return Page();
                 }
                 else throw;

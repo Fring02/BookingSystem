@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 
 namespace BookingWeb.ApiCollection.Interfaces
 {
-    public interface IUsersApi
+    public interface IOwnersApi
     {
         Task<string> RegisterOwnerAsync(RegisterDTO registerForm);
+        Task<string> LoginOwnerAsync(LoginDTO loginForm);
     }
 }

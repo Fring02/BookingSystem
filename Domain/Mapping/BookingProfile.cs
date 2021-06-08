@@ -24,6 +24,9 @@ namespace Domain.Mapping
             CreateMap<User, UserViewDto>().ReverseMap();
             CreateMap<RegisterDto, User>().ReverseMap();
             CreateMap<UpdateDto, User>().ReverseMap();
+            
+            CreateMap<RegisterDto, Owner>().ReverseMap();
+            CreateMap<LoginDto, Owner>().ReverseMap();
         }
     }
 }

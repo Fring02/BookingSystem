@@ -25,8 +25,12 @@
             <span asp-validation-for="RegisterForm.Email" class="text-danger"></span>
 
             <label asp-for="RegisterForm.Password" for="password">Password</label>
-            <input asp-for="RegisterForm.Password" type="password" id="password" pattern="[a-zA-Z0-9]+" minlength="6" maxlength="15" placeholder="**********" required>
+            <input asp-for="RegisterForm.Password" type="password" id="password" placeholder="**********" required>
             <span asp-validation-for="RegisterForm.Password" class="text-danger"></span>
+
+            <label for="repassword">Confirm Password</label>
+            <span class="msg"></span>
+            <input type="password" id="repassword" placeholder="repeat password" required>
 
             <label asp-for="RegisterForm.MobilePhone" for="mobile">Mobile Phone</label>
             <input asp-for="RegisterForm.MobilePhone" type="text" id="mobile" placeholder="79998887654" required>
@@ -37,9 +41,4 @@
             <a asp-page="/Login">Already created your account?</a>
         </form>
     </div>
-    @{ if (ViewData["Message"] != null)
-        {
-            <script>alert("@ViewData["Message"]");</script>
-        }
-    }
 </div>

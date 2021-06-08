@@ -1,7 +1,5 @@
 ﻿using Domain.Models.Users;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Services.Users
@@ -9,5 +7,8 @@ namespace Domain.Interfaces.Services.Users
     public interface IOwnersService : IModelService<Owner>
     {
         Task<bool> OwnerExists(Guid ownerId);
+        Task<Owner> LoginOwnerAsync(string email, string password);
+        Task<Owner> RegisterOwnerAsync(Owner owner, string password);
+        Task<bool> UpdateOwnerWithPasswordAsync(Owner ownerParam, string password = null);
     }
 }

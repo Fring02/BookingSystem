@@ -11,7 +11,7 @@ namespace Infrastructure.Data
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+/*        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Owner>().HasData(new Owner
             {
@@ -23,7 +23,7 @@ namespace Infrastructure.Data
                 Password = "qwerty123"
             });
             base.OnModelCreating(modelBuilder);
-        }
+        }*/
         public DbSet<LeisureService> LeisureServices { get; set; }
         public DbSet<LeisureServiceCategory> LeisureServiceCategories { get; set; }
         public DbSet<ServiceImage> ServicesImages { get; set; }

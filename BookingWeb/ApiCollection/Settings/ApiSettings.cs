@@ -10,7 +10,7 @@ namespace BookingWeb.ApiCollection.Settings
         public string BaseAddress { get; set; }
         public string ServicesPath { get; set; }
         public string CategoriesPath { get; set; }
-        public string UsersPath { get; set; }
+        public string OwnersPath { get; set; }
         public string RequestsPath { get; set; }
     }
 }

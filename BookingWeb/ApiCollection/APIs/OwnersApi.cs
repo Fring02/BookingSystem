@@ -13,14 +13,19 @@ using System.Threading.Tasks;
 
 namespace BookingWeb.ApiCollection.APIs
 {
-    public class UsersApi : BaseHttpClientFactory, IUsersApi
+    public class OwnersApi : BaseHttpClientFactory, IOwnersApi
     {
         private readonly ApiSettings _config;
-        public UsersApi(IHttpClientFactory factory, IOptions<ApiSettings> options) : base(factory)
+        public OwnersApi(IHttpClientFactory factory, IOptions<ApiSettings> options) : base(factory)
         {
             _config = options.Value;
             _builder = new HttpRequestBuilder(_config.BaseAddress);
-            _builder.AddToPath(_config.UsersPath);
+            _builder.AddToPath(_config.OwnersPath);
+        }
+
+        public Task<string> LoginOwnerAsync(LoginDTO loginForm)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<string> RegisterOwnerAsync(RegisterDTO registerDtoForm)
