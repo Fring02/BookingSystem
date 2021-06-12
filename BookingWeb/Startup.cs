@@ -1,14 +1,16 @@
 using BookingWeb.ApiCollection.APIs;
 using BookingWeb.ApiCollection.Interfaces;
 using BookingWeb.ApiCollection.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text;
 
 namespace BookingWeb
 {
@@ -48,9 +50,27 @@ namespace BookingWeb
             #region RazorPages configuration
             services.AddRazorPages(options =>
             {
-                options.Conventions.AuthorizePage("/Profile");
-                options.Conventions.AuthorizePage("/Service");
                 options.Conventions.AllowAnonymousToPage("/Index");
+            });
+            #endregion
+            #region Auth config
+            var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Secret").Value);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
             #endregion
         }
@@ -72,6 +92,8 @@ namespace BookingWeb
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

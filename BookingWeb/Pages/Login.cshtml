@@ -14,10 +14,13 @@
         <form asp-page-handler="LoginOwner" method="post" id="loginform">
 
             <label asp-for="LoginForm.Email" for="email">Email <span class="text-muted">(Required)</span></label>
+            <span class="text-danger">@ViewData["message"]</span>
             <input asp-for="LoginForm.Email" type="email" id="email" placeholder="you@example.com">
+            <span asp-validation-for="LoginForm.Email" class="text-danger"></span>
 
             <label asp-for="LoginForm.Password" for="pass">Password</label>
             <input asp-for="LoginForm.Password" type="password" id="pass" placeholder="**********" required>
+            <span asp-validation-for="LoginForm.Password" class="text-danger"></span>
 
             <hr class="mb-4">
             <button class="knopka" id="loginbtn">Sign in</button>

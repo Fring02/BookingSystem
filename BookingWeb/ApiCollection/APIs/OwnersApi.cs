@@ -23,9 +23,13 @@ namespace BookingWeb.ApiCollection.APIs
             _builder.AddToPath(_config.OwnersPath);
         }
 
-        public Task<string> LoginOwnerAsync(LoginDTO loginForm)
+        public async Task<string> LoginOwnerAsync(LoginDTO loginForm)
         {
-            throw new NotImplementedException();
+            using var message = _builder
+              .HttpMethod(HttpMethod.Post).AddToPath("/login").
+              Content(new StringContent(JsonConvert.SerializeObject(loginForm), Encoding.UTF8, "application/json"))
+              .HttpMessage;
+            return await GetResponseStringAsync(message);
         }
 
         public async Task<string> RegisterOwnerAsync(RegisterDTO registerDtoForm)

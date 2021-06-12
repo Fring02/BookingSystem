@@ -14,18 +14,16 @@ namespace BookingWeb.Pages
 {
     public class RegisterModel : PageModel
     {
-        private readonly IOwnersApi _usersApi;
+        private readonly IOwnersApi _ownersApi;
 
-        public RegisterModel(IOwnersApi usersApi)
+        public RegisterModel(IOwnersApi ownersApi)
         {
-            _usersApi = usersApi ?? throw new ArgumentNullException(nameof(usersApi));
+            _ownersApi = ownersApi ?? throw new ArgumentNullException(nameof(ownersApi));
         }
 
         [BindProperty]
         public RegisterDTO RegisterForm { get; set; }
 
-        [ViewData]
-        public string Message { get; set; }
         public void OnGet()
         {
         }
@@ -38,7 +36,7 @@ namespace BookingWeb.Pages
                 return Page();
             }
 
-            string registerTokenResponse = await _usersApi.RegisterOwnerAsync(RegisterForm);
+            string registerTokenResponse = await _ownersApi.RegisterOwnerAsync(RegisterForm);
 
             try
             {
