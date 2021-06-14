@@ -5,14 +5,13 @@ using Domain.Interfaces.Services.Users;
 using Infrastructure.Repositories.Booking;
 using Infrastructure.Repositories.Users;
 using Domain.Interfaces.Services;
-using Domain.Interfaces.Services.Booking;
 using Infrastructure.Repositories;
-using Infrastructure.Repositories.Booking;
 using Infrastructure.Services;
 using Infrastructure.Services.Booking;
 using Infrastructure.Services.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Helpers;
+using Infrastructure.Services.Utils;
 
 namespace API.Extensions
 {

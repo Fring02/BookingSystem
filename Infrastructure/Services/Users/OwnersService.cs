@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services.Users
 {
+
     public class OwnersService : BaseService<IOwnersRepository, Owner>, IOwnersService
     {
         public OwnersService(IOwnersRepository ownersRepository) : base(ownersRepository)

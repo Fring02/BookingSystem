@@ -4,6 +4,7 @@
     ViewData["Title"] = Model.Name;
     Layout = "_Layout";
 }
+
     <div class="bg-light">
         <div class="row p-5">
             <div class="col-md-8 service-info">
@@ -22,58 +23,61 @@
                         <span class="text-danger ml-2">@ViewBag.RatingError</span>
                     </li>
                     @if (accessor.HttpContext.Session.Keys.Any())
-            {
-                <li class="list-group-item">
-                    <a class="btn btn-outline-success" data-toggle="collapse" href="#editRatingCollapse" role="button" aria-expanded="false" aria-controls="editRatingCollapse">
-                        Put rating
-                    </a>
-                    <div class="collapse" id="editRatingCollapse">
-                        <form method="post" action="/services/@Model.Id" class="card card-body d-flex rating">
-                            <div class="form-group">
-                                <select name="rating" class="text-warning">
-                                    <option value="1">
-                                        <span>★</span>
-                                    </option>
+                    {
+                        <li class="list-group-item">
+                            <a class="btn btn-outline-success" data-toggle="collapse" href="#editRatingCollapse" role="button" aria-expanded="false" aria-controls="editRatingCollapse">
+                                Put rating
+                            </a>
+                            <div class="collapse" id="editRatingCollapse">
+                                <form method="post" action="/services/@Model.Id" class="card card-body d-flex rating">
+                                    <div class="form-group">
+                                        <select name="rating" class="text-warning">
+                                            <option value="1">
+                                                <span>★</span>
+                                            </option>
 
-                                    <option value="2">
-                                        <span>★</span>
-                                        <span>★</span>
-                                    </option>
+                                            <option value="2">
+                                                <span>★</span>
+                                                <span>★</span>
+                                            </option>
 
-                                    <option value="3">
-                                        <span>★</span>
-                                        <span>★</span>
-                                        <span>★</span>
-                                    </option>
+                                            <option value="3">
+                                                <span>★</span>
+                                                <span>★</span>
+                                                <span>★</span>
+                                            </option>
 
-                                    <option value="4">
-                                        <span>★</span>
-                                        <span>★</span>
-                                        <span>★</span>
-                                        <span>★</span>
-                                    </option>
+                                            <option value="4">
+                                                <span>★</span>
+                                                <span>★</span>
+                                                <span>★</span>
+                                                <span>★</span>
+                                            </option>
 
-                                    <option value="5">
-                                        <span>★</span>
-                                        <span>★</span>
-                                        <span>★</span>
-                                        <span>★</span>
-                                        <span>★</span>
-                                    </option>
-                                </select>
+                                            <option value="5">
+                                                <span>★</span>
+                                                <span>★</span>
+                                                <span>★</span>
+                                                <span>★</span>
+                                                <span>★</span>
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-outline-info">Submit</button>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-outline-info">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-            }
-                    
+                        </li>
+                    }
+
                 </ul>
                 <p class="lead mt-5">
                     @Model.Description
                 </p>
+                <div id='weathermap' style='width: 400px; height: 300px;'>
+
+                </div>
             </div>
             <div class="col-md-4 service-img">
                 <div id="service-images-carousel" class="carousel slide" data-ride="carousel">
@@ -125,3 +129,17 @@
             </div>
         </div>
     </div>
+    <script>
+    let lat = @Model.Latitude;
+    let lon = @Model.Longitude;
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZnJpbmcwMSIsImEiOiJja2x6MTFlcDkxdms0MnBtd216dDk0NXdhIn0.TfLkvef4PFGecp3Y823l0Q';
+    var map = new mapboxgl.Map({
+        container: 'weathermap',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [lat, lon],
+        zoom: 12
+    });
+    var marker1 = new mapboxgl.Marker()
+        .setLngLat([lat, lon])
+        .addTo(map);
+    </script>

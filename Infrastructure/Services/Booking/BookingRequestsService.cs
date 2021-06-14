@@ -26,7 +26,7 @@ namespace Infrastructure.Services.Booking
             if ((await _servicesRepository.GetByIdAsync(model.ServiceId)) == null) throw new EntityNotFoundException("Not found service by id " + model.ServiceId);
             if((await _usersRepository.GetByIdAsync(model.UserId)) == null) throw new EntityNotFoundException("Not found user by id " + model.UserId);
             if (await _repository.HasRequestAsync(model)) throw new AlreadyPresentException("This request already exists");
-            return await _repository.CreateAsync(model).ConfigureAwait(false);
+            return await _repository.CreateAsync(model);
         }
 
         public override async Task<BookingRequest> GetByIdAsync(Guid id)

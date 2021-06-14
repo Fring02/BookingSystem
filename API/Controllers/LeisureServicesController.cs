@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Domain.Dtos;
-using Domain.Helpers;
-using Domain.Helpers.Exceptions;
+using Domain.Core.Helpers;
+using Domain.Core.Helpers.Exceptions;
+using Domain.Core.Models.Booking;
+using Domain.Dtos.Booking;
 using Domain.Interfaces.Services.Booking;
-using Domain.Interfaces.Services.Users;
-using Domain.Models.Booking;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -81,8 +81,12 @@ namespace API.Controllers
             }
             try
             {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 var model = _mapper.Map<LeisureService>(dto);
                 await _leisureService.CreateAsync(model);
+                stopwatch.Stop();
+                Debug.WriteLine("Create service time elapsed: " + stopwatch.ElapsedMilliseconds + "ms");
                 return Ok("Created new leisure service");
             } catch (EntityNotFoundException e)
             {

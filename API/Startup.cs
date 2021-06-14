@@ -1,9 +1,5 @@
-using System;
 using System.Text;
-using System.Threading.Tasks;
 using API.Extensions;
-using Domain.Helpers;
-using Domain.Interfaces.Services;
 using Domain.Mapping;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Microsoft.IdentityModel.Tokens;
-using Infrastructure;
+using Domain.Core.Helpers;
 
 namespace API
 {

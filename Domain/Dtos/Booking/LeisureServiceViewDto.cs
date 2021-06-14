@@ -18,5 +18,7 @@ namespace Domain.Dtos
         public DateTime BookingTime { get; set; }
         public Guid CategoryId { get; set; }
         public LeisureServiceCategoryViewDto Category { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

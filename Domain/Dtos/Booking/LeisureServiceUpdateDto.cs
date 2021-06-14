@@ -14,5 +14,7 @@ namespace Domain.Dtos
         public string Description { get; set; }
         public string WorkingTime { get; set; }
         public Guid CategoryId { get; set; } = default;
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

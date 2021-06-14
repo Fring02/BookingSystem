@@ -8,16 +8,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.14" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.14" />
       <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.1" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain.Core\Domain.Core.csproj" />
+      <ProjectReference Include="..\Domain.Dtos\Domain.Dtos.csproj" />
+      <ProjectReference Include="..\Domain.Interfaces\Domain.Interfaces.csproj" />
+      <ProjectReference Include="..\Infrastructure.Data\Infrastructure.Data.csproj" />
+      <ProjectReference Include="..\Infrastructure.Services\Infrastructure.Services.csproj" />
     </ItemGroup>
 
     <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Domain.Dtos.Users;
-using Domain.Helpers;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +9,11 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Domain.Models.Users;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Domain.Core.Helpers;
+using Domain.Core.Models.Booking;
+using Domain.Core.Helpers.Exceptions;
 
 namespace Booking.API.Controllers
 {
@@ -35,37 +36,37 @@ namespace Booking.API.Controllers
             _appSettings = appSettings.Value;
         }
 
+
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto model)
+        public async Task<IActionResult> Login([FromBody] LoginUserDto model)
         {
-            var user = await _userService.LoginAsync(model.Email, model.Password);
+                var user = await _userService.LoginAsync(model.Email, model.Password);
+                if (user == null)
+                    return BadRequest("Email or password is incorrect");
 
-            if (user == null)
-                return BadRequest("Email or password is incorrect");
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+                var tokenDescriptor = new SecurityTokenDescriptor
                 {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Role, user.Role)
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
 
-            // return basic user info and authentication token
-            return  Ok(tokenString);
+                // return basic user info and authentication token
+                return Ok(tokenString);
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterDto model)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserDto model)
         {
             // map model to entity
             var user = _mapper.Map<User>(model);
@@ -97,6 +98,7 @@ namespace Booking.API.Controllers
                 // return error message if there was an exception
                 return BadRequest(ex.Message);
             }
+
         }
 
         [HttpGet]

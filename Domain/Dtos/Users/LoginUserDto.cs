@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Domain.Dtos.Users
 {
-    public class LoginDto
+    public class LoginUserDto
     {
         [Required]
         public string Email { get; set; }

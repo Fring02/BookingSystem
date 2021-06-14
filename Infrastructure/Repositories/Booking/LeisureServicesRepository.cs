@@ -61,10 +61,8 @@ namespace Infrastructure.Repositories.Booking
 
         public async Task<IEnumerable<LeisureService>> GetByPopularityAsync(int count)
         {
-            var services = _context.LeisureServices.AsNoTracking().Include(s => s.Images).
-                OrderByDescending(s => s.RatedCount);
-            if (count > 0) return await services.Take(count).ToListAsync().ConfigureAwait(false);
-            else return await services.ToListAsync().ConfigureAwait(false);
+            return await _context.LeisureServices.AsNoTracking().Include(s => s.Images).
+                OrderByDescending(s => s.RatedCount).Take(count).ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<LeisureService>> GetByNameAsync(string name)

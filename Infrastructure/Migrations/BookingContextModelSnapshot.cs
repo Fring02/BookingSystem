@@ -61,8 +61,14 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("Location")
                         .HasColumnType("text");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -158,7 +164,7 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("00f31f27-dd0d-4538-8dcd-fddddd76c68d"),
+                            Id = new Guid("81a80284-e72c-4a29-ace5-ece125e555ff"),
                             Email = "hasenovsultanbek@gmail.com",
                             Firstname = "Sultanbek",
                             Lastname = "Hasenov",

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Domain.Dtos;
-using Domain.Helpers;
-using Domain.Helpers.Exceptions;
+using Domain.Core.Helpers.Exceptions;
+using Domain.Core.Models.Booking;
+using Domain.Dtos.Booking;
 using Domain.Interfaces.Services.Booking;
-using Domain.Models.Booking;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.API.Controllers

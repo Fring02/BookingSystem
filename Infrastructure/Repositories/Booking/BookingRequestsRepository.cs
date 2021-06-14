@@ -24,7 +24,7 @@ namespace Infrastructure.Repositories.Booking
         }
         public async Task<IEnumerable<BookingRequest>> GetByServiceIdAsync(Guid serviceId)
         {
-            return await _context.BookingRequests.AsNoTracking().Include(r => r.Service).Where(r => r.ServiceId == serviceId).ToListAsync().ConfigureAwait(false);
+            return await _context.BookingRequests.AsNoTracking().Include(r => r.Service).ThenInclude(s => s.Category).Where(r => r.ServiceId == serviceId).ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> HasRequestAsync(BookingRequest request)
@@ -34,7 +34,7 @@ namespace Infrastructure.Repositories.Booking
 
         public async Task<IEnumerable<BookingRequest>> GetByUserIdAsync(Guid userId)
         {
-            return await _context.BookingRequests.AsNoTracking().Include(r => r.Service).Where(r => r.UserId == userId).ToListAsync().ConfigureAwait(false);
+            return await _context.BookingRequests.AsNoTracking().Include(r => r.Service).ThenInclude(s => s.Category).Where(r => r.UserId == userId).ToListAsync().ConfigureAwait(false);
         }
     }
 }

@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Domain.Dtos;
-using Domain.Helpers;
-using Domain.Helpers.Exceptions;
+using Domain.Core.Helpers;
+using Domain.Core.Helpers.Exceptions;
+using Domain.Core.Models.Booking;
+using Domain.Dtos.Booking;
 using Domain.Interfaces.Services.Booking;
-using Domain.Models.Booking;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
-    //[Authorize(Roles = Roles.USER)]
+    [Authorize(Roles = Roles.USER)]
     [Route("/api/v1/requests/")]
     public class BookingRequestsController : ControllerBase
     {
@@ -25,11 +25,13 @@ namespace API.Controllers
             _requestsService = requestsService;
             _mapper = mapper;
         }
+        [Authorize(Roles = Roles.ADMIN)]
         [HttpGet]
         public async Task<IEnumerable<BookingRequestViewDto>> GetAllBookingRequestsAsync()
         {
             return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetAllAsync() ?? new List<BookingRequest>());
         }
+        [Authorize(Roles = Roles.OWNER)]
         [HttpGet("serviceId={serviceId}")]
         public async Task<IEnumerable<BookingRequestViewDto>> GetBookingRequestsByServiceIdAsync(Guid serviceId)
         {

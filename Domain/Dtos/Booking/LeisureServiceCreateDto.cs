@@ -21,5 +21,9 @@ namespace Domain.Dtos
         public Guid CategoryId { get; set; }
         [Required(ErrorMessage = "Enter owner id")]
         public Guid OwnerId { get; set; }
+        [Required]
+        public double Latitude { get; set; }
+        [Required]
+        public double Longitude { get; set; }
     }
 }

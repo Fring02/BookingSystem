@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Domain.Models.Users
 {
-   public class Owner : IEntity<Guid>
+   public class Owner : IEntity<Guid>, IUser
     {
         public Guid Id { get; set; }
         public string Firstname { get; set; }
