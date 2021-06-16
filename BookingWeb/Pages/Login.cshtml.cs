@@ -44,6 +44,7 @@ namespace BookingWeb.Pages
                 string id = claims.First(claim => claim.Type == "nameid").Value;
                 if (!string.IsNullOrEmpty(id)) HttpContext.Session.SetString("id", id);
                 HttpContext.Session.SetString("token", loginTokenResponse);
+
                 return RedirectToPage("Profile");
             }
             catch

@@ -26,12 +26,13 @@ namespace BookingWeb.Pages
                 if (id != Guid.Empty)
                 {
                     string token = HttpContext.Session.GetString("token");
+                    
+                    //TODO: Delete before final release
                     Console.WriteLine(token);
                 }
             }
             else
             {
-                Console.WriteLine("Not authorized");
                 return RedirectToPage("Login");
             }
             

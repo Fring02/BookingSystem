@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Dtos.Owners;
 using Domain.Dtos.Users;
 using Domain.Helpers;
 using Domain.Interfaces.Services.Users;
@@ -94,6 +95,35 @@ namespace Booking.API.Controllers
             {
                 // return error message if there was an exception
                 return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(Guid id)
+        {
+            var owner = await _ownerService.GetByIdAsync(id);
+            var details = _mapper.Map<OwnerDetailDto>(owner);
+            return Ok(details);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateDto model)
+        {
+            // map model to entity and set id
+            var ownerModel = _mapper.Map<Owner>(model);
+            ownerModel.Id = id;
+
+            try
+            {
+                // update user 
+                await _ownerService.UpdateOwnerWithPasswordAsync(ownerModel, model.Password);
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

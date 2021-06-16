@@ -85,9 +85,48 @@ namespace Infrastructure.Services.Users
             return await _ownersRepository.UpdateAsync(model).ConfigureAwait(false);
         }
 
-        public Task<bool> UpdateOwnerWithPasswordAsync(Owner ownerParam, string password = null)
+        public async Task<bool> UpdateOwnerWithPasswordAsync(Owner ownerParam, string password = null)
         {
-            throw new NotImplementedException();
+            var ownerToUpdate = await GetByIdAsync(ownerParam.Id);
+            if (ownerToUpdate == null)
+                throw new AppException("User not found");
+
+            // update username if it has changed
+            if (!string.IsNullOrWhiteSpace(ownerParam.Email) && ownerParam.Email != ownerToUpdate.Email)
+            {
+                // throw error if the new username is already taken
+                if ((await _ownersRepository.GetOwnerByEmail(ownerParam.Email)) != null)
+                    throw new AppException("Email " + ownerParam.Email + " is already taken");
+
+                ownerToUpdate.Email = ownerParam.Email;
+            }
+            if (!string.IsNullOrWhiteSpace(ownerParam.MobilePhone)) ownerToUpdate.MobilePhone = ownerParam.MobilePhone;
+            // update owner properties if provided
+            if (!string.IsNullOrWhiteSpace(ownerParam.Firstname))
+                ownerToUpdate.Firstname = ownerParam.Firstname;
+
+            if (!string.IsNullOrWhiteSpace(ownerParam.Lastname))
+                ownerToUpdate.Lastname = ownerParam.Lastname;
+
+            // update password if provided
+            if (!string.IsNullOrWhiteSpace(password))
+            {
+                CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
+                ownerToUpdate.PasswordHash = passwordHash;
+                ownerToUpdate.PasswordSalt = passwordSalt;
+            }
+            return await _ownersRepository.UpdateAsync(ownerToUpdate).ConfigureAwait(false);
+        }
+
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+
+            using var hmac = new System.Security.Cryptography.HMACSHA512();
+            passwordSalt = hmac.Key;
+            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         }
     }
 }
