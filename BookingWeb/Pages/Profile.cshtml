@@ -1,27 +1,36 @@
 ﻿@page
 
-@{
-    Layout = "_AdminkaLayout";
-}
+@{ Layout = "_AdminkaLayout"; }
 
- 
+
 @model BookingWeb.Pages.ProfileModel
 @{ ViewData["Title"] = "Profile";}
 
-@section stylesheets{
-    <link rel="stylesheet" href="~/css/profile.css">
-}
+<div class="home-intro h-100 d-flex flex-column justify-content-end">
 
-<div id="header-image">
-</div>
+    <div class="container h-75">
 
-<div class="col-md-8 offset-md-2" id="profile-form-box">
-    <div id="general-info">
-        <h4 class="text-center">Profile Details</h4>
-        <br><br>
-        @Model.ownerProfileModel.Firstname
-        @Model.ownerProfileModel.Lastname
-        @Model.ownerProfileModel.Email
-        @Model.ownerProfileModel.MobilePhone
+        <div class="row h-100">
+
+            <div class="col-6 d-flex flex-column justify-content-start">
+
+                <div class="col-12">
+                    <h1 class="text-primary"><i class="fa fa-user fx-4" aria-hidden="true"></i> Profile details</h1>
+                </div>
+
+                <div class="col-8">
+
+                    <h6>First name: @Model.ownerProfileModel.Firstname</h6>
+                    <h6>Last name: @Model.ownerProfileModel.Lastname</h6>
+                    <h6>Email: @Model.ownerProfileModel.Email</h6>
+                    <h6>Mobile phone: @Model.ownerProfileModel.MobilePhone</h6>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
 </div>

@@ -34,27 +34,21 @@ namespace BookingWeb.Pages
 
                     //TODO: Delete before final release
                     ownerProfileModel = await _ownersApi.GetOwnerByIdAsync(id, token);
+
+                    HttpContext.Session.SetString("user", ownerProfileModel.Lastname + " " + ownerProfileModel.Firstname);
+
+                    //This is for saving user details to show on other pages
+                    ViewData["user"] = HttpContext.Session.GetString("user");
                 }
             }
             else
             {
                 return RedirectToPage("Login");
             }
-            
+
             return Page();
         }
 
-        public class PasswordSet
-        {
-            public string OldPassword { get; set; }
-            public string NewPassword { get; set; }
-        }
-
-        public IActionResult OnGetLogout()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToPage("Index");
-        }
 
     }
 }

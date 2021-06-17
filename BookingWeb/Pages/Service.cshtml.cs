@@ -27,6 +27,9 @@ namespace BookingWeb.Pages
 
         public async Task<IActionResult> OnGetAsync(string category = null)
         {
+            //This is for saving user details to show on other pages
+            ViewData["user"] = HttpContext.Session.GetString("user");
+
             IEnumerable<LeisureServiceElementViewModel> services;
             if (!string.IsNullOrEmpty(category)) services = await _servicesApi.GetFilteredServices(category);
             else services = await _servicesApi.GetAllServices();
@@ -46,7 +49,6 @@ namespace BookingWeb.Pages
             {
 
             };
-            await _servicesApi.
             return Page();
         }
     }

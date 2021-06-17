@@ -8,11 +8,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BookingWeb.Pages
 {
-    public class BookingRequestsModel : PageModel
+    public class DashboardModel : PageModel
     {
         public void OnGet()
         {
-            //This is for saving user details to show on other pages
             ViewData["user"] = HttpContext.Session.GetString("user");
         }
     }

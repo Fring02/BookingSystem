@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BookingWeb.Pages
 {
-    public class BookingRequestsModel : PageModel
+    public class ServiceCreateModel : PageModel
     {
         public void OnGet()
         {
