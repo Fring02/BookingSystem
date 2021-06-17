@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookingWeb.ApiCollection.Interfaces;
 using BookingWeb.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -20,17 +21,32 @@ namespace BookingWeb.Pages
             _categoriesApi = categoriesApi;
         }
 
+        [BindProperty]
+        public ServicesSectionViewModel serviceModel { get; set; }
+        public LeisureServiceViewModel viewModel { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string category = null)
         {
             IEnumerable<LeisureServiceElementViewModel> services;
             if (!string.IsNullOrEmpty(category)) services = await _servicesApi.GetFilteredServices(category);
             else services = await _servicesApi.GetAllServices();
             var categories = await _categoriesApi.GetAllCategories();
-            var service = new ServicesSectionViewModel
+            serviceModel = new ServicesSectionViewModel
             {
                 Services = services,
                 Categories = categories
             };
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostCreateAsync()
+        {
+            string userId = HttpContext.Session.GetString("userId");
+            var viewModel = new LeisureServiceViewModel
+            {
+
+            };
+            await _servicesApi.
             return Page();
         }
     }

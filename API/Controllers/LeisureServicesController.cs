@@ -81,12 +81,8 @@ namespace Booking.API.Controllers
             }
             try
             {
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
                 var model = _mapper.Map<LeisureService>(dto);
                 await _leisureService.CreateAsync(model);
-                stopwatch.Stop();
-                Debug.WriteLine("Create service time elapsed: " + stopwatch.ElapsedMilliseconds + "ms");
                 return Ok("Created new leisure service");
             } catch (EntityNotFoundException e)
             {
