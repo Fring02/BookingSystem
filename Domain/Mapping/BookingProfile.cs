@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Dtos;
+using Domain.Dtos.Owners;
 using Domain.Dtos.Users;
 using Domain.Models.Booking;
 using Domain.Models.Users;
@@ -24,6 +25,11 @@ namespace Domain.Mapping
             CreateMap<User, UserViewDto>().ReverseMap();
             CreateMap<RegisterDto, User>().ReverseMap();
             CreateMap<UpdateDto, User>().ReverseMap();
+            
+            CreateMap<RegisterDto, Owner>().ReverseMap();
+            CreateMap<LoginDto, Owner>().ReverseMap();
+            CreateMap<OwnerDetailDto, Owner>().ReverseMap();
+            CreateMap<UpdateDto, Owner>().ReverseMap();
         }
     }
 }

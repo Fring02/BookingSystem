@@ -1,0 +1,27 @@
+﻿@page
+
+@{
+    Layout = "_AdminkaLayout";
+}
+
+ 
+@model BookingWeb.Pages.ProfileModel
+@{ ViewData["Title"] = "Profile";}
+
+@section stylesheets{
+    <link rel="stylesheet" href="~/css/profile.css">
+}
+
+<div id="header-image">
+</div>
+
+<div class="col-md-8 offset-md-2" id="profile-form-box">
+    <div id="general-info">
+        <h4 class="text-center">Profile Details</h4>
+        <br><br>
+        @Model.ownerProfileModel.Firstname
+        @Model.ownerProfileModel.Lastname
+        @Model.ownerProfileModel.Email
+        @Model.ownerProfileModel.MobilePhone
+    </div>
+</div>

@@ -106,6 +106,15 @@ namespace API.Controllers
             UpdateService(model, dto);
             try
             {
+                if(dto.CategoryId != default)
+                {
+                    var category = await _categoryService.GetByIdAsync(dto.CategoryId);
+                    if (category == null)
+                    {
+                        return BadRequest("Category not found for id " + dto.CategoryId);
+                    }
+                    model.CategoryId = dto.CategoryId;
+                }
                 await _leisureService.UpdateAsync(model);
                 return Ok("Updated leisure service by id " + id);
             } 
@@ -136,7 +145,6 @@ namespace API.Controllers
             if (!string.IsNullOrEmpty(dto.Website)) model.Website = dto.Website;
             if (!string.IsNullOrEmpty(dto.Description)) model.Description = dto.Description;
             if (!string.IsNullOrEmpty(dto.WorkingTime)) model.WorkingTime = dto.WorkingTime;
-            if (dto.CategoryId != default) model.CategoryId = dto.CategoryId;
             if (dto.Rating > 0)
             {
                 model.RatedCount++;
