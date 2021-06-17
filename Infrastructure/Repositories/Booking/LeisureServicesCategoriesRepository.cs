@@ -14,10 +14,6 @@ namespace Infrastructure.Repositories.Booking
         public LeisureServicesCategoriesRepository(BookingContext context) : base(context)
         {
         }
-        public override async Task<IEnumerable<LeisureServiceCategory>> GetAllAsync()
-        {
-            return await _context.LeisureServiceCategories.AsNoTracking().ToListAsync().ConfigureAwait(false);
-        }
         public override async Task<LeisureServiceCategory> GetByIdAsync(Guid id)
         {
             return await _context.LeisureServiceCategories.AsNoTracking().Include(c => c.Services).FirstOrDefaultAsync(c => c.Id == id).ConfigureAwait(false);

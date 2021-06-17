@@ -3,15 +3,17 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    partial class BookingContextModelSnapshot : ModelSnapshot
+    [Migration("20210531120724_ChangeRoleForUserOwner")]
+    partial class ChangeRoleForUserOwner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,15 +147,27 @@ namespace Infrastructure.Migrations
                     b.Property<string>("MobilePhone")
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("bytea");
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
 
-                    b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("bytea");
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("LeisureServicesOwners");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00f31f27-dd0d-4538-8dcd-fddddd76c68d"),
+                            Email = "hasenovsultanbek@gmail.com",
+                            Firstname = "Sultanbek",
+                            Lastname = "Hasenov",
+                            MobilePhone = "+7(776)-166-70-60",
+                            Password = "qwerty123",
+                            Role = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.Users.User", b =>

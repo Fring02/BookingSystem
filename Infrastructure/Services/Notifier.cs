@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class NotificationService
+    public class Notifier
     {
         private readonly EmailConfiguration _conf;
 
-        public NotificationService(IOptions<EmailConfiguration> conf)
+        public Notifier(IOptions<EmailConfiguration> conf)
         {
             _conf = conf.Value;
         }

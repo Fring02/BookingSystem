@@ -1,4 +1,5 @@
 ﻿using Domain.Helpers;
+using Domain.Interfaces.Models;
 using Domain.Models.Booking;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace Domain.Models.Users
 {
-   public class Owner
+   public class Owner : IEntity<Guid>
     {
         public Guid Id { get; set; }
         public string Firstname { get; set; }

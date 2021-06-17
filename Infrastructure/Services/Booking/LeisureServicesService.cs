@@ -9,20 +9,18 @@ using Domain.Models.Booking;
 
 namespace Infrastructure.Services.Booking
 {
-    public class LeisureServicesService : ILeisureServicesService
+    public class LeisureServicesService : BaseService<ILeisureServicesRepository, LeisureService>, ILeisureServicesService
     {
-        private readonly ILeisureServicesRepository _repository;
         private readonly ILeisureServicesCategoriesRepository _categoriesRepository;
         private readonly IOwnersRepository _ownersRepository;
-        public LeisureServicesService(ILeisureServicesRepository repository, ILeisureServicesCategoriesRepository categoriesRepository, 
-            IOwnersRepository ownersRepository)
+        public LeisureServicesService(ILeisureServicesRepository repository, ILeisureServicesCategoriesRepository categoriesRepository,
+            IOwnersRepository ownersRepository) : base(repository)
         {
-            _repository = repository;
             _categoriesRepository = categoriesRepository;
             _ownersRepository = ownersRepository;
         }
 
-        public async Task<LeisureService> CreateAsync(LeisureService model)
+        public override async Task<LeisureService> CreateAsync(LeisureService model)
         {
             var category = await _categoriesRepository.GetByIdAsync(model.CategoryId).ConfigureAwait(false);
             if (category == null) throw new EntityNotFoundException("Such category does not exist");
@@ -30,27 +28,10 @@ namespace Infrastructure.Services.Booking
             if (await _repository.ServiceExistsAsync(model.Name).ConfigureAwait(false)) throw new AlreadyPresentException("Service already exists");
             return await _repository.CreateAsync(model).ConfigureAwait(false);
         }
-
-        public async Task<IEnumerable<LeisureService>> GetAllAsync()
-        {
-            return await _repository.GetAllAsync().ConfigureAwait(false);
-        }
-
-        public async Task<LeisureService> GetByIdAsync(Guid id)
-        {
-            return await _repository.GetByIdAsync(id).ConfigureAwait(false);
-        }
-
-        public async Task<bool> UpdateAsync(LeisureService model)
+        public override async Task<bool> UpdateAsync(LeisureService model)
         {
             return await _repository.UpdateAsync(model).ConfigureAwait(false);
         }
-
-        public async Task<bool> DeleteAsync(LeisureService model)
-        {
-            return await _repository.DeleteAsync(model).ConfigureAwait(false);
-        }
-
 
         public async Task<IEnumerable<LeisureService>> GetByCategoryIdAsync(Guid categoryId)
         {
@@ -81,13 +62,17 @@ namespace Infrastructure.Services.Booking
 
         public async Task<IEnumerable<LeisureService>> GetByPopularity(int count)
         {
-            if (count <= 0) return null;
-            return await _repository.GetByPopularity(count).ConfigureAwait(false);
+            return await _repository.GetByPopularityAsync(count).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<LeisureService>> GetByName(string name)
         {
-            return await _repository.GetByName(name).ConfigureAwait(false);
+            return await _repository.GetByNameAsync(name).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<LeisureService>> GetByPageAsync(int page, int count)
+        {
+            return await _repository.GetByPageAsync(page, count).ConfigureAwait(false);
         }
     }
 }

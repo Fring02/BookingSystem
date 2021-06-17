@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services.Users
 {
-    public class OwnersService : IOwnersService
+    public class OwnersService : BaseService<IOwnersRepository, Owner>, IOwnersService
     {
         private readonly IOwnersRepository _ownersRepository;
         private readonly IPasswordEncryptor _encryptor;
@@ -20,15 +20,10 @@ namespace Infrastructure.Services.Users
             _ownersRepository = ownersRepository;
             _encryptor = encryptor;
         }
-
-        public async Task<Owner> CreateAsync(Owner model)
+        public override Task<Owner> CreateAsync(Owner model)
         {
-            return await _ownersRepository.CreateAsync(model).ConfigureAwait(false);
-        }
-
-        public async Task<bool> DeleteAsync(Owner model)
-        {
-            return await _ownersRepository.DeleteAsync(model).ConfigureAwait(false);
+            model.Role = Roles.OWNER;
+            return base.CreateAsync(model);
         }
 
         public async Task<IEnumerable<Owner>> GetAllAsync()

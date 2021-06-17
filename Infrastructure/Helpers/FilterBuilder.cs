@@ -41,9 +41,9 @@ namespace Infrastructure.Helpers
             return this;
         }
 
-        public async Task<IEnumerable<LeisureService>> Build()
+        public IQueryable<LeisureService> Build()
         {
-            return await _services.AsNoTracking().Include(s => s.Images).Include(s => s.Category).ToListAsync().ConfigureAwait(false);
+            return _services;
         }
     }
 }

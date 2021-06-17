@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Domain.Interfaces.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Services
 {
-    public interface IModelService<T> where T : class
+    public interface IModelService<TRepository, T> where T : class where TRepository : IModelRepository<T>
     {
         Task<T> CreateAsync(T model);
         Task<IEnumerable<T>> GetAllAsync();

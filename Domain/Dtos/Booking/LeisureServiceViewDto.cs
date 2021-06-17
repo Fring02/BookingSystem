@@ -14,7 +14,7 @@ namespace Domain.Dtos
         public int RatedCount { get; set; }
         public string Description { get; set; }
         public string WorkingTime { get; set; }
-        public List<ServiceImageDto> Images { get; set; }
+        public List<ServiceImageViewDto> Images { get; set; }
         public DateTime BookingTime { get; set; } = DateTime.Now;
         public Guid CategoryId { get; set; }
         public LeisureServiceCategoryViewDto Category { get; set; }

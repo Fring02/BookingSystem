@@ -9,47 +9,27 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services.Booking
 {
-    public class LeisureServicesCategoriesService : ILeisureServicesCategoriesService
+    public class LeisureServicesCategoriesService : BaseService<ILeisureServicesCategoriesRepository, LeisureServiceCategory>,
+        ILeisureServicesCategoriesService
     {
-        private readonly ILeisureServicesCategoriesRepository _categoryRepository;
 
-        public LeisureServicesCategoriesService(ILeisureServicesCategoriesRepository categoryRepository)
+        public LeisureServicesCategoriesService(ILeisureServicesCategoriesRepository categoryRepository) : base(categoryRepository)
         {
-            _categoryRepository = categoryRepository;
         }
 
         public async Task<LeisureServiceCategory> GetByNameAsync(string categoryName)
         {
-            return await _categoryRepository.GetByName(categoryName).ConfigureAwait(false);
+            return await _repository.GetByName(categoryName).ConfigureAwait(false);
         }
 
-        public async Task<LeisureServiceCategory> CreateAsync(LeisureServiceCategory model)
+        public override async Task<LeisureServiceCategory> CreateAsync(LeisureServiceCategory model)
         {
-            if((await _categoryRepository.GetByName(model.Name)) != null)
+            if((await _repository.GetByName(model.Name)) != null)
             {
                 throw new AlreadyPresentException("This category already exists");
             }
-            return await _categoryRepository.CreateAsync(model).ConfigureAwait(false);
+            return await _repository.CreateAsync(model).ConfigureAwait(false);
         }
 
-        public async Task<bool> DeleteAsync(LeisureServiceCategory model)
-        {
-            return await _categoryRepository.DeleteAsync(model).ConfigureAwait(false);
-        }
-
-        public async Task<IEnumerable<LeisureServiceCategory>> GetAllAsync()
-        {
-            return await _categoryRepository.GetAllAsync().ConfigureAwait(false);
-        }
-
-        public async Task<LeisureServiceCategory> GetByIdAsync(Guid id)
-        {
-            return await _categoryRepository.GetByIdAsync(id).ConfigureAwait(false);
-        }
-
-        public async Task<bool> UpdateAsync(LeisureServiceCategory model)
-        {
-            return await _categoryRepository.UpdateAsync(model).ConfigureAwait(false);
-        }
     }
 }

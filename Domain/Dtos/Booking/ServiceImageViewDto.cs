@@ -2,7 +2,7 @@
 
 namespace Domain.Dtos
 {
-    public class ServiceImageDto
+    public class ServiceImageViewDto
     {
         public Guid Id { get; set; }
         public Guid ServiceId { get; set; }

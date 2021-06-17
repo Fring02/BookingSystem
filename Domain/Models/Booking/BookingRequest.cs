@@ -1,9 +1,10 @@
-﻿using Domain.Models.Users;
+﻿using Domain.Interfaces.Models;
+using Domain.Models.Users;
 using System;
 
 namespace Domain.Models.Booking
 {
-    public class BookingRequest
+    public class BookingRequest : IEntity<Guid>
     {
         public Guid Id { get; set; }
         public Guid ServiceId { get; set; }
