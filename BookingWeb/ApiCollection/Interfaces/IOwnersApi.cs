@@ -1,4 +1,5 @@
 ﻿using BookingWeb.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace BookingWeb.ApiCollection.Interfaces
@@ -7,5 +8,6 @@ namespace BookingWeb.ApiCollection.Interfaces
     {
         Task<string> RegisterOwnerAsync(RegisterDTO registerForm);
         Task<string> LoginOwnerAsync(LoginDTO loginForm);
+        Task<OwnerProfileModel> GetOwnerByIdAsync(Guid id, string token = default);
     }
 }

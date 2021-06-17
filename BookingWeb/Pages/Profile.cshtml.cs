@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookingWeb.ApiCollection.Interfaces;
 using BookingWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,17 @@ namespace BookingWeb.Pages
 {
     public class ProfileModel : PageModel
     {
+        private readonly IOwnersApi _ownersApi;
+
+        public ProfileModel(IOwnersApi ownersApi)
+        {
+            _ownersApi = ownersApi;
+        }
 
         [BindProperty]
-        public RegisterDTO RegisterForm { get; set; }
+        public OwnerProfileModel ownerProfileModel { get; set; }
 
-        public PasswordSet PasswordDTO { get; set; }
-
-        public IActionResult OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString("id")))
             {
@@ -26,9 +31,9 @@ namespace BookingWeb.Pages
                 if (id != Guid.Empty)
                 {
                     string token = HttpContext.Session.GetString("token");
-                    
+
                     //TODO: Delete before final release
-                    Console.WriteLine(token);
+                    ownerProfileModel = await _ownersApi.GetOwnerByIdAsync(id, token);
                 }
             }
             else

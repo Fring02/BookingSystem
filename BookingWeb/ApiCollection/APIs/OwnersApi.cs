@@ -2,6 +2,7 @@
 using BookingWeb.ApiCollection.Interfaces;
 using BookingWeb.ApiCollection.Settings;
 using BookingWeb.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
@@ -16,11 +17,14 @@ namespace BookingWeb.ApiCollection.APIs
     public class OwnersApi : BaseHttpClientFactory, IOwnersApi
     {
         private readonly ApiSettings _config;
-        public OwnersApi(IHttpClientFactory factory, IOptions<ApiSettings> options) : base(factory)
+        private readonly ILogger<OwnersApi> _log;
+        public OwnersApi(IHttpClientFactory factory, IOptions<ApiSettings> options,
+            ILogger<OwnersApi> log) : base(factory)
         {
             _config = options.Value;
             _builder = new HttpRequestBuilder(_config.BaseAddress);
             _builder.AddToPath(_config.OwnersPath);
+            _log = log;
         }
 
         public async Task<string> LoginOwnerAsync(LoginDTO loginForm)
@@ -42,8 +46,8 @@ namespace BookingWeb.ApiCollection.APIs
         }
 
 
-        /*
-        public async Task<RegisterDTO> GetUserByIdAsync(Guid id, string token = default)
+        
+        public async Task<OwnerProfileModel> GetOwnerByIdAsync(Guid id, string token = default)
         {
             using var message = _builder
               .HttpMethod(HttpMethod.Get).AddToPath("/" + id).Headers(h =>
@@ -53,7 +57,7 @@ namespace BookingWeb.ApiCollection.APIs
               .HttpMessage;
             try
             {
-                return await GetResponseAsync<UserViewModel>(message);
+                return await GetResponseAsync<OwnerProfileModel>(message);
             }
             catch (ApiException e)
             {
@@ -62,7 +66,7 @@ namespace BookingWeb.ApiCollection.APIs
             }
         }
 
-        public async Task<string> LoginResponseAsync(LoginViewModel user)
+       /* public async Task<string> LoginResponseAsync(LoginViewModel user)
         {
             using var message = _builder
               .HttpMethod(HttpMethod.Post).AddToPath("/login").

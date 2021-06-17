@@ -19,7 +19,7 @@
             <hr class="mb-4">
 
             <p class="text-end"><a asp-page="/Login">Already have an account?</a></p>
-
+            <span class="col-12">@ViewData["Err"]</span>
             <form asp-page-handler="RegisterOwner" method="post" id="regform">
 
                 <div class="form-group row">

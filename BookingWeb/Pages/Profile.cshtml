@@ -4,7 +4,7 @@
     Layout = "_AdminkaLayout";
 }
 
-
+ 
 @model BookingWeb.Pages.ProfileModel
 @{ ViewData["Title"] = "Profile";}
 
@@ -19,40 +19,9 @@
     <div id="general-info">
         <h4 class="text-center">Profile Details</h4>
         <br><br>
-        <form asp-page-handler="UpdateProfile" method="post" id="general-info-form">
-            <label asp-for="RegisterForm.Firstname" for="fname">First name</label>
-            <input asp-for="RegisterForm.Firstname" type="text" id="fname" placeholder="" value="" required>
-
-            <label asp-for="RegisterForm.Lastname" for="lname">Last name</label>
-            <input asp-for="RegisterForm.Lastname" type="text" id="lname" placeholder="" value="" required>
-
-            <label asp-for="RegisterForm.Email" for="email">Email address</label>
-            <input asp-for="RegisterForm.Email" type="email" id="email" placeholder="you@example.com">
-
-            <label asp-for="RegisterForm.MobilePhone" for="mobile">Mobile Phone</label>
-            <input asp-for="RegisterForm.MobilePhone" type="text" id="mobile" required>
-
-            <label asp-for="RegisterForm.Password" for="pass">Confirm identity by Password</label>
-            <input asp-for="RegisterForm.Password" type="password" id="pass" required>
-
-            <button class="confirm-buttons" type="submit">Update details</button>
-        </form>
-    </div>
-    <div id="password-info">
-        <h4 class="text-center">Set new Password</h4>
-        <br><br>
-        <form asp-page-handler="UpdatePassword" method="post" id="password-info-form">
-            <label asp-for="PasswordDTO.OldPassword" for="oldpass">Old Password</label>
-            <input asp-for="PasswordDTO.OldPassword" type="password" id="oldpass" required>
-
-            <label asp-for="PasswordDTO.NewPassword" for="newpass">New Password</label>
-            <input asp-for="PasswordDTO.NewPassword" type="password" id="newpass" required>
-
-            <label for="confirmpass">Confirm New Password</label>
-            <input type="password" id="confirmpass" required>
-
-            <hr class="mb-4">
-            <button class="confirm-buttons" type="submit">Change Password</button>
-        </form>
+        @Model.ownerProfileModel.Firstname
+        @Model.ownerProfileModel.Lastname
+        @Model.ownerProfileModel.Email
+        @Model.ownerProfileModel.MobilePhone
     </div>
 </div>

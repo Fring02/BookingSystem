@@ -52,6 +52,7 @@ namespace BookingWeb.Pages
             {
                 if (registerTokenResponse.Length < 50)
                 {
+                    ViewData["Err"] = registerTokenResponse; 
                     return Page();
                 }
                 else throw;
