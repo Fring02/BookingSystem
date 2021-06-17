@@ -14,11 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
+    
   </ItemGroup>
 
 </Project>

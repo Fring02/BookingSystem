@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Domain.Core.Models.Users;
+using Domain.Models.Users;
 
 namespace Domain.Core.Models.Booking
 {

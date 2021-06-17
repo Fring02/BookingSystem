@@ -4,7 +4,7 @@ using Domain.Interfaces.Services.Booking;
 using Domain.Interfaces.Services.Users;
 using Infrastructure.Data.Repositories.Booking;
 using Infrastructure.Data.Repositories.Users;
-using Infrastructure.Services;
+using Infrastructure.Repositories.Users;
 using Infrastructure.Services.Booking;
 using Infrastructure.Services.Users;
 using Infrastructure.Services.Utils;

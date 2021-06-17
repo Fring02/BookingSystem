@@ -2,7 +2,9 @@
 using Domain.Core.Models.Booking;
 using Domain.Core.Models.Users;
 using Domain.Dtos.Booking;
+using Domain.Dtos.Owners;
 using Domain.Dtos.Users;
+using Domain.Models.Users;
 
 namespace Infrastructure.Services.Mapping
 {
@@ -27,6 +29,9 @@ namespace Infrastructure.Services.Mapping
             CreateMap<User, UserViewDto>().ReverseMap();
             CreateMap<RegisterUserDto, User>().ReverseMap();
             CreateMap<UserUpdateDto, User>().ReverseMap();
+
+            CreateMap<RegisterUserDto, Owner>().ReverseMap();
+            CreateMap<Owner, OwnerDetailDto>().ReverseMap();
         }
     }
 }

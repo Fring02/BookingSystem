@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using Domain.Core.Helpers;
+﻿using Domain.Core.Helpers;
 using Domain.Core.Models.Booking;
+using System;
+using System.Collections.Generic;
 
-namespace Domain.Core.Models.Users
+namespace Domain.Models.Users
 {
-   public class Owner : IEntity<Guid>, IUser
+    public class Owner
     {
         public Guid Id { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Email { get; set; }
         public string MobilePhone { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; } = Roles.OWNER;
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
+        public string Role { get => Roles.OWNER; }
         public List<LeisureService> Services { get; set; }
     }
 }

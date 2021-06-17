@@ -2,6 +2,7 @@
 using Domain.Core.Helpers;
 using Domain.Core.Models.Booking;
 using Domain.Core.Models.Users;
+using Domain.Models.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Contexts
@@ -12,6 +13,7 @@ namespace Infrastructure.Data.Contexts
         {
         }
 
+        /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Owner>().HasData(new Owner
@@ -26,6 +28,8 @@ namespace Infrastructure.Data.Contexts
             });
             base.OnModelCreating(modelBuilder);
         }
+
+        */
         public DbSet<LeisureService> LeisureServices { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ServiceImage> ServicesImages { get; set; }
