@@ -1,7 +1,8 @@
 using System.Text;
-using API.Extensions;
-using Domain.Mapping;
-using Infrastructure.Data;
+using Booking.API.Extensions;
+using Domain.Core.Helpers;
+using Infrastructure.Data.Contexts;
+using Infrastructure.Services.Mapping;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,12 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using Microsoft.IdentityModel.Tokens;
-using Domain.Core.Helpers;
 
-namespace API
+namespace Booking.API
 {
     public class Startup
     {

@@ -6,7 +6,7 @@ using Domain.Interfaces.Repositories.Booking;
 
 namespace Domain.Interfaces.Services.Booking
 {
-    public interface ILeisureServicesService : IModelService<ILeisureServicesRepository ,LeisureService>
+    public interface ILeisureServicesService : IModelService<ILeisureServicesRepository ,LeisureService, Guid>
     {
         Task<IEnumerable<LeisureService>> GetByCategoryIdAsync(Guid categoryId);
         Task<IEnumerable<LeisureService>> GetByOwnerIdAsync(Guid ownerId);

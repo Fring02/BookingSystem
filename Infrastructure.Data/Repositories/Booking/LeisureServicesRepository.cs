@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Core.Models.Booking;
 using Domain.Interfaces.Repositories.Booking;
-using Infrastructure.Data;
+using Infrastructure.Data.Contexts;
 using Infrastructure.Data.Utils;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories.Booking
+namespace Infrastructure.Data.Repositories.Booking
 {
-    public class LeisureServicesRepository : BaseRepository<LeisureService>,ILeisureServicesRepository
+    public class LeisureServicesRepository : BaseRepository<LeisureService, Guid>,ILeisureServicesRepository
     {
         private FilterBuilder _builder;
         public LeisureServicesRepository(BookingContext context) : base(context)

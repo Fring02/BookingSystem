@@ -9,11 +9,11 @@ using Domain.Interfaces.Services.Booking;
 
 namespace Infrastructure.Services.Booking
 {
-    public class LeisureServicesService : BaseService<ILeisureServicesRepository, LeisureService>, ILeisureServicesService
+    public class LeisureServicesService : BaseService<ILeisureServicesRepository, LeisureService, Guid>, ILeisureServicesService
     {
-        private readonly ILeisureServicesCategoriesRepository _categoriesRepository;
+        private readonly ICategoriesRepository _categoriesRepository;
         private readonly IOwnersRepository _ownersRepository;
-        public LeisureServicesService(ILeisureServicesRepository repository, ILeisureServicesCategoriesRepository categoriesRepository,
+        public LeisureServicesService(ILeisureServicesRepository repository, ICategoriesRepository categoriesRepository,
             IOwnersRepository ownersRepository) : base(repository)
         {
             _categoriesRepository = categoriesRepository;
@@ -24,9 +24,9 @@ namespace Infrastructure.Services.Booking
         {
             var category = await _categoriesRepository.GetByIdAsync(model.CategoryId).ConfigureAwait(false);
             if (category == null) throw new EntityNotFoundException("Such category does not exist");
-            if (!await _ownersRepository.OwnerExists(model.OwnerId).ConfigureAwait(false)) throw new EntityNotFoundException("Such services owner doesn't exist");
-            if (await _repository.ServiceExistsAsync(model.Name).ConfigureAwait(false)) throw new AlreadyPresentException("Service already exists");
-            return await _repository.CreateAsync(model).ConfigureAwait(false);
+            if (!await _ownersRepository.OwnerExists(model.OwnerId)) throw new EntityNotFoundException("Such services owner doesn't exist");
+            if (await _repository.ServiceExistsAsync(model.Name)) throw new AlreadyPresentException("Service already exists");
+            return await base.CreateAsync(model);
         }
         public override async Task<bool> UpdateAsync(LeisureService model)
         {
@@ -35,7 +35,7 @@ namespace Infrastructure.Services.Booking
             {
                 throw new EntityNotFoundException("Category not found by id " + model.CategoryId);
             }
-            return await _repository.UpdateAsync(model).ConfigureAwait(false);
+            return await base.UpdateAsync(model);
         }
 
         public async Task<IEnumerable<LeisureService>> GetByCategoryIdAsync(Guid categoryId)

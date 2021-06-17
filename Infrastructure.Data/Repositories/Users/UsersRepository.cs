@@ -1,16 +1,13 @@
-﻿using Domain.Core.Models.Booking;
-using Domain.Interfaces.Repositories.Users;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using Domain.Core.Models.Users;
+using Domain.Interfaces.Repositories.Users;
+using Infrastructure.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Data.Repositories.Users
 {
-    public class UsersRepository : BaseRepository<User>, IUsersRepository
+    public class UsersRepository : BaseRepository<User, Guid>, IUsersRepository
     {
         public UsersRepository(BookingContext context) : base(context)
         { 
@@ -19,14 +16,14 @@ namespace Infrastructure.Repositories
         {
             return await _context.Users.AsNoTracking().Include(u => u.BookingRequests).ThenInclude(r => r.Service).FirstOrDefaultAsync(u => u.Id == id).ConfigureAwait(false);
         }
-        public async Task<bool> UserExistsAsync(string Email)
+        public async Task<bool> UserExistsAsync(string email)
         {
-            return await _context.Users.AnyAsync(u => u.Email == Email).ConfigureAwait(false);
+            return await _context.Users.AnyAsync(u => u.Email == email).ConfigureAwait(false);
         }
 
-        public async Task<User> GetByEmailAsync(string Email)
+        public async Task<User> GetByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Email == Email).ConfigureAwait(false);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email).ConfigureAwait(false);
         }
     }
 }

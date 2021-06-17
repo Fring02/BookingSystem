@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Core.Models.Booking;
 
 namespace Domain.Interfaces.Repositories.Booking
 {
-    public interface IServiceImageRepository : IModelRepository<ServiceImage, Guid>
+    public interface ICommentRepository : IModelRepository<Comment, int>
     {
-        Task<IEnumerable<ServiceImage>> GetByServiceIdAsync(Guid serviceId);
+        Task<IEnumerable<Comment>> GetByServiceIdAsync(Guid serviceId);
     }
 }

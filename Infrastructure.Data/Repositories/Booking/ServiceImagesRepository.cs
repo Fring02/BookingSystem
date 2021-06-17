@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Core.Models.Booking;
 using Domain.Interfaces.Repositories.Booking;
-using Infrastructure.Data;
+using Infrastructure.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories.Booking
+namespace Infrastructure.Data.Repositories.Booking
 {
-    public class ServiceImagesRepository : BaseRepository<ServiceImage>, IServiceImageRepository
+    public class ServiceImagesRepository : BaseRepository<ServiceImage, Guid>, IServiceImageRepository
     {
         public ServiceImagesRepository(BookingContext context) : base(context)
         {

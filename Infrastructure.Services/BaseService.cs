@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class BaseService<TRepository, T> : IModelService<TRepository, T> where T : class
-        where TRepository : IModelRepository<T>
+    public class BaseService<TRepository, T, TId> : IModelService<TRepository, T, TId> where T : class
+        where TRepository : IModelRepository<T, TId>
     {
         protected readonly TRepository _repository;
-        public BaseService(TRepository repository)
+
+        protected BaseService(TRepository repository)
         {
             _repository = repository;
         }
@@ -30,7 +31,7 @@ namespace Infrastructure.Services
             return await _repository.GetAllAsync().ConfigureAwait(false);
         }
 
-        public virtual async Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<T> GetByIdAsync(TId id)
         {
             return await _repository.GetByIdAsync(id).ConfigureAwait(false);
         }

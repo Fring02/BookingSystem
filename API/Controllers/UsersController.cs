@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using Domain.Core.Helpers;
 using Domain.Core.Models.Booking;
 using Domain.Core.Helpers.Exceptions;
+using Domain.Core.Models.Users;
+using Domain.Interfaces.Services.Users;
 
 namespace Booking.API.Controllers
 {

@@ -6,8 +6,8 @@ using Domain.Interfaces.Repositories.Booking;
 
 namespace Domain.Interfaces.Services.Booking
 {
-    public interface IServiceImagesService : IModelService<IServiceImageRepository, ServiceImage, Guid>
+    public interface ICommentService : IModelService<ICommentRepository, Comment, int>
     {
-        Task<IEnumerable<ServiceImage>> GetByServiceIdAsync(Guid serviceId);
+        Task<IEnumerable<Comment>> GetByServiceIdAsync(Guid serviceId);
     }
 }

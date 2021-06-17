@@ -1,8 +1,8 @@
-﻿using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Domain.Core.Models.Booking;
+using Infrastructure.Data.Contexts;
 
 namespace Booking.API.Extensions
 {
@@ -21,22 +21,22 @@ namespace Booking.API.Extensions
         {
             using var scope = host.Services.CreateScope();
             using var context = scope.ServiceProvider.GetRequiredService<BookingContext>();
-            context.LeisureServiceCategories.AddRange(new LeisureServiceCategory
+            context.Categories.AddRange(new Category
             {
                 Name = "Sport"
-            }, new LeisureServiceCategory
+            }, new Category
             {
                 Name = "Food"
-            }, new LeisureServiceCategory
+            }, new Category
             {
                 Name = "Cinema"
-            }, new LeisureServiceCategory
+            }, new Category
             {
                 Name = "Bar"
-            }, new LeisureServiceCategory
+            }, new Category
             {
                 Name = "Club"
-            }, new LeisureServiceCategory
+            }, new Category
             {
                 Name = "Spa"
             });

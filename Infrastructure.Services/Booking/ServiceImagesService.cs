@@ -8,7 +8,7 @@ using Domain.Interfaces.Services.Booking;
 
 namespace Infrastructure.Services.Booking
 {
-    public class ServiceImagesService : BaseService<IServiceImageRepository, ServiceImage>, IServiceImagesService
+    public class ServiceImagesService : BaseService<IServiceImageRepository, ServiceImage, Guid>, IServiceImagesService
     {
 
         public ServiceImagesService(IServiceImageRepository repository) : base(repository)

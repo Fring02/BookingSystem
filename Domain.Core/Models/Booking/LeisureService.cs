@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Domain.Core.Models.Users;
 
 namespace Domain.Core.Models.Booking
 {
@@ -18,8 +19,9 @@ namespace Domain.Core.Models.Booking
         public Guid OwnerId { get; set; }
         public Owner Owner { get; set; }
         public Guid CategoryId { get; set; }
-        public LeisureServiceCategory Category { get; set; }
+        public Category Category { get; set; }
         public List<ServiceImage> Images { get; set; }
-        public List<BookingRequest> BookingRequests { get; set; }
+        public List<Order> BookingRequests { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

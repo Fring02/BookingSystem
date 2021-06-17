@@ -8,7 +8,7 @@ using Domain.Dtos.Booking;
 using Domain.Interfaces.Services.Booking;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace Booking.API.Controllers
 {
     [ApiController]
     //[Authorize(Roles = Roles.OWNER)]

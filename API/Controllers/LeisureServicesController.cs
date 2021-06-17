@@ -12,7 +12,7 @@ using Domain.Interfaces.Services.Booking;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace Booking.API.Controllers
 {
     [ApiController]
     //[Authorize(Roles = Roles.OWNER)]
@@ -20,9 +20,9 @@ namespace API.Controllers
     public class LeisureServicesController : ControllerBase
     {
         private readonly ILeisureServicesService _leisureService;
-        private readonly ILeisureServicesCategoriesService _categoryService;
+        private readonly ICategoriesService _categoryService;
         private readonly IMapper _mapper;
-        public LeisureServicesController(ILeisureServicesService leisureService, IMapper mapper, ILeisureServicesCategoriesService categoryService)
+        public LeisureServicesController(ILeisureServicesService leisureService, IMapper mapper, ICategoriesService categoryService)
         {
             _leisureService = leisureService;
             _mapper = mapper;

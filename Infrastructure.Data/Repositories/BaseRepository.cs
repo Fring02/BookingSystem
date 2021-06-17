@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Interfaces.Repositories;
-using Infrastructure.Data;
+using Infrastructure.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Data.Repositories
 {
-    public class BaseRepository<T> : IModelRepository<T> where T : class
+    public class BaseRepository<T, TId> : IModelRepository<T, TId> where T : class
     {
         protected readonly BookingContext _context;
-        public BaseRepository(BookingContext context)
+
+        protected BaseRepository(BookingContext context)
         {
             _context = context;
         }
@@ -27,7 +28,7 @@ namespace Infrastructure.Repositories
             return await _context.Set<T>().AsNoTracking().ToListAsync().ConfigureAwait(false);
         }
 
-        public virtual async Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<T> GetByIdAsync(TId id)
         {
             return await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
         }

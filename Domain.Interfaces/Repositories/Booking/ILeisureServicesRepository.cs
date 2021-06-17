@@ -5,7 +5,7 @@ using Domain.Core.Models.Booking;
 
 namespace Domain.Interfaces.Repositories.Booking
 {
-    public interface ILeisureServicesRepository : IModelRepository<LeisureService>
+    public interface ILeisureServicesRepository : IModelRepository<LeisureService, Guid>
     {
         Task<IEnumerable<LeisureService>> GetByCategoryIdAsync(Guid categoryId);
         Task<IEnumerable<LeisureService>> GetByPopularityAsync(int count);

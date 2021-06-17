@@ -23,11 +23,11 @@ namespace Infrastructure.Services.Utils
             if (string.IsNullOrEmpty(toEmail)) throw new ArgumentException("Recipient message is null or empty");
             MimeMessage message = RegistrationMessage(toEmail);
             using var smtpClient = new SmtpClient();
-            smtpClient.Connect(_conf.SmtpServer, _conf.Port, MailKit.Security.SecureSocketOptions.StartTls);
+            await smtpClient.ConnectAsync(_conf.SmtpServer, _conf.Port, MailKit.Security.SecureSocketOptions.StartTls);
             smtpClient.AuthenticationMechanisms.Remove("XOAUTH2");
-            smtpClient.Authenticate(toEmail, password);
+            await smtpClient.AuthenticateAsync(toEmail, password);
             await smtpClient.SendAsync(message);
-            smtpClient.Disconnect(true);
+            await smtpClient.DisconnectAsync(true);
         }
 
 

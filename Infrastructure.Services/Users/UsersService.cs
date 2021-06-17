@@ -1,17 +1,16 @@
-﻿using Domain.Core.Helpers;
-using Domain.Core.Helpers.Exceptions;
-using Domain.Core.Models.Booking;
-using Domain.Interfaces.Repositories.Users;
-using Domain.Interfaces.Services;
-using Infrastructure.Helpers;
-using Infrastructure.Services.Utils;
-using System;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Core.Helpers;
+using Domain.Core.Helpers.Exceptions;
+using Domain.Core.Models.Users;
+using Domain.Interfaces.Repositories.Users;
+using Domain.Interfaces.Services.Users;
+using Infrastructure.Services.Utils;
 
-namespace Infrastructure.Services
+namespace Infrastructure.Services.Users
 {
-    public class UsersService : BaseService<IUsersRepository, User>, IUserService
+    public class UsersService : BaseService<IUsersRepository, User, Guid>, IUserService
     {
         private readonly Notifier _notificationService;
         private readonly IPasswordEncryptor _encryptor;

@@ -1,9 +1,8 @@
-﻿using Infrastructure.Services.Utils;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 
-namespace Infrastructure.Helpers
+namespace Infrastructure.Services.Utils
 {
     public class SHA512PasswordEncryptor : IPasswordEncryptor
     {
@@ -24,11 +23,9 @@ namespace Infrastructure.Helpers
             if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
             if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
 
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(storedHash);
-            }
+            using var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt);
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return computedHash.SequenceEqual(storedHash);
         }
     }
 }
