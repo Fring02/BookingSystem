@@ -18,7 +18,7 @@
             <form asp-page-handler="LoginOwner" method="post" id="loginform">
 
                 <div class="form-group">
-                    <label class="col-lg-2 col-form-label text-danger">@ViewData["message"]</label>
+                    <label class="col-lg-12 col-form-label text-danger">@ViewData["message"]</label>
                     <div class="form-floating mb-3">
                         <input asp-for="LoginForm.Email" type="email" class="form-control" id="email" placeholder="name@example.com" required>
                         <span asp-validation-for="LoginForm.Email" class="text-danger"></span>
