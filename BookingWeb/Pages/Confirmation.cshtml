@@ -1,0 +1,16 @@
+﻿@page
+
+@{
+    Layout = "_AuthLayout";
+}
+
+
+@model BookingWeb.Pages.ConfirmationModel
+@{ ViewData["Title"] = "Account Confirmation";}
+
+<div id="right">
+    <div class="jumbotron">
+        <h1>You have successfully registered. Now you can <a asp-page="Login">Sign in</a></h1>
+        <a asp-page="/Index">Go Home</a>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+@font-face {
+    font-family: 'RobotoSlab-Medium';
+    src: url('fonts/RobotoSlab-Medium.ttf');
+}
+body{
+  margin: 0;
+  padding: 0px;
+  font-size: 1.2em;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'RobotoSlab-Medium';
+  overflow-x: hidden;
+}
+
+a{
+  text-decoration: none;
+}
+
+.knopka {
+    font-size: 1.1em;
+    width: 100%;
+    height: 100%;
+    padding: 1vh;
+    border: none;
+    color: white;
+    background: rgba(41, 89, 124, 0.9);
+    font-family: 'RobotoSlab-Medium';
+    transition: 0.5s ease-in-out;
+    border-radius: 3vh;
+}
+
+.knopka:hover {
+    transition: 0.5s ease-in-out;
+    background: #15db95;
+}
+
+.actbtn{
+	border-radius: 3.5vh;
+	background: #15db95;
+	padding: 2vh 3vh;
+	 transition: 0.5s ease-in-out;
+}
+
+.actbtn:hover{
+	color: white;
+	transition: 0.5s ease-in-out;
+}
+
+.actbtn-normal{
+  border-radius: 3.5vh;
+	background: #15db95;
+	padding: 1vh 2vh;
+	 transition: 0.5s ease-in-out;
+}
+
+#warning{
+    font-style: bold;
+    color: red;
+    padding: 1vh 1vh;
+    background-color: #e4c580;
+}

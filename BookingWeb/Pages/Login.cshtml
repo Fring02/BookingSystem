@@ -1,0 +1,45 @@
+﻿@page
+
+@{
+    Layout = "_AuthLayout";
+}
+
+
+@model BookingWeb.Pages.LoginModel
+@{ ViewData["Title"] = "Login";}
+
+
+<div class="container h-100 d-flex flex-column justify-content-center  w-50">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="d-flex justify-content-center mp-5"><img src="booking.png" height="50" width="50" id="logo" alt="logo" /></div>
+            <div class="d-flex justify-content-center"><h1 class="text-primary">Sign in</h1></div>
+            <hr class="mb-4">
+            <form asp-page-handler="LoginOwner" method="post" id="loginform">
+
+                <div class="form-group">
+                    <label class="col-lg-12 col-form-label text-danger">@ViewData["message"]</label>
+                    <div class="form-floating mb-3">
+                        <input asp-for="LoginForm.Email" type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                        <span asp-validation-for="LoginForm.Email" class="text-danger"></span>
+                        <label asp-for="LoginForm.Email" for="email">Email address</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input asp-for="LoginForm.Password" type="password" class="form-control" id="pass" placeholder="strong-passord" required>
+                        <span asp-validation-for="LoginForm.Password" class="text-danger"></span>
+                        <label asp-for="LoginForm.Password" for="pass">Password</label>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <br>
+                    <button class="btn btn-lg btn-primary" id="loginbtn">Sign in</button>
+                    <hr class="mb-4">
+                    <span class="text-info">Do not have an account? <a asp-page="/Register">Create it now</a></span>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

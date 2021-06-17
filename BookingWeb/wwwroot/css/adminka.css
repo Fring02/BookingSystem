@@ -1,0 +1,187 @@
+/*
+    DEMO STYLE
+*/
+@font-face {
+    font-family: 'RobotoSlab-Medium';
+    src: url('fonts/RobotoSlab-Medium.ttf');
+}
+
+body {
+    background: #fafafa;
+    margin: 0;
+    padding: 0px;
+    font-size: 1em;
+    font-family: 'RobotoSlab-Medium';
+}
+
+p {
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #999;
+}
+
+.navbar {
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+#sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    height: 100vh;
+    z-index: 999;
+    background: #030a30;
+    color: #fff;
+    transition: all 0.3s;
+    overflow-y: scroll;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+    #sidebar.active {
+        left: 0;
+    }
+
+#dismiss {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    background: #7386D5;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+    #dismiss:hover {
+        background: #fff;
+        color: #7386D5;
+    }
+
+.overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 998;
+    display: none;
+}
+
+    .overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    margin: 0vh 5vh;
+    color: #ffffff;
+    transition: 0.5s ease-in-out;
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+    text-decoration: none;
+}
+
+    #sidebar ul li a:hover {
+        color: #E34C43;
+    }
+
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+#logo {
+    height: 9vh;
+    width: 9vh;
+    padding: 2vh;
+}
+
+#sidebarCollapse {
+    background: #fff;
+}
+
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+#content {
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/* ---------------------------------------------------
+    CUSTOM STYLE STARTS HERE
+----------------------------------------------------- */
+
+#btn {
+    border-radius: 3.5vh;
+    background: #15db95;
+    color: #ffffff;
+    box-shadow: 0 0 0.5vh rgba(0,0,0,0.7);
+    padding: 1.2vh 2vh;
+    text-decoration: none;
+}
+
+#btn:hover {
+    transition: 0.5s ease-in-out;
+    background: #E34C43;
+}
+
+.el {
+    padding: 0vh 2vh;
+}
+
+#profile-details > li {
+    margin: 0 1.5vh;
+}
+
+#where-are-you {
+    text-align: center;
+    font-size: 1.3em;
+    text-decoration: underline;
+    color: #15db95;
+    background: #6d7fcc;
+}
+
+#render-place {
+    height: 100%;
+    width: 100%;
+    padding: 0px;
+}
