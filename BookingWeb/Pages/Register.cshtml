@@ -8,37 +8,92 @@
 @model BookingWeb.Pages.RegisterModel
 @{ ViewData["Title"] = "Registration";}
 
-<div id="right">
-    <div class="registerBox" id="signupForm">
-        <form asp-page-handler="RegisterOwner" method="post" id="regform">
-            <label asp-for="RegisterForm.Firstname" for="fname">First name</label>
-            <input asp-for="RegisterForm.Firstname" type="text" id="fname" placeholder="John" value="" required>
-            <span asp-validation-for="RegisterForm.Firstname" class="text-danger"></span>
+<div class="container h-100 d-flex flex-column justify-content-center  w-75">
 
+    <div class="row justify-content-center">
 
-            <label asp-for="RegisterForm.Lastname" for="lname">Last name</label>
-            <input asp-for="RegisterForm.Lastname" type="text" id="lname" placeholder="Doe" value="" required>
-            <span asp-validation-for="RegisterForm.Lastname" class="text-danger"></span>
+        <div class="col-lg-8">
 
-            <label asp-for="RegisterForm.Email" for="email">Email <span class="text-muted">(Required)</span></label>
-            <input asp-for="RegisterForm.Email" type="email" id="email" placeholder="you@example.com">
-            <span asp-validation-for="RegisterForm.Email" class="text-danger"></span>
-
-            <label asp-for="RegisterForm.Password" for="password">Password</label>
-            <input asp-for="RegisterForm.Password" type="password" id="password" placeholder="**********" required>
-            <span asp-validation-for="RegisterForm.Password" class="text-danger"></span>
-
-            <label for="repassword">Confirm Password</label>
-            <span class="msg"></span>
-            <input type="password" id="repassword" placeholder="repeat password" required>
-
-            <label asp-for="RegisterForm.MobilePhone" for="mobile">Mobile Phone</label>
-            <input asp-for="RegisterForm.MobilePhone" type="text" id="mobile" placeholder="79998887654" required>
-            <span asp-validation-for="RegisterForm.MobilePhone" class="text-danger"></span>
+            <div class="d-flex justify-content-between"><img class="justify-items-start" src="booking.png" height="50" width="50" id="logo" alt="logo" /><h1 class="text-primary">Sign up</h1></div>
 
             <hr class="mb-4">
-            <button class="knopka" id="regBtn">Sign up</button>
-            <a asp-page="/Login">Already created your account?</a>
-        </form>
+
+            <p class="text-end"><a asp-page="/Login">Already have an account?</a></p>
+
+            <form asp-page-handler="RegisterOwner" method="post" id="regform">
+
+                <div class="form-group row">
+
+                    <div class="col-lg-6">
+                        <label asp-for="RegisterForm.Firstname" class="col-form-label" for="fname">First name</label>
+                        <input asp-for="RegisterForm.Firstname" class="form-control" type="text" id="fname" placeholder="John" value="" required>
+                        <span asp-validation-for="RegisterForm.Firstname" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label asp-for="RegisterForm.Lastname" class="col-form-label" for="lname">Last name</label>
+                        <input asp-for="RegisterForm.Lastname" class="form-control" type="text" id="lname" placeholder="Doe" value="" required>
+                        <span asp-validation-for="RegisterForm.Lastname" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="RegisterForm.Email" for="email" class="form-label mt-4">Email address</label>
+                    <input type="email" class="form-control" asp-for="RegisterForm.Email" type="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                    <span asp-validation-for="RegisterForm.Email" class="text-danger"></span>
+                    <small id="emailHelp" class="form-text text-muted">You will use that email as a username</small>
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="col-lg-6 w-50 align-self-center">
+
+                        <div class="col-lg-12">
+                            <p class="text-warning">Password should be: </p>
+                            <ul>
+                                <li>at least 6 characters</li>
+                                <li>no more than 15</li>
+                                <li>it is not recommended to use dictionary words</li>
+                                <li>try to create strong passwords using A-Z a-z 0-9 $#!</li>
+                            </ul>
+                            <span class="msg"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        <div class="col-lg-12">
+                            <label class="form-label mt-4" asp-for="RegisterForm.Password" for="password">Password</label>
+                            <input class="form-control" asp-for="RegisterForm.Password" type="password" id="password" placeholder="Strong Password" required>
+                            <span asp-validation-for="RegisterForm.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <label class="form-label mt-4" for="repassword">Confirm Password</label>
+                            <input class="form-control" type="password" id="repassword" placeholder="Retype password again" required>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <label class="form-label mt-4" asp-for="RegisterForm.MobilePhone" for="mobile">Mobile Phone</label>
+                            <input class="form-control" asp-for="RegisterForm.MobilePhone" type="text" id="mobile" placeholder="79998887654" required>
+                            <span asp-validation-for="RegisterForm.MobilePhone" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr class="mb-4">
+
+                <div class="d-grid gap-1">
+                    <button class="btn btn-lg btn-primary" id="regBtn">Sign up</button>
+                </div>
+            </form>
+
+        </div>
+
     </div>
+
 </div>
