@@ -35,6 +35,7 @@ namespace BookingWeb
             #region API interfaces
             services.AddScoped<IOwnersApi, OwnersApi>();
             services.AddScoped<IServicesApi, ServicesApi>();
+            services.AddScoped<ICategoriesApi, CategoriesApi>();
             #endregion
 
             #region Session configuration
