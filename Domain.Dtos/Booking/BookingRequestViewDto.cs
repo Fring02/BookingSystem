@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Dtos.Users;
+using System;
 
 namespace Domain.Dtos.Booking
 {
@@ -8,6 +9,7 @@ namespace Domain.Dtos.Booking
         public Guid ServiceId { get; set; }
         public LeisureServiceViewDto Service { get; set; }
         public Guid UserId { get; set; }
+        public UserRequestViewDto User { get; set; }
         public DateTime LeftAt { get; set; }
         public TimeSpan BookingTime { get; set; }
         public string Info { get; set; }
