@@ -7,3 +7,108 @@
 
 @model BookingWeb.Pages.ServiceCreateModel
 @{ ViewData["Title"] = "Create Service";}
+
+<div class="container h-100 d-flex flex-column justify-content-center  w-75">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="d-flex justify-content-between">
+                <img class="justify-items-start" src="booking.png" height="50" width="50" id="logo" alt="logo" />
+                <h1 class="text-primary">Create Service</h1>
+            </div>
+
+            <hr class="mb-4">
+
+            <span class="col-12">@ViewData["Err"]</span>
+            <!--LEISURE SERVICE CREATE FORM-->
+            <form asp-page-handler="CreateService" method="post">
+
+                <div class="form-group row">
+
+                    <div class="col-lg-6">
+                        <label asp-for="ServiceForm.Name" class="col-form-label" for="serv-name"><i class="fa fa-tag" aria-hidden="true"></i> Service name</label>
+                        <input asp-for="ServiceForm.Name" class="form-control" type="text" id="serv-name" placeholder="Your service name" value="" required>
+                        <span asp-validation-for="ServiceForm.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label asp-for="ServiceForm.Location" class="col-form-label" for="location"><i class="fa fa-map-signs" aria-hidden="true"></i> Location</label>
+                        <input asp-for="ServiceForm.Location" class="form-control" type="text" id="location" placeholder="Wall st. 10" value="" required>
+                        <span asp-validation-for="ServiceForm.Location" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ServiceForm.Website" for="web" class="form-label mt-4"><i class="fa fa-globe" aria-hidden="true"></i> Website</label>
+                    <input type="text" class="form-control" asp-for="ServiceForm.Website" type="text" id="web" aria-describedby="emailHelp" placeholder="www.booking.net">
+                    <span asp-validation-for="ServiceForm.Website" class="text-danger"></span>
+                    <small id="emailHelp" class="form-text text-muted">You can use our platform address</small>
+                </div>
+
+
+                <div class="form-group row">
+
+                    <div class="form-group">
+                        <label for="descr" class="form-label mt-4"><i class="fa fa-file-o" aria-hidden="true"></i> Description - shortly about your service</label>
+                        <textarea asp-for="ServiceForm.Description" class="form-control" id="descr" rows="3"></textarea>
+                    </div>
+
+                </div>
+
+
+                <div class="form-group row">
+
+                    <div class="col-lg-6">
+                        <label asp-for="ServiceForm.Latitude" class="col-form-label" for="latt"><i class="fa fa-location-arrow" aria-hidden="true"></i> Latitude</label>
+                        <input asp-for="ServiceForm.Latitude" class="form-control" type="text" id="latt" placeholder="" value="" required>
+                        <span asp-validation-for="ServiceForm.Latitude" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label asp-for="ServiceForm.Longitude" class="col-form-label" for="long"><i class="fa fa-location-arrow" aria-hidden="true"></i> Longitude</label>
+                        <input asp-for="ServiceForm.Longitude" class="form-control" type="text" id="long" placeholder="" value="" required>
+                        <span asp-validation-for="ServiceForm.Longitude" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="col-lg-6">
+                        <label asp-for="ServiceForm.WorkingTime" class="col-form-label" for="worktime"><i class="fa fa-calendar" aria-hidden="true"></i> Working Time</label>
+                        <input asp-for="ServiceForm.WorkingTime" class="form-control" type="text" id="worktime" placeholder="" value="" required>
+                        <span asp-validation-for="ServiceForm.WorkingTime" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        <div class="form-group">
+                            <label for="category" class="col-form-label form-label"><i class="fa fa-star-o" aria-hidden="true"></i> Define category</label>
+                            <select asp-for="ServiceForm.CategoryId" class="form-select" id="category">
+                                @foreach (var cat in Model.CategoriesList)
+                                {
+                                    <option value="@cat.Id">@cat.Name</option>
+                                }
+                            </select>
+                        </div>
+
+                        <input asp-for="ServiceForm.OwnerId" class="hidden" value="@ViewData["owner"]" hidden/>
+                    </div>
+
+                </div>
+
+                <hr class="mb-4">
+
+                <div class="d-grid gap-1">
+                    <button class="btn btn-lg btn-primary">Create</button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

@@ -12,5 +12,6 @@ namespace BookingWeb.ApiCollection.Interfaces
         Task<bool> CreateBookingRequest(BookingRequestViewModel request, string token);
         Task<bool> CheckBookingRequest(BookingRequestViewModel request, string token);
         Task<bool> DeleteBookingRequest(Guid id, string token);
+        Task<IEnumerable<BookingRequestViewModel>> GetRequestsByServiceId(Guid serviceid, string token = default);
     }
 }

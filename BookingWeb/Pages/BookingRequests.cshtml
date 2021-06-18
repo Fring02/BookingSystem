@@ -8,3 +8,57 @@
 @model BookingWeb.Pages.BookingRequestsModel
 @{ ViewData["Title"] = "Booking Requests";}
 
+<div class="solutions-section h-100 d-flex flex-column justify-content-start w-100" style="background-color: #f8f5ff">
+
+    <div class="container">
+
+        <div class="row">
+            <!--START FOREACH HERE-->
+
+            <div class="col-10">
+
+                <div class="col-12">
+                    <h2 class="text-primary">Booking Requests for @Model.Service.Name</h2>
+                </div>
+
+                <table class="table table-hover table-secondary">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Last Name</th>
+                            <th scope="col"><i class="fa fa-envelope-o" aria-hidden="true"></i> User Email</th>
+                            <th scope="col"><i class="fa fa-clock-o" aria-hidden="true"></i> LeftAt</th>
+                            <th scope="col"><i class="fa fa-calendar" aria-hidden="true"></i> BookingTime</th>
+                            <th scope="col"><i class="fa fa-info-circle" aria-hidden="true"></i> Info</th>
+                            <th scope="col"><i class="fa fa-mobile" aria-hidden="true"></i> Mobile phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.BookingRequests.Any())
+                        {
+                            <h2 class="text-warning">No incoming requests for @Model.Service.Name</h2>
+                        }
+
+                        @{int rowNo = 1;}
+
+                        @foreach (var req in Model.BookingRequests)
+                        {
+                            <tr>
+                                <th scope="col">@(rowNo++)</th>
+                                <th scope="col">@req.User.Lastname</th>
+                                <th scope="col">@req.User.Email</th>
+                                <th scope="col">@req.LeftAt</th>
+                                <th scope="col">@req.BookingTime</th>
+                                <th scope="col">@req.Info</th>
+                                <th scope="col">@req.User.MobilePhone</th>
+                            </tr>
+                        }
+
+                    </tbody>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

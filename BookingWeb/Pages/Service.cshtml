@@ -8,11 +8,76 @@
 @model BookingWeb.Pages.ServiceModel
 @{ ViewData["Title"] = "Service Management";}
 
-<div id="general-info">
-    <h4 class="text-center">Profile Details</h4>
-    <br><br>
-    @foreach(var service in Model.serviceModel.Services)
-    {
-        @service.Name;
-    }
+<div class="solutions-section h-75 d-flex flex-column justify-content-around w-100 align-items-center" style="background-color: #f8f5ff">
+
+    <div class="container">
+
+        <div class="row d-flex flex-wrap">
+            @if (!Model.viewModel.Any())
+            {
+
+                <div class="home-intro h-100 d-flex flex-column justify-content-end">
+
+                    <div class="container h-75">
+
+                        <div class="row h-100">
+
+                            <div class="col-6 d-flex flex-column justify-content-around">
+
+                                <div class="col-12">
+                                    <h1 class="text-primary">My Leisure Services</h1>
+                                </div>
+
+                                <div class="col-8">
+                                    <h4 class="text-warning">You do not have any Leisure Service details</h4>
+                                    <br />
+                                    <a asp-page="/ServiceCreate" type="button" class="btn btn-success btn-sm">Create Leisure service</a>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+            <!--START FOREACH HERE-->
+            @foreach (var Service in Model.viewModel)
+            {
+                <div class="col-6">
+
+                    <div class="card bg-light mb-3">
+                        <h3 class="card-header"><i class="fa fa-tag" aria-hidden="true"></i> @Service.Name</h3>
+                        <div class="card-body">
+                            <h5 class="card-title">Category: @Service.Category.Name</h5>
+                            <h6 class="card-subtitle text-muted"><i class="fa fa-map-signs" aria-hidden="true"></i> @Service.Location</h6>
+                            <span class="badge bg-primary rounded-pill">@Service.Website</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><i class="fa fa-file-o" aria-hidden="true"></i> @Service.Description</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="fa fa-calendar" aria-hidden="true"></i> Working Time: <span class="badge bg-primary rounded-pill">@Service.WorkingTime</span></li>
+                            <li class="list-group-item"><i class="fa fa-star-o" aria-hidden="true"></i> Rating: <span class="badge bg-primary rounded-pill">@Service.Rating</span></li>
+                            <li class="list-group-item">Rated by <span class="badge bg-primary rounded-pill">@Service.RatedCount</span> times</li>
+                        </ul>
+                        <div class="card-body text-end">
+
+                            <a asp-page="/BookingRequests" asp-route-serviceid="@Service.Id" type="button" class="btn btn-primary btn-sm">Booking Requests</a>
+
+                            <a asp-page="/DeleteService" asp-route-serviceid="@Service.Id" type="button" class="btn btn-danger btn-sm">Delete Service</a>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
 </div>

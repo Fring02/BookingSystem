@@ -138,5 +138,58 @@ namespace BookingWeb.ApiCollection.APIs
                 return null;
             }
         }
+
+        public async Task<bool> CreateService(LeisureServiceCreateView model, string token = default)
+        {
+            using var message = _builder.HttpMethod(HttpMethod.Post).
+                Content(new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")).Headers(h =>
+                {
+                    h.Add("Authorization", "Bearer " + token);
+                }).HttpMessage;
+            try
+            {
+                return await GetResponseStringAsync(message) != null;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<IEnumerable<LeisureServiceViewModel>> GetOwnerService(Guid owner, string token = null)
+        {
+            using var message = _builder.AddToPath("/ownerId=" + owner)
+             .HttpMethod(HttpMethod.Get)
+             .HttpMessage;
+            try
+            {
+                var service = await GetResponseAsync<IEnumerable<LeisureServiceViewModel>>(message);
+                if (service == null) _log.LogWarning("Did not found service by uri " + _builder.HttpMessage.RequestUri.LocalPath);
+                return service;
+            }
+            catch (ApiException e)
+            {
+                _log.LogError(e.Message);
+                return null;
+            }
+        }
+
+        public async Task<string> DeleteService(Guid serviceId, string token = default)
+        {
+            using var message = _builder.AddToPath("/" + serviceId)
+             .HttpMethod(HttpMethod.Delete).Headers(h =>
+             {
+                 h.Add("Authorization", "Bearer " + token);
+             }).HttpMessage;
+
+            try
+            {
+                return await GetResponseStringAsync(message);
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

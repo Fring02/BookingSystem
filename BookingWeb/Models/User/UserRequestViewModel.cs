@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Domain.Dtos.Users
+namespace BookingWeb.Models.User
 {
-    public class UserRequestViewDto
+    public class UserRequestViewModel
     {
         public Guid Id { get; set; }
         public string Firstname { get; set; }

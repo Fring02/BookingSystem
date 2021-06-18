@@ -69,5 +69,25 @@ namespace BookingWeb.ApiCollection.APIs
                 return false;
             }
         }
+
+        public async Task<IEnumerable<BookingRequestViewModel>> GetRequestsByServiceId(Guid serviceid, string token = null)
+        {
+            using var message = _builder.AddToPath("/serviceId=" + serviceid)
+             .HttpMethod(HttpMethod.Get).Headers(h =>
+             {
+                 h.Add("Authorization", "Bearer " + token);
+             }).HttpMessage;
+            try
+            {
+                var service = await GetResponseAsync<IEnumerable<BookingRequestViewModel>>(message);
+                if (service == null) _log.LogWarning("Did not found any requests by uri " + _builder.HttpMessage.RequestUri.LocalPath);
+                return service;
+            }
+            catch (ApiException e)
+            {
+                _log.LogError(e.Message);
+                return null;
+            }
+        }
     }
 }

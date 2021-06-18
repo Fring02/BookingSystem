@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Booking.API.Controllers
 {
     [ApiController]
-    [Authorize(Roles = Roles.USER)]
     [Route("/api/v1/requests/")]
     public class OrdersController : ControllerBase
     {
@@ -31,7 +30,8 @@ namespace Booking.API.Controllers
         {
             return _mapper.Map<IEnumerable<BookingRequestViewDto>>(await _requestsService.GetAllAsync() ?? new List<Order>());
         }
-        [Authorize(Roles = Roles.OWNER)]
+        
+
         [HttpGet("serviceId={serviceId}")]
         public async Task<IEnumerable<BookingRequestViewDto>> GetBookingRequestsByServiceIdAsync(Guid serviceId)
         {
@@ -54,6 +54,7 @@ namespace Booking.API.Controllers
         {
            return await _requestsService.HasRequestAsync(new Order { UserId = userId, ServiceId = serviceId });
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateBookingRequestAsync(BookingRequestCreateDto dto)
         {

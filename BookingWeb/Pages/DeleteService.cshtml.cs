@@ -1,30 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BookingWeb.ApiCollection.Interfaces;
-using BookingWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Threading.Tasks;
 
 namespace BookingWeb.Pages
 {
-    public class ServiceModel : PageModel
+    public class DeleteServiceModel : PageModel
     {
         private readonly IServicesApi _servicesApi;
-        private readonly ICategoriesApi _categoriesApi;
 
-        public ServiceModel(IServicesApi servicesApi, ICategoriesApi categoriesApi)
+        public DeleteServiceModel(IServicesApi servicesApi)
         {
             _servicesApi = servicesApi;
-            _categoriesApi = categoriesApi;
         }
 
-        [BindProperty]
-        public IEnumerable<LeisureServiceViewModel> viewModel { get; set; }
-
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(Guid serviceid)
         {
             //This is for saving user details to show on other pages
             ViewData["user"] = HttpContext.Session.GetString("user");
@@ -37,9 +29,9 @@ namespace BookingWeb.Pages
                 {
                     string token = HttpContext.Session.GetString("token");
 
-                    var model = await _servicesApi.GetOwnerService(id, token);
+                    var msg = await _servicesApi.DeleteService(serviceid, token);
 
-                    viewModel = model;
+                    ViewData["message"] = msg;
                 }
             }
             else

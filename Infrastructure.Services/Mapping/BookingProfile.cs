@@ -27,6 +27,7 @@ namespace Infrastructure.Services.Mapping
             CreateMap<Comment, CommentCreateDto>().ReverseMap();
             CreateMap<Comment, CommentUpdateDto>().ReverseMap();
             CreateMap<User, UserViewDto>().ReverseMap();
+            CreateMap<User, UserRequestViewDto>().ReverseMap();
             CreateMap<RegisterUserDto, User>().ReverseMap();
             CreateMap<UserUpdateDto, User>().ReverseMap();
 

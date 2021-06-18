@@ -24,7 +24,7 @@ namespace Infrastructure.Data.Repositories.Booking
         }
         public async Task<IEnumerable<Order>> GetByServiceIdAsync(Guid serviceId)
         {
-            return await _context.Orders.AsNoTracking().Include(r => r.Service).ThenInclude(s => s.Category).Where(r => r.ServiceId == serviceId).ToListAsync().ConfigureAwait(false);
+            return await _context.Orders.AsNoTracking().Include(r => r.Service).ThenInclude(s => s.Category).Include(s => s.User).Where(r => r.ServiceId == serviceId).ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> HasRequestAsync(Order request)
